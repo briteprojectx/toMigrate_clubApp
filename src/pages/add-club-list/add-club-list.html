@@ -1,0 +1,40 @@
+<ion-header >
+    <ion-navbar >
+      <ion-buttons start>
+                    <button ion-button icon-only (click)="close()" *ngIf="openedModal" >
+                      <i class="mdi mdi-close" ></i >
+                  </button >
+                </ion-buttons>
+        <ion-title center >{{"SelectClub.title" | translate}}</ion-title >
+        <ion-buttons end >
+
+            <button ion-button icon-only (click)="refreshClubs(null, null)" >
+                <i class="fa fa-refresh" aria-hidden="true" ></i >
+            </button >
+            <button (click)="close()" ion-button icon-only>
+                <i class="fa fa-floppy-o" aria-hidden="true" ></i >
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content >
+    <ion-toolbar light >
+        <ion-searchbar [(ngModel)]="searchQuery" debounce="1000" (input)="onSearchInput($event)" color="dark" >
+        </ion-searchbar >
+    </ion-toolbar >
+    <ion-list radio-group >
+        <button ion-item *ngFor="let club of clubList.clubs" >
+            <ion-label >
+                <h2 class="course-name" >{{club.clubName}}</h2 >
+            </ion-label >
+            <ion-radio ></ion-radio >
+        </button >
+    </ion-list >
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                         threshold="30%" >
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data..." ></ion-infinite-scroll-content >
+    </ion-infinite-scroll >
+</ion-content >

@@ -1,0 +1,110 @@
+// ion-content{
+//     .content{
+//         border-radius: 12px;
+//         margin: 16px;
+//     }
+//   }
+.caddies-icons{
+  ion-note{
+   position: relative;
+   top: -10px;
+  }
+}
+.item-logo{
+    background: transparent !important;
+.logo {
+    height: 50px;
+    img {
+      position: relative;
+      border-radius: 50%;
+      top: 10px;
+      left: -48px;
+    }
+    ion-title {
+      position: relative;
+      top: -38px;
+      left: 28px;
+      font-size: 24px;
+    }
+    ion-note{
+      font-size: 24px !important;
+    }
+  }
+}
+  .toolbar-title-ios, .toolbar-title-md {
+    font-size: 2.4rem;
+  }
+  
+  .scroll-content {
+    padding: 0 !important;
+  }
+  ion-content{
+    --background: #E3F7DC ;
+      .booking-content{
+        background: #E3F7DC ;
+        border-radius: 12px;
+        //  ;
+        ion-item{
+          background: transparent;
+        }
+      }
+      .main-content{
+        border-radius: 12px;
+        .tee-time{
+          background: #E3F7DC ;
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+          img{
+              border-radius: 50%;
+            }
+          .help{
+              width: 20px;
+              height: 20px;
+              background: red;
+              border-radius: 50%;
+              color: whitesmoke;
+            }
+        }
+      }
+      .input{
+      //   width: calc(100%-100px) !important;
+      border-bottom: 1px solid #dedede;
+      }
+      ion-input{
+        margin: 10px 0 0px -2px !important;
+        border-bottom: 1px solid #dedede;
+      }
+      .text-input-ios, .text-input-md{
+        margin: 11px 8px 11px 6px;
+        padding: 0;
+        width: calc(100% - 8px);
+      }
+     ion-icon{
+       position: relative;
+       top: 2px;
+       font-size: 20px;
+       font-weight: 800;
+     }
+    
+     ion-segment{
+       ion-icon{
+        margin: -5px 0 0 0;
+       }
+     }
+     .book_now{
+       color: #000;
+       font-weight: 400;
+     }
+    }
+    .book{
+      height: 60px;
+  }
+  .modal-margin {
+    margin-bottom: 20px !important
+  }
+  
+    @media screen and (max-width:350px){
+        .book{
+            height: 60px;
+        }
+    }

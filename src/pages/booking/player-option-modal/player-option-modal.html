@@ -1,0 +1,63 @@
+<!-- Generated template for the PlayerOptionModalComponent component -->
+<ion-content padding>
+  <div padding>
+  <ion-item>
+    <ion-label color="primary">Options for you John(# 23)</ion-label>
+    <ion-icon item-right name="close" color="danger" (click)="dismiss()"></ion-icon>
+  </ion-item>
+
+  <div class="shadow-3" padding>
+        <ion-item no-lines>
+          <ion-label color="medium">Buggie Seating <ion-note color="secondary"><i><b>(Walking)</b></i></ion-note></ion-label>
+          <ion-toggle [(ngModel)]="buggieSeating"></ion-toggle>
+        </ion-item>
+     
+ 
+        <ion-item no-lines>
+          <ion-label color="medium">Driver <ion-note color="success"><i><b>(Hire)</b></i></ion-note></ion-label>
+          <ion-toggle [(ngModel)]="driver"></ion-toggle>
+        </ion-item>
+
+        <ion-item no-lines>
+          <ion-label color="medium">Caddy Pairing <ion-note color="secondary"><i><b>(no caddy)</b></i></ion-note></ion-label>
+          <ion-toggle [(ngModel)]="caddieParing"></ion-toggle>
+        </ion-item>
+    
+
+        <ion-item no-lines>
+          <ion-label color="medium">Favourite Caddy?</ion-label>
+          <ion-select text-right placeholder="caddie" name="caddies" [(ngModel)]="favoriteCaddy" interface="popover" class="select_caddies">
+            <ion-option value='1'>caddie 1</ion-option>
+            <ion-option value='2'>caddie 2</ion-option>
+            <ion-option value='3'>caddie 3</ion-option>
+            <ion-option value='4'>caddie 4</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+
+      <div class="shadow-3" padding>
+    <div padding>
+      <ion-item no-lines>
+        <ion-label color="warning" style="font-size: 14px;">
+          <b> NOTE ALL CADDIES WILL ONLY BE CONFIRMED DURING PAYMENT</b>
+        </ion-label>
+      </ion-item>
+    </div>
+    <div text-center class="animate">
+      <ion-item class="shadow-3" no-lines color="warning" padding-bottom style="border-radius: 16px;" text-center>
+        <ion-note color="medium" style="line-height: 2rem;"><b>You have not entered your phone number or adderess as per
+            MGA rules. Tap to add</b></ion-note>
+      </ion-item>
+    </div>
+
+    <!-- <div text-center padding>
+      <button ion-button round color="danger" class="shadow-3" (click)="dismiss()">Go back</button>
+
+    </div> -->
+
+  </div>
+  </div>
+<div style="height: 10px;"></div>
+
+</ion-content>

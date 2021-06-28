@@ -1,0 +1,112 @@
+booking-list-page {
+
+  //.css-calendar {
+  //  color: #D92929;
+  //  padding-right: 5px;
+  //}
+  //.friend-row {
+  //  @extend .custom-item;
+  //}
+  //.custom-avatar-img {
+  //  min-width: 4rem;
+  //  min-height: 4rem;
+  //}
+
+  //[item-left] {
+  //  background-image: none;
+  //}
+  .male {
+    color: $skyblue;
+  }
+
+  .female {
+    color: $eagle-color;
+  }
+
+  ion-segment-button.segment-button {
+    max-width: 15em !important;
+  }
+
+  ion-item.item-block.search {
+    min-height: 10.4rem !important;
+  }
+
+  .page-sub-title {
+    background-color: #DDF6D6 !important; //#30bb5b !important;
+    // color: white !important;
+    // text-align: center;
+    font-weight: bold;
+  }
+
+  .time-slot-subheader {
+    // background-color: #30bb5b !important;
+
+    // background-color: #cde2c3 !important;
+
+    color: #3F9341; //black;
+    // text-align: center;
+    font-weight: bold;
+  }
+
+  .mygolf-table-caption {
+    text-align: center;
+    font-weight: bold;
+    // background-color: #cde2c3 !important;
+    color: black !important;
+  }
+
+  .book-unavailable {
+    background-color: #f5f5f5;
+    font-style: italic;
+  }
+
+  ion-row {
+    line-height: 1.5em;
+  }
+
+  button.bar-button {
+    color: $primary;
+  }
+
+  .toolbar-background.toolbar-background-md,
+  .toolbar-background.toolbar-background-ios {
+    background-color: #DDF6D6 !important;
+  }
+
+  .btn-back {
+    background: url(../assets/img/prev.png) no-repeat;
+    background-size: 1.5em;
+    // transform: translate(10px, 10px);
+    transform: translate(12px, 15px);
+  }
+
+  .btn-next {
+    background: url(../assets/img/prev.png) no-repeat;
+    background-size: 1.5em;
+    transform: scale(-1, 1) translate(12px, 15px);
+  }
+
+  .row.row-price {
+    width: 100%;
+  }
+
+  .column.col-price-left {
+    width: 75%;
+    text-align: left;
+  }
+
+  .column.col-price-right {
+    width: 25%;
+    text-align: right;
+  }
+
+  .slot-available {
+    background-color: #cde2c3;
+  }
+
+  .slot-not-available {
+    background-color: grey;
+    font-style: italic;
+    color: white;
+  }
+}

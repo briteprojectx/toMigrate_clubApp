@@ -1,0 +1,1423 @@
+starter-flight-lists-page {
+    .buggy-col {
+        height: 4rem !important;
+    }
+
+    // .starter-buggy-box {
+    //     border: #4dd176;
+    // border-style: solid;
+    // border-width: 1px;
+    // border-radius: 1em;
+    // /* margin: 1em; */
+    // margin: 0.5em;
+    // }
+
+
+    @media (max-width: 576px) {
+        .hide-xs {
+            display: none;
+        }
+
+        .starter-btn-courses {
+            max-width: 100%;
+            min-width: 100%;
+            margin-top: 1em;
+        }
+    }
+
+    @media (min-width: 360px) and (max-width: 767px) {
+        .starter-btn-courses {
+            max-width: 100%;
+            min-width: 100%;
+            margin-top: 1em;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hide-xs {
+            display: none;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 767px) {
+        .hide-sm {
+            display: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        .show-sm {
+            display: none;
+        }
+
+        .show-xs {
+            display: none;
+        }
+        .starter-btn-courses {
+            max-width: 100%;
+            min-width: 100%;
+            // margin-top: 1em;
+        }
+
+    }
+
+
+
+
+
+
+    .tee-buggy-list-page { 
+        ion-card {
+            margin-bottom: 0;
+        }
+
+        .left {
+            margin-left: 70%;
+        }
+
+        $breakpoints: ("phone": 400px,
+            "phone-wide": 480px,
+            "phablet": 560px,
+            "tablet-small": 640px,
+            "tablet": 768px,
+            "tablet-wide": 1024px,
+            "desktop": 1248px,
+            "desktop-wide": 1440px);
+
+        @mixin mq($width, $type: min) {
+            @if map_has_key($breakpoints, $width) {
+                $width: map_get($breakpoints, $width);
+
+                @if $type==max {
+                    $width: $width - 1px;
+                }
+
+                @media only screen and (#{$type}-width: $width) {
+                    @content;
+                }
+            }
+        }
+
+        .player-flight {
+            background-color: $danger !important;
+            color: $white;
+        }
+
+        .flight-subtitle {
+            font-weight: bold;
+            @include truncate();
+        }
+
+
+
+        .caddie-img-flight {
+            max-height: 2em;
+        }
+
+        .mygolf-table-caption-a {
+            background-color: #e0e0e0;
+            font-weight: 600;
+            color: #222;
+        }
+
+        // .page-sub-title {
+        //     // background-color: #cde2c3 !important;
+        //     background-color: white;
+        // }
+
+        // .buggy-toolbar {
+        //     margin-left: 80%;
+        //     display: block;
+        // }
+
+        .bag-left {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            // transform: translate(-4px, -30px);
+            transform: translate(-6px, 0px);
+        }
+
+        .bag-right {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            // transform: scale(-1, 1) translate(-4px, -30px);
+            transform: scale(-1,1) translate(-6px, 0px);
+        }
+
+        // @media only screen and (min-width: 961px) {
+        //      .buggy-title {
+        //         padding-top: 1.2em;
+        //         text-align: center;
+        //         padding-bottom: 4em;
+        //         font-size: 14px;
+        //      }
+
+        //      .buggy-bg {
+        //         background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+        //         height: 270px;
+        //         background-size: 200px;
+        //         background-origin: content-box;
+        //      }
+
+        //      .bag-left {
+        //         background: url(../assets/img/bag-left.svg) no-repeat;
+        //           transform: scale(1.2) translate(9px, 25px); 
+        //      }
+
+        //      .bag-right {
+        //         background: url(../assets/img/bag-left.svg) no-repeat;
+        //         transform: scale(-1.2, 1.2) translate(10px, 25px);
+        //      }
+        // }
+
+        /* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
+
+        /* Portrait and Landscape */
+        @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2)
+        and (-webkit-max-device-pixel-ratio: 2) {}
+
+        /* Portrait */
+        @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2)
+        and (-webkit-max-device-pixel-ratio: 2) and (orientation: portrait) {
+            .buggy-bg {
+                // display: block;    
+                // background: url(../assets/img/cart-short.svg);
+                // height: 28em;
+                // background-size: 100%; //24em;
+
+
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                // height: 230px;
+                height: 210px;
+                // background-size: 200px;
+                background-size: 150px;
+                background-origin: content-box;
+
+                // height: 21em;
+                // background-size: 75%;
+            }
+
+            .buggy-title {
+                // padding-top: 1.5em; //30px;
+                padding-top: 0.7em;
+                text-align: center;
+                // padding-bottom: 1em;
+                padding-bottom: 3.5em;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+
+            // .player-img-flight {
+            //     border-radius: 30%;
+            //     // max-height: 3em;
+            //     // width: 3em;
+            //     max-height: 3em;
+            //     width: 3em;
+            //     // margin-right: 0.5em;
+            //     // margin-left: 0.5em;
+            //     margin-left: 0;
+
+
+            // }
+
+            .player-img-flight {
+                border-radius: 50%;
+                max-height: 5rem !important;
+                width: 5rem !important;
+                max-width: 5rem !important;
+                height: 5rem  !important;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+            .bag-left {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                // transform: translate(-4px, -30px);
+                transform: translate(-13px, -27px);
+            }
+    
+            .bag-right {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                // transform: scale(-1, 1) translate(-4px, -30px);
+                transform: scale(-1,1) translate(-13px, -27px);
+            }
+        }
+
+        /* Landscape */
+        @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {}
+
+        @media only screen and (max-width: 360px) and (-webkit-min-device-pixel-ratio: 3) {
+            .buggy-bg {
+                // display: block;    
+                // background: url(../assets/img/cart-short.svg);
+                // height: 28em;
+                // background-size: 100%; //24em;
+
+
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                // height: 230px;
+                height: 230px;
+                // background-size: 200px;
+                background-size: 150px;
+                background-origin: content-box;
+
+                // height: 21em;
+                // background-size: 75%;
+            }
+
+            .buggy-title {
+                // padding-top: 1.5em; //30px;
+                padding-top: 0.7em;
+                text-align: center;
+                // padding-bottom: 1em;
+                padding-bottom: 2.5em;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 3em;
+                width: 3em;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            .player-img-flight.left {
+                margin-left: 0;
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+        }
+
+        @media only screen and (min-width: 360px) and (max-width: 480px) and (-webkit-min-device-pixel-ratio: 3) {
+
+            .buggy-bg {
+                // display: block;    
+                // background: url(../assets/img/cart-short.svg);
+                // height: 28em;
+                // background-size: 100%; //24em;
+
+
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                // height: 230px;
+                height: 210px;
+                // background-size: 200px;
+                background-size: 150px;
+                background-origin: content-box;
+
+                // height: 21em;
+                // background-size: 75%;
+            }
+
+            .buggy-title {
+                // padding-top: 1.5em; //30px;
+                padding-top: 0.7em;
+                text-align: center;
+                // padding-bottom: 1em;
+                padding-bottom: 3.5em;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 3em;
+                width: 3em;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+        }
+
+        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+            .buggy-bg {
+                // display: block;
+                // background: url(../assets/img/cart-short.svg);
+                // height: 42em;
+                // background-size: 100%;
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                height: 230px;
+                background-size: 200px;
+                background-origin: content-box;
+            }
+
+            .buggy-title {
+                padding-top: 9px; //4.5em;
+                text-align: center;
+                padding-bottom: 1em;
+                font-size: 14px; //1em;
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                max-height: 3em; //7em;
+                width: 3em; //7em;
+                // margin: 0.5em;
+                margin-right: 0.5em;
+                margin-left: 0.5em;
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .bag-left {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+
+                transform: scale(1.2) translate(-3px, 12px);
+            }
+
+            .bag-right {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                transform: scale(-1.2, 1.2) translate(-1px, 10px);
+            }
+
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .buggy-bg {
+                // display: block;
+                // background: url(../assets/img/cart-short.svg);
+                // height: 42em;
+                // background-size: 100%;
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                height: 270px;
+                background-size: 200px;
+                background-origin: content-box;
+            }
+
+            .buggy-title {
+                padding-top: 1.2em; //4.5em;
+                text-align: center;
+                padding-bottom: 4em;
+                font-size: 14px; //1em;
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                max-height: 3em; //7em;
+                width: 3em; //7em;
+                // margin: 0.5em;
+                margin-right: 0.5em;
+                margin-left: 0.5em;
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //#B8EDC9;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 960px) {
+            .buggy-title {
+                padding-top: 1.2em;
+                text-align: center;
+                padding-bottom: 4em;
+                font-size: 14px;
+            }
+
+            .buggy-bg {
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                height: 270px;
+                background-size: 200px;
+                background-origin: content-box;
+            }
+
+            .bag-left {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                transform: scale(1.2) translate(9px, 25px);
+            }
+
+            .bag-right {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                transform: scale(-1.2, 1.2) translate(10px, 25px);
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                max-height: 3em; //7em;
+                width: 3em; //7em;
+                // margin: 0.5em;
+                margin-right: 0.5em;
+                margin-left: 0.5em;
+            }
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+        }
+
+        @media only screen and (min-width: 961px) {
+            .buggy-title {
+                padding-top: 1.2em;
+                text-align: center;
+                padding-bottom: 4em;
+                font-size: 14px;
+            }
+
+            .buggy-bg {
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                height: 270px;
+                background-size: 200px;
+                background-origin: content-box;
+            }
+
+            .bag-left {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                transform: scale(1.2) translate(9px, 25px);
+            }
+
+            .bag-right {
+                background: url(../assets/img/bag-left.svg) no-repeat;
+                transform: scale(-1.2, 1.2) translate(10px, 25px);
+            }
+
+
+            img.player-img-flight {
+                border-radius: 30%;
+                max-height: 2em; //7em;
+                width: 2em; //7em;
+                // margin: 0.5em;
+                margin-right: 0.5em;
+                margin-left: 0.5em;
+            }
+
+            img.caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+                }
+
+                &.right {
+                    float: left;
+                }
+            }
+
+            .buggy-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 12px; //1.5em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+        }
+
+        /* ----------- iPhone X ----------- */
+
+        /* Portrait and Landscape */
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) {}
+
+        /* Portrait */
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+            .buggy-bg {
+                // display: block;    
+                // background: url(../assets/img/cart-short.svg);
+                // height: 28em;
+                // background-size: 100%; //24em;
+
+
+                background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+                // height: 230px;
+                height: 210px;
+                // background-size: 200px;
+                background-size: 150px;
+                background-origin: content-box;
+
+                // height: 21em;
+                // background-size: 75%;
+            }
+
+            .buggy-title {
+                // padding-top: 1.5em; //30px;
+                padding-top: 0.7em;
+                text-align: center;
+                // padding-bottom: 1em;
+                padding-bottom: 3.5em;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+
+            .player-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 3em;
+                width: 3em;
+
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+                &.left {
+                    margin-left: 0;
+                }
+
+            }
+
+
+
+            .caddie-img-flight {
+                border-radius: 30%;
+                // max-height: 3em;
+                // width: 3em;
+                max-height: 30px;
+                width: 30px;
+                // margin-right: 0.5em;
+                // margin-left: 0.5em;
+
+
+            }
+
+            img.caddie-img-flight.caddie {
+                // margin-left: 70%;
+
+                &.left {
+                    float: right;
+                    margin-left: 0;
+
+                }
+
+                &.right {
+                    float: left;
+
+                }
+            }
+
+            .buggy-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+            .buggy-caddie-name {
+                font-size: 1em;
+                // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+                color: #222;
+                padding: 0.5em;
+                display: block;
+                border-radius: 1em;
+                border-color: rgba(184, 237, 201, 0.41);
+                border-width: thin;
+                border-style: solid;
+            }
+
+        }
+         /* Screen 360 x 540 Galaxy S5 */
+     @media only screen and (min-device-width: 360px) and (max-device-width: 410px) and (-webkit-min-device-pixel-ratio: 3) {
+
+    }
+    /* screen 411 x ??? pixel 2 / 2 XL */
+    @media only screen and (min-device-width: 411px)
+    and (-webkit-min-device-pixel-ratio: 2.6) and (-webkit-max-device-pixel-ratio: 3.5) {
+        .bag-left {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            transform: translate(0.5em, 0px)
+        }
+    
+        .bag-right {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            transform: scale(-1,1) translate(0.5em, 0px);
+        }
+
+        .player-img-flight {
+            border-radius: 30%;
+            max-height: 3em;
+            width: 3em;
+            &.left {
+                margin-left: 20%;
+            }
+        }
+
+    }
+    }
+
+    ion-item.item.item-block.item-md {
+        padding-left: 0;
+    }
+
+    ion-item.item.item-block.item-ios {
+        padding-left: 0;
+    }
+
+    ion-item.item.item-block {
+        padding-left: 0;
+    }
+
+    .page-sub-title {
+        // background-color: #cde2c3;
+        background: white; // !important;
+    }
+
+
+    .player-flight {
+        background-color: $danger !important;
+        color: $white;
+    }
+
+    .flight-subtitle {
+        font-weight: bold;
+        @include truncate();
+    }
+
+    .player-img-flight {
+        border-radius: 50%;
+        max-height: 4em;
+        width: auto;
+        // margin-right: 0.5em;
+        // margin-left: 0.5em;
+    }
+
+    ion-col.mg-txt-left.starter-flight-subtitle {
+        font-size: normal;
+
+        @media only screen and (max-width: 360px) {
+            font-size: small;
+        }
+
+        // @media (min-width: 361px) {
+        //     font-s
+        // }
+    }
+
+    ion-col.mg-txt-right.starter-flight-subtitle {
+        font-size: normal;
+
+        @media only screen and (max-width: 360px) {
+            font-size: small;
+        }
+
+        // @media (min-width: 361px) {
+        //     font-s
+        // }
+    }
+
+    .segment-activated .custom-badge {
+        color: white;
+    }
+
+    .scoring-badge {
+        text-align: -webkit-center;
+        @extend .custom-badge;
+
+        .score {
+            font-size: x-large;
+            border-radius: 1em;
+            max-height: 1.5em;
+            width: 1.5em;
+            border-style: solid;
+            display: grid;
+            border-width: 2px;
+            // color: red;
+        }
+
+        .score-type {
+            font-size: small;
+            color: black;
+        }
+    }
+
+    .mygolf-table {
+        margin-top: 0px;
+    }
+
+    .mygolf-table-caption {
+        text-align: center;
+        font-weight: bold;
+        background-color: #cde2c3 !important;
+        color: black !important;
+    }
+
+    ion-segment-button.segment-button {
+        height: 3em !important;
+    }
+
+    // ion-segment.segment-md .segment-button.segment-activated,
+    // ion-segment.segment-ios .segment-button.segment-activated,
+    // ion-segment.segment-wp .segment-button.segment-activated,
+    // ion-segment.segment-button.segment-activated {
+    //     border-color: transparent;
+    //     letter-spacing: 2px;
+    // }
+
+    .segment-md .segment-button.activated,
+    .segment-md .segment-button.segment-activated,
+    .segment-ios .segment-button.activated,
+    .segment-ios .segment-button.segment-activated {
+        border-color: transparent;
+        letter-spacing: 2px;
+    }
+
+    .tee-top-items {
+        font-weight: bold;
+    }
+
+    .btn-buggy-status {
+        letter-spacing: 2px;
+        color: $primary;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    
+
+
+
+    button.bar-button {
+        color: $primary;
+    }
+
+    .toolbar-background.toolbar-background-md,
+    .toolbar-background.toolbar-background-ios {
+        background-color: #DDF6D6 !important;
+    }
+
+    .btn-back {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 2em;
+        transform: translate(10px, 10px);
+    }
+
+    .btn-next {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 2em;
+        transform: scale(-1, 1) translate(10px, 10px);
+    }
+
+    //  /* Screen 360 x 540 Galaxy S5 */
+    //  @media only screen and (min-device-width: 360px) and (max-device-width: 410px) and (-webkit-min-device-pixel-ratio: 3) {
+    //     .bag-left {
+    //         background: url(../assets/img/bag-left.svg) no-repeat;
+    //         // transform: translate(-4px, -30px);
+    //         transform: translate(-13px, -27px);
+    //     }
+    //     .bag-right {
+    //         background: url(../assets/img/bag-left.svg) no-repeat;
+    //         // transform: scale(-1, 1) translate(-4px, -30px);
+    //         transform: scale(-1,1) translate(-13px, -27px);
+    //     }
+    
+    // }
+    /* screen 411 x ??? pixel 2 / 2 XL */
+    @media only screen and (min-device-width: 411px)
+    and (-webkit-min-device-pixel-ratio: 2.6) and (-webkit-max-device-pixel-ratio: 3.5) {
+        .buggy-bg {
+            // display: block;    
+            // background: url(../assets/img/cart-short.svg);
+            // height: 28em;
+            // background-size: 100%; //24em;
+
+
+            background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+            // height: 230px;
+            height: 210px;
+            // background-size: 200px;
+            background-size: 150px;
+            background-origin: content-box;
+
+            // height: 21em;
+            // background-size: 75%;
+        }
+
+        .buggy-title {
+            // padding-top: 1.5em; //30px;
+            padding-top: 0.7em;
+            text-align: center;
+            // padding-bottom: 1em;
+            padding-bottom: 3.5em;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .player-img-flight {
+            border-radius: 30%;
+            // max-height: 3em;
+            // width: 3em;
+            max-height: 3em;
+            width: 3em;
+            // margin-right: 0.5em;
+            // margin-left: 0.5em;
+            &.left {
+                margin-left: 20%;
+            }
+        }
+
+        .caddie-img-flight {
+            border-radius: 30%;
+            // max-height: 3em;
+            // width: 3em;
+            max-height: 30px;
+            width: 30px;
+            // margin-right: 0.5em;
+            // margin-left: 0.5em;
+
+
+        }
+
+        img.caddie-img-flight.caddie {
+            // margin-left: 70%;
+
+            &.left {
+                float: right;
+                margin-left: 0;
+            }
+
+            &.right {
+                float: left;
+            }
+        }
+
+        .buggy-name {
+            font-size: 1em;
+            // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+            color: #222;
+            padding: 0.5em;
+            display: block;
+            border-radius: 1em;
+            border-color: rgba(184, 237, 201, 0.41);
+            border-width: thin;
+            border-style: solid;
+        }
+
+        .buggy-caddie-name {
+            font-size: 1em;
+            // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+            color: #222;
+            padding: 0.5em;
+            display: block;
+            border-radius: 1em;
+            border-color: rgba(184, 237, 201, 0.41);
+            border-width: thin;
+            border-style: solid;
+        }
+        .bag-left {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            // transform: translate(-4px, -30px);
+            transform: translate(-13px, -27px);
+        }
+    
+        .bag-right {
+            background: url(../assets/img/bag-left.svg) no-repeat;
+            // transform: scale(-1, 1) translate(-4px, -30px);
+            transform: scale(-1,1) translate(-13px, -27px);
+        }
+    }
+
+    .player-img-flight {
+        border-radius: 50%;
+        max-height: 5rem !important;
+        width: 5rem !important;
+        max-width: 5rem !important;
+        height: 5rem  !important;
+        // margin-right: 0.5em;
+        // margin-left: 0.5em;
+    }
+
+    .caddie-img-flight {
+        border-radius: 50%;
+        max-height: 4rem !important;
+        width: 4rem !important;
+        max-width: 4rem !important;
+        height: 4rem  !important;
+        // margin-right: 0.5em;
+        // margin-left: 0.5rem;
+    }
+
+
+    /* iPad landscape */
+    @media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : landscape)
+    and (-webkit-min-device-pixel-ratio:2.0)
+    and (-webkit-max-device-pixel-ratio:2.0) /* STYLES GO HERE */{}
+
+
+    /* ipad Potrait */
+    @media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : portrait)
+    and (-webkit-min-device-pixel-ratio:2.0)
+    and (-webkit-max-device-pixel-ratio:2.0) { 
+
+        .buggy-toolbar { 
+        // margin-left: 80%;
+        display:block;
+        font-size:1rem;
+    } 
+    .player-row {
+        padding-top: 0.5rem;
+        // padding-bottom: 1.3rem;
+        height: 6.5rem;
+    }
+
+    .buggy-bg {
+        // display: block;
+        // background: url(../assets/img/cart-short.svg);
+        // height: 42em;
+        // background-size: 100%;
+        background: url(../assets/img/cart-short.svg) no-repeat 50% 1%;
+        height: 270px;
+        background-size: 200px;
+        background-origin: content-box;
+    } 
+
+    .buggy-title {
+        padding-top: 1.2em; //4.5em;
+        text-align: center;
+        padding-bottom: 4em;
+        font-size: 14px; //1em;
+    }
+
+    .buggy-player-img-flight {
+        border-radius: 30%;
+        max-height: 4rem;
+        width: 4rem;
+        height: -webkit-fill-available;
+
+        // border-radius: 30%;
+        // max-height: 3em; //7em;
+        // width: 3em; //7em;
+        // // margin: 0.5em;
+        // margin-right: 0.5em;
+        // margin-left: 0.5em;
+        // height: -webkit-fill-available;
+    }
+    .buggy-caddie-img-flight {
+        border-radius: 30%;
+        max-height: 3rem;
+        width: 3rem;
+        height: -webkit-fill-available;
+        // border-radius: 30%;
+        // // max-height: 3em;
+        // // width: 3em;
+        // max-height: 30px;
+        // width: 30px;
+        // // margin-right: 0.5em;
+        // // margin-left: 0.5em;
+
+
+    }
+
+    .buggy-title {
+        padding-top: 9px; //4.5em;
+        text-align: center;
+        padding-bottom: 1em;
+        font-size: 14px; //1em;
+    }
+    img.caddie-img-flight.caddie {
+        // margin-left: 70%;
+        
+        &.left {
+            float:right;
+            margin-left:0;
+        }
+        &.right {
+            float:left;
+        }
+    }
+
+    .buggy-name {
+        font-size: 1rem; //12px; //1.5em;
+        // background-color: rgba(184, 237, 201, 0.41); //rgba(205, 226, 195, 0.5); //#cdfbdb;
+        color: #222;
+        padding: 0.3rem;
+        display: block;
+        border-radius: 1em;
+        border-color: rgba(184, 237, 201, 0.41);
+        border-width: thin;
+        border-style: solid;
+        text-overflow: ellipsis;
+        font-weight: bold;
+        overflow-x: scroll;
+        height: 6rem;
+        // white-space: nowrap;
+    }
+
+    .buggy-caddie-name {
+        font-size: 1rem;// 12px; //1.5em;
+        // background-color: rgba(184, 237, 201, 0.41); //rgba(255, 170, 170, 0.5); //#ffaaaa;
+        color: #222;
+        padding: 0.5em;
+        display: block;
+        border-radius: 1em;
+        border-color: rgba(184, 237, 201, 0.41);
+        border-width: thin;
+        border-style: solid;
+    }
+
+    .bag-left {
+        background: url(../assets/img/bag-left.svg)  no-repeat;
+        
+    transform: scale(1.2) translate(-3px, 12px);
+    }
+    .bag-right {
+        background: url(../assets/img/bag-left.svg) no-repeat;
+        transform: scale(-1.2,1.2) translate(-1px, 10px);
+    }
+
+    img.buggy-caddie-img-flight.caddie {
+        // margin-left: 70%;
+        
+        &.left {
+            float:right;
+            margin-left:0;
+        }
+        &.right {
+            float:left;
+        }
+    }
+
+    .buggy-player-img-flight.left {
+        margin-left: 0;
+        height: -webkit-fill-available;
+    }
+        
+    
+
+}
+img.buggy-caddie-img-flight.caddie {
+    // margin-left: 70%;
+    
+    &.left {
+        float:right;
+        margin-left:0;
+    }
+    &.right {
+        float:left;
+    }
+}
+
+.buggy-player-img-flight.left {
+    margin-left: 0;
+    height: -webkit-fill-available;
+}
+
+
+    
+
+    
+
+    
+
+
+}

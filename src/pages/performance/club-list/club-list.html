@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{"SelectClub.title" | translate}}</ion-title>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                  <!--<i class="fa fa-close fa-lg" aria-hidden="true"></i>-->
+
+                   <ion-icon name="close-circle" color="invert-text"></ion-icon>
+                </button>
+        </ion-buttons>
+
+    </ion-navbar>
+    <ion-searchbar [(ngModel)]="searchQuery" debounce="1000" (ionInput)="onSearchInput($event)" [showCancelButton]="true" dark>
+    </ion-searchbar>
+</ion-header>
+
+<!--ion-toolbar light >
+
+</ion-toolbar -->
+<ion-content class="club-list">
+
+    <ion-list>
+
+        <ion-item *ngFor="let club of clubList.clubs;let idx=index" (click)="clubSelected($event, club)">
+            <ion-avatar class="avatar-left custom-avatar">
+                <img src="{{club.clubImage}}" />
+            </ion-avatar>
+            <h3 class="course-name">{{club.clubName}}</h3 >
+            <p class="course-detail" >{{club.address}}</p >
+            <!--span class="course-distance" item-right >
+                <p class="course-distance" >{{clubDistance(club)}}</p >
+            </span -->
+        </ion-item >
+
+    </ion-list >
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                         threshold="30%" >
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data..." ></ion-infinite-scroll-content >
+    </ion-infinite-scroll >
+</ion-content >
+<!-- <ion-footer> -->
+<!-- <ion-toolbar position="bottom" light *ngIf="openedModal" >
+    <button block danger (click)="close()" >Cancel</button >
+</ion-toolbar >
+</ion-footer> -->

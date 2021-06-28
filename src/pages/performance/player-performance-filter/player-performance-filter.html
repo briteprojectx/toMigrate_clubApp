@@ -1,0 +1,211 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button icon-only large color="invert-text" (click)="close()">
+                <ion-icon  name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Filters</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only large (click)="onApplyClick()">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="competition-filter player-performance">
+    <ion-list>
+        <div radio-group [(ngModel)]="courseType">
+            <ion-item-divider >
+                By default, show me
+            </ion-item-divider>
+            <div *ngIf="performanceType == 'performance'">
+                <ion-item>
+                    <ion-label>
+                        By specific club / course :
+                    </ion-label>
+                    <ion-checkbox [(ngModel)]="checkboxCourse" ></ion-checkbox>
+                     <!-- (ionChange)="courseSelection($event)" -->
+                </ion-item>
+                <!-- <ion-item *ngIf="checkboxCourse" (click)="goCoursePicklist()">
+                    <ion-avatar item-left>
+                        <img src="img/course-default.png" />
+                    </ion-avatar>
+                    <ion-label>&nbsp;{{courseName}}</ion-label>
+                </ion-item> -->
+            </div>
+
+            <div *ngIf="checkboxCourse && (performanceType == 'analysis' || performanceType == 'performance')">
+                <ion-item>
+                    <ion-segment no-padding [(ngModel)]="courseType">
+                        <ion-segment-button value="club">
+                            Club
+                        </ion-segment-button>
+                        <ion-segment-button value="course">
+                            Course
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-item>
+                <div *ngIf="courseType == 'club'">
+
+                    <ion-item (click)="goCoursePicklist()">
+                        <ion-avatar item-left>
+                            <img src="img/default_club.png" />
+                        </ion-avatar>
+                        <ion-label>&nbsp;{{getClubName()}}</ion-label>
+                    </ion-item>
+
+                </div>
+
+                <div *ngIf="courseType == 'course'">
+
+                    <ion-item (click)="goCoursePicklist()">
+                        <ion-avatar item-left>
+                            <img src="img/course-default.png" />
+                        </ion-avatar>
+                        <ion-label>&nbsp;{{getCourseName()}}</ion-label>
+                    </ion-item>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div *ngIf="performanceType=='performance'">
+                <ion-item-divider>Show me :
+                </ion-item-divider>
+                <div>
+                    <ion-item>
+                        <ion-segment no-padding [(ngModel)]="holesPlayed">
+                            <ion-segment-button value="9">
+                                9 Holes
+                            </ion-segment-button>
+                            <ion-segment-button value="18">
+                                18 Holes
+                            </ion-segment-button>
+                        </ion-segment>
+                    </ion-item>
+                </div>
+            </div>
+            <ion-item-divider class="list-header">
+                Period filter
+            </ion-item-divider>
+            <div radio-group [(ngModel)]="periodSelection">
+                <ion-item>
+                    <ion-label>Use last N games</ion-label>
+                    <ion-radio value="last" (ionSelect)="toggleNGames()"></ion-radio>
+                </ion-item>
+                <ion-row *ngIf="searchCriteria.useNGames">
+                    <ion-col width-80>
+
+                        <ion-range [disabled]="!searchCriteria.useNGames" min="1" [max]="maxNGames()" step="1" pin="true" primary [(ngModel)]="searchCriteria.lastNGames">
+                            <ion-label range-left>0</ion-label>
+                            <ion-label range-right>{{maxNGames()}}</ion-label>
+                        </ion-range>
+                    </ion-col>
+                    <ion-col width-20>
+                        <ion-input [disabled]="!searchCriteria.useNGames" [(ngModel)]="searchCriteria.lastNGames" type="number" ></ion-input>
+
+                    </ion-col>
+                </ion-row>
+                <ion-item>
+                    <ion-label>Use specific period</ion-label>
+                    <ion-radio value="period" (ionSelect)="toggleNGames()"></ion-radio>
+                </ion-item>
+            </div>
+
+        </div>
+        <div>
+            <ion-item *ngIf="!searchCriteria.useNGames">
+                <ion-label>Period</ion-label>
+                <ion-select [disabled]="searchCriteria.useNGames" [(ngModel)]="searchCriteria.periodType" (ionChange)="onPeriodTypeChange($event)" interface="action-sheet">
+                    <ion-option value="NONE" checked="true">None</ion-option>
+                    <ion-option value="DAY">Days</ion-option>
+                    <ion-option value="WEEK">Weeks</ion-option>
+                    <ion-option value="MONTH">Months</ion-option>
+                    <ion-option value="YEAR">Years</ion-option>
+                    <ion-option value="CUSTOM">Custom</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item *ngIf="searchCriteria.periodType !== 'NONE' && searchCriteria.periodType !== 'CUSTOM'">
+                <ion-label *ngIf="searchCriteria.periodType === 'DAY'" class="range-label">Number of days : {{searchCriteria.periodLength}}</ion-label>
+                <ion-label *ngIf="searchCriteria.periodType === 'WEEK'" class="range-label">Number of weeks : {{searchCriteria.periodLength}}</ion-label>
+                <ion-label *ngIf="searchCriteria.periodType === 'MONTH'" class="range-label">Number of months : {{searchCriteria.periodLength}}</ion-label>
+                <ion-label *ngIf="searchCriteria.periodType === 'YEAR'" class="range-label">Numbr of years : {{searchCriteria.periodLength}}</ion-label>
+
+                <ion-range min="1" [max]="maxPeriodLength()" step="1" pin="true" primary [(ngModel)]="searchCriteria.periodLength">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>{{maxPeriodLength()}}</ion-label>
+                </ion-range>
+
+            </ion-item>
+            <ion-item *ngIf="searchCriteria.periodType == 'CUSTOM'">
+                <ion-label danger>* Dates are not stored across sessions</ion-label>
+            </ion-item>
+
+            <button ion-item (click)="onStartDateClick()" *ngIf="searchCriteria.periodType == 'CUSTOM' && platform.is('cordova')">
+                <span>{{"PerformanceFilters.startDate"|translate}}:</span >
+                <span style="float:right" >{{startDate | date}}</span >
+            </button >
+            <button ion-item (click)="onEndDateClick()"
+                    *ngIf="searchCriteria.periodType == 'CUSTOM' && platform.is('cordova')" >
+                <span >{{"PerformanceFilters.endDate"|translate}}:</span >
+                <span style="float:right" >{{endDate | date}}</span >
+            </button >
+            <button ion-item
+                    *ngIf="searchCriteria.periodType=='CUSTOM' && !platform.is('cordova')" >
+                <span >{{"PerformanceFilters.startDate"|translate}}:</span >
+                <ion-label>Date From :</ion-label>
+                <ion-datetime (ionChange)="showDate(isoStartDate)" displayFormat="DD-MM-YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="isoStartDate" min="2008-01-01" max="2016"></ion-datetime>
+            </button >
+            <button ion-item
+                    *ngIf="searchCriteria.periodType=='CUSTOM' && !platform.is('cordova')" >
+                <span >{{"PerformanceFilters.endDate"|translate}}:</span >
+                <ion-label>Date To :</ion-label>
+                <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="isoEndDate" min="2008" max="2019-12-31"></ion-datetime>
+
+            </button >
+
+            <div *ngIf="searchType == 'date' && platform.is('cordova')" >
+                <ion-item-divider class="list-header" >
+                    <br > Show my performances between :
+                </ion-item-divider >
+
+                <ion-item >
+
+                    <span >Start Date:</span >
+                    <span style="float:right" >{{startDate | date}}</span >
+                </ion-item >
+
+                <ion-item >
+                    <span >End Date:</span >
+                    <span style="float:right" >{{endDate | date}}</span >
+
+                </ion-item >
+
+            </div >
+        </div>
+        <div radio-group [(ngModel)]="searchCriteria.type" >
+            <ion-item-divider class="list-header" >
+                Show me games for:
+            </ion-item-divider >
+            <ion-item >
+                <ion-label >All</ion-label >
+                <ion-radio value="ALL" ></ion-radio >
+            </ion-item >
+            <ion-item >
+                <ion-label >Competition</ion-label >
+                <ion-radio value="COMPETITION" ></ion-radio >
+            </ion-item >
+            <ion-item >
+                <ion-label >Non-competition</ion-label >
+                <ion-radio value="NORMAL" ></ion-radio >
+            </ion-item >
+        </div >
+        <ion-item-divider class="list-header">
+            Game(s) with player(s):
+        </ion-item-divider>
+        <ion-item>
+            <ion-label (click)="goPlayerList()">{{playersSelected.length}} players selected</ion-label> <!---->
+        </ion-item>
+    </ion-list >
+
+</ion-content >

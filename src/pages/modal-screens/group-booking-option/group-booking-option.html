@@ -1,0 +1,360 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>Group Booking</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content *ngIf="0" class="friend-list">
+        <ion-toolbar color="light">
+                <ion-segment [(ngModel)]="listMode">
+                    <ion-segment-button value="friends">Friends</ion-segment-button>
+                    <ion-segment-button value="others">All Players</ion-segment-button>
+                    <ion-segment-button value="non-mg2u">Non-MG2U Players</ion-segment-button>
+                </ion-segment>
+            </ion-toolbar>
+            <ion-toolbar *ngIf="listMode==='friends'" color="light">
+                <ion-searchbar [(ngModel)]="searchQuery"
+                        debounce="1000"
+                        (ionInput)="onSearchInput()">
+        
+                </ion-searchbar>
+            </ion-toolbar>
+            <ion-toolbar *ngIf="listMode==='others'" color="light">
+                <!--<ion-label color="blue">To search for players type any part of their name</ion-label>-->
+                <ion-searchbar [(ngModel)]="searchPlayers" (ionInput)="onSearchPlayers()"
+                        placeholder="To search for players, type any part of their name"
+                        debounce="1000">
+                </ion-searchbar>
+            </ion-toolbar>
+    <!--<ion-list [virtualScroll]="friends" *ngIf="listMode==='friends'">-->
+    <ion-list *ngIf="listMode==='friends'">
+        <ion-list-header class="list-header">Friend List</ion-list-header>
+        <!--<button  ion-item *virtualItem="let friend" (click)="friendSelected(friend)">-->
+            <!--<ion-avatar style="height: 32px; width: 32px" item-left>-->
+                <!--<ion-img src="{{getImage(friend)}}" ></ion-img>-->
+            <!--</ion-avatar>-->
+            <!--<h2>{{friend.playerName}}</h2>-->
+            <!--<span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"-->
+                                                                                        <!--aria-hidden="true"></i></span>-->
+            <!--<span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>-->
+        <!--</button>-->
+        <button  ion-item *ngFor="let friend of friends" (click)="friendSelected(friend)">
+            <ion-avatar style="height: 32px; width: 32px" item-left>
+                <img src="{{getImage(friend)}}" >
+            </ion-avatar>
+            <h2>{{friend.playerName}}</h2>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i></span>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>
+        </button>
+    </ion-list>
+    <ion-list *ngIf="listMode==='others'">
+        <ion-list-header class="list-header">Players</ion-list-header>
+        <button  ion-item *ngFor="let friend of players" (click)="friendSelected(friend)">
+            <ion-avatar style="height: 32px; width: 32px" item-left>
+                <img src="{{getImage(friend)}}" >
+            </ion-avatar>
+            <h2>{{friend.playerName}}</h2>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i></span>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>
+        </button>
+        <ion-item *ngIf="searchPlayers && !players.length" color="danger">
+            No player with name matching search string
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="listMode==='non-mg2u'">
+        <ion-item >
+            <ion-label floating class="small-label">Email Address</ion-label>
+            <!-- placeholder="{{'SignUpPage.email'|translate}}" -->
+                <ion-input (ionChange)="onKeySearchPlayerByEmail()" debounce="1500" type="email" value="" [(ngModel)]="_email"
+                           maxLength="50" ></ion-input >
+            </ion-item >
+        <ion-item>
+            <ion-label floating class="small-label">Player Name</ion-label>
+                        <!-- stacked -->
+                        placeholder="Player Name"
+                        <ion-input type="text" value="" [(ngModel)]="_playerName"
+                                    maxLength="50" ></ion-input >
+        </ion-item>
+        <ion-item >
+            <ion-label floating class="small-label">Phone Number</ion-label>
+            <!-- stacked -->
+            placeholder="Phone Number"
+            <ion-input type="text" value="" [(ngModel)]="_phone"
+                        maxLength="50" ></ion-input >
+        </ion-item >
+        
+            <!-- <ion-item> -->
+                <ion-label style="padding-left:1em;" class="small-label">Gender</ion-label>
+                        <ion-segment [(ngModel)]="_gender" padding >
+                                <ion-segment-button value="M" >Male</ion-segment-button >
+                                <ion-segment-button value="F" >Female</ion-segment-button >
+                            </ion-segment>
+            <!-- </ion-item> -->
+            <!-- <ion-list-header class="list-header">Add non-MG2U Player</ion-list-header> -->
+            <form *ngIf="0" [formGroup]="addPlayerForm"  >
+
+                    <!-- First Name -->
+                    <ion-item  [class.error]="playerName.invalid && playerName.touched" >
+                        <ion-label floating class="small-label">Player Name</ion-label>
+                        <!-- stacked -->
+                        placeholder="Player Name"
+                        <ion-input type="text" value="" formControlName="playerName"
+                                    maxLength="50" ></ion-input >
+                    </ion-item >
+                    <div *ngIf="playerName.errors && playerName.errors['required'] && playerName.touched"
+                         class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+                    </div >
+                    <div *ngIf="playerName.errors && playerName.errors['maxlength'] && playerName.touched"
+                         class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+                    </div >
+                    <ion-item  [class.error]="phone.invalid && phone.touched" >
+                            <ion-label floating class="small-label">Phone Number</ion-label>
+                            <!-- stacked -->
+                            placeholder="Phone Number"
+                            <ion-input type="text" value="" formControlName="phone"
+                                        maxLength="50" ></ion-input >
+                        </ion-item >
+                        <div *ngIf="phone.errors && phone.errors['required'] && phone.touched"
+                             class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+                        </div >
+                        <div *ngIf="phone.errors && phone.errors['maxlength'] && phone.touched"
+                             class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+                        </div >
+                    <ion-item  [class.error]="email.invalid && email.touched" >
+                        <ion-label floating class="small-label">Email Address</ion-label>
+                        <!-- placeholder="{{'SignUpPage.email'|translate}}" -->
+                            <ion-input (ngModelChange)="onKeySearchPlayerByEmail()" debounce="1500" type="email" value="" formControlName="email" 
+                                       maxLength="50" ></ion-input >
+                        </ion-item >
+                        <div *ngIf="email.errors && email.errors['required'] && email.touched"
+                             class="error-box" >* Email is required
+                        </div >
+                        <!-- <ion-item> -->
+                        <ion-label style="padding-left:1em;" class="small-label">Gender</ion-label>
+                        <ion-segment formControlName="gender" padding >
+                                <ion-segment-button value="M" >Male</ion-segment-button >
+                                <ion-segment-button value="F" >Female</ion-segment-button >
+                            </ion-segment>
+                        <!-- </ion-item> -->
+                    
+                    </form>
+        </ion-list>
+</ion-content>
+<ion-content>
+    <ion-item >
+        <!-- padding class="booking-option" -->
+        <!-- <ion-label floating class="small-label">Player Name</ion-label> -->
+    <h4 class="small-label">Booking Player</h4>
+        <div class="row" *ngIf="groupBookPlayer">
+            <div class="column" style="width:80%"> 
+                <h2 style="font-weight: bold;color: green;">
+                    {{(groupBookPlayer && groupBookPlayer.playerName)?groupBookPlayer.playerName + ' (#' + groupBookPlayer.id +')':''}}</h2>
+            </div>
+            <div class="column" style="width:20%">
+                <button class="player-action" (click)="onDeleteBookingPlayer()" ion-button clear style="font-size:1.2em">
+                    <i style="color:red" class="fa fa-times-circle "></i>
+                </button>
+            </div>
+            <!-- <div class="column" style="width:80%;white-space: nowrap;
+            overflow: hidden;">
+                <h2 style="font-size: medium;font-weight: bold;color: green;">{{groupBookPlayer && groupBookPlayer.playerName?groupBookPlayer.playerName + groupBookPlayer.id:''}}</h2>
+            </div>
+            <div class="column" style="width:20%;text-align:right" *ngIf="bookingType!=='past'">
+                        <button class="player-action" (click)="onDeleteBookingPlayer()" ion-button clear style="font-size:1.2em">
+                            <i style="color:red" class="fa fa-times-circle "></i>
+                        </button>
+            </div> -->
+        </div>
+        <div class="row" *ngIf="!groupBookPlayer">
+            <!-- <span>{{groupBookPlayer && groupBookPlayer.playerName?groupBookPlayer.playerName:''}}</span> -->
+            <div class="column" style="width:80%">
+                    <!-- {{getPlayerType(x)}} -->
+                <span style="display:inline-flex;">
+                    <!-- 8em; -->
+                    <input (keyup.enter)="searchBookingPlayer(x)" style="width:20rem;height:2em;margin-right:2px" placeholder="Club Membership No." type="text" [disabled]="searchById && searchById" [(ngModel)]="searchByMembership"/> 
+                    <input (keyup.enter)="searchBookingPlayer(x)" style="width:10rem;height:2em;margin-right:2px" type="number" placeholder="mg2u ID" [disabled]="searchByMembership && searchByMembership.length > 0" [(ngModel)]="searchById"/>
+                    <!-- 5em -->
+                <button class="player-action" (click)="clearSearchPlayer(x)" ion-button clear style="font-size:1.2em">
+                            <i style="color:grey" class="fa fa-times-circle "></i>
+                        </button>
+                    </span>
+                    
+            </div>
+            <div class="column" style="width:20%;text-align:right">
+                    <!-- (click)="onPlayerSelect(x)" -->
+                    <button (click)="searchBookingPlayer(x)" class="player-action" clear ion-button style="font-size:1.2em">
+                            <i class="fas fa-fw fa-search"></i>
+                        </button>
+            </div>
+        </div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="small-label">Tee Off Date</ion-label><br>
+</ion-item>
+<ion-item class="booking-date" style="color: #42B06D;">
+<i item-left class="far fa-calendar-alt" style="margin-right:1px;"></i>
+<ion-datetime item-right no-padding
+[min]="today" displayFormat="DDD, DD MMM YYYY"
+pickerFormat="DDD MMM YYYY"
+[(ngModel)]="startDate"></ion-datetime>
+
+</ion-item>
+    <!-- (click)="onSelectTimes()" -->
+    <ion-item (click)="onSelectTimes()">
+                        
+        <h4 class="small-label">Tee Off Time Range</h4>
+        <!-- style="font-size: large; color: #42B06D;text-align: center;letter-spacing: 1px;padding-left:13rem" -->
+        <p style="font-size: large; color: #42B06D;letter-spacing: 1px;"> <i class="far fa-fw fa-clock"></i>{{fromTime}} to {{toTime}}</p>
+        <!-- text-align: center; -->
+</ion-item>
+<ion-item class="booking-option need-wrapper">
+    <h4 class="small-label">How many slots for the group? {{groupSlots}}</h4>
+</ion-item>
+<ion-item>
+<ion-range min="1" max="20" step="1" pin="true" snaps="true"
+debounce="500"
+[(ngModel)]="groupSlots">
+  <ion-label range-left>1</ion-label>
+  <ion-label range-right>20</ion-label>
+</ion-range>
+</ion-item>
+<ion-item (click)="onSelectCourse($event)">              
+    <h4 class="small-label">Select preferred course</h4>
+    <!-- style="font-size: large; color: #42B06D;text-align: center;letter-spacing: 1px;padding-left:13rem" -->
+    <p style="font-size: large; color: #42B06D;letter-spacing: 1px;">
+        <!-- text-align: center; -->
+        <!-- <i class="far fa-fw fa-clock"></i> -->
+        <img style="height:100%;height: 3rem;float:left;object-fit: cover;margin-left:0;margin-right:0.5em" 
+                                        [src]="'img/course-default.png'"
+                                        onerror="this.src='img/course-default.png'">
+        {{optionCourse?optionCourse.courseName:'Tap here to select a course'}}
+    </p>
+    <!-- <button block ion-button icon-right small outline (click)="onSelectCourse($event)" class="starter-btn-courses">
+        <span *ngIf="optionCourse">{{optionCourse.courseName}}</span>
+    <ion-icon primary name="arrow-down"></ion-icon>
+</button> -->
+</ion-item>
+
+<!-- <ion-item >              
+    <h4 class="small-label"></h4>
+    <p style="font-size: large; color: #42B06D;text-align: center;letter-spacing: 1px;"> <i class="far fa-fw fa-clock"></i>{{selectedCourse}}}</p>
+</ion-item> -->
+<!-- <ion-item  class="booking-option">
+    <h4 class="small-label">How many players per flight? </h4>
+</ion-item> -->
+<ion-item class="booking-option">
+        <ion-label class="small-label" item-left>Players per flight? </ion-label>
+        <!-- {{playersPerFlight}} -->
+<!-- <ion-label item-left style="max-width:8em;">Club distance in<br><span>{{searchDistance}} KM</span></ion-label> -->
+    <!-- <span primary padding>{{searchDistance}}</span> -->
+    <!-- <ion-range min="1" max="6" step="1" pin="true" snaps="true"
+    debounce="500" item-right
+   [(ngModel)]="playersPerFlight">
+      <ion-label range-left>1</ion-label>
+      <ion-label range-right>6</ion-label>
+    </ion-range> -->
+    <ion-segment [(ngModel)]="playersPerFlight" color = "warning" item-right no-padding style="padding-top:1em; padding-bottom:1em">
+    
+        <ion-segment-button  value = "1">
+            <!-- (click) = "setBookingType(1)" -->
+            1
+        </ion-segment-button>
+        <ion-segment-button  value = "2">
+            <!-- (click) = "setBookingType(2)" -->
+            2
+        </ion-segment-button>
+        <ion-segment-button  value = "3">3</ion-segment-button>
+        <ion-segment-button  value = "4">4</ion-segment-button>
+        <ion-segment-button  value = "5">5</ion-segment-button>
+        <ion-segment-button  value = "6">6</ion-segment-button>
+    </ion-segment>
+</ion-item>
+<ion-item  class="booking-option">
+    <ion-label class="small-label" item-left>Buggies per flight?</ion-label>
+    <ion-segment [(ngModel)]="buggiesPerFlight" color = "warning" item-right no-padding style="padding-top:1em; padding-bottom:1em">
+    
+        <ion-segment-button  value = "1">1</ion-segment-button>
+        <ion-segment-button  value = "2">2</ion-segment-button>
+        <ion-segment-button  value = "3">3</ion-segment-button>
+        <ion-segment-button  value = "4">4</ion-segment-button>
+        <ion-segment-button  value = "5">5</ion-segment-button>
+        <ion-segment-button  value = "6">6</ion-segment-button>
+    </ion-segment>
+    </ion-item>
+    <ion-item  class="booking-option">
+        <ion-label class="small-label" item-left>Caddies per flight?</ion-label>
+        <ion-segment [(ngModel)]="caddiesPerFlight" color = "warning" item-right no-padding style="padding-top:1em; padding-bottom:1em">
+    
+            <ion-segment-button  value = "1">1</ion-segment-button>
+            <ion-segment-button  value = "2">2</ion-segment-button>
+            <ion-segment-button  value = "3">3</ion-segment-button>
+            <ion-segment-button  value = "4">4</ion-segment-button>
+            <ion-segment-button  value = "5">5</ion-segment-button>
+            <ion-segment-button  value = "6">6</ion-segment-button>
+        </ion-segment>
+        </ion-item>
+
+    <form *ngIf="0" [formGroup]="addPlayerForm"  >
+
+        <!-- First Name -->
+        <ion-item  [class.error]="playerName.invalid && playerName.touched" >
+            <ion-label floating class="small-label">Player Name</ion-label>
+            <!-- stacked -->
+            placeholder="Player Name"
+            <ion-input type="text" value="" formControlName="playerName"
+                        maxLength="50" ></ion-input >
+        </ion-item >
+        <div *ngIf="playerName.errors && playerName.errors['required'] && playerName.touched"
+             class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+        </div >
+        <div *ngIf="playerName.errors && playerName.errors['maxlength'] && playerName.touched"
+             class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+        </div >
+        <ion-item  [class.error]="phone.invalid && phone.touched" >
+                <ion-label floating class="small-label">Phone Number</ion-label>
+                <!-- stacked -->
+                placeholder="Phone Number"
+                <ion-input type="text" value="" formControlName="phone"
+                            maxLength="50" ></ion-input >
+            </ion-item >
+            <div *ngIf="phone.errors && phone.errors['required'] && phone.touched"
+                 class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+            </div >
+            <div *ngIf="phone.errors && phone.errors['maxlength'] && phone.touched"
+                 class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+            </div >
+        <ion-item  [class.error]="email.invalid && email.touched" >
+            <ion-label floating class="small-label">Email Address</ion-label>
+            <!-- placeholder="{{'SignUpPage.email'|translate}}" -->
+                <ion-input (ngModelChange)="onKeySearchPlayerByEmail()" debounce="1500" type="email" value="" formControlName="email" 
+                           maxLength="50" ></ion-input >
+            </ion-item >
+            <div *ngIf="email.errors && email.errors['required'] && email.touched"
+                 class="error-box" >* Email is required
+            </div >
+            <!-- <ion-item> -->
+            <ion-label style="padding-left:1em;" class="small-label">Gender</ion-label>
+            <ion-segment formControlName="gender" padding >
+                    <ion-segment-button value="M" >Male</ion-segment-button >
+                    <ion-segment-button value="F" >Female</ion-segment-button >
+                </ion-segment>
+            <!-- </ion-item> -->
+        
+        </form>
+        <ion-row>
+            <ion-col> <button (click)="close()" block item-left ion-button color="danger">Cancel</button></ion-col>
+            <ion-col><button item-right block ion-button color="primary">Book</button></ion-col>
+        </ion-row>
+</ion-content>
+<ion-footer>
+    <ion-toolbar position="bottom" color="light" *ngIf="openedModal" style="text-align: center">
+        <!-- && !checkAddMe() -->
+        <!-- <button ion-button round color="secondary" (click)="newContact()">Add Player</button> -->
+        <button *ngIf="listMode !== 'non-mg2u'" ion-button round color="secondary" (click)="addMeself()">Add Me</button>
+        <button *ngIf="listMode === 'non-mg2u'" ion-button round color="secondary" (click)="addPlayer()">Add Player</button>
+        <button ion-button round color="danger" (click)="close()">Cancel</button>
+    </ion-toolbar>
+</ion-footer>

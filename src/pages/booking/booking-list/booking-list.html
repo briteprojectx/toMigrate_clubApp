@@ -1,0 +1,448 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-title center>Tee Time Slots</ion-title> -->
+        <ion-title center><img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /></ion-title>
+
+        <ion-buttons end>
+                <!-- (click)="toggleAvailable()" -->
+            <button ion-button *ngIf="toggleAvailableBoolean" (click)="toggleAvailable()">
+                Show All
+            </button>
+            <button ion-button *ngIf="!toggleAvailableBoolean" (click)="toggleAvailable()">
+                    Show Available
+                </button>
+                <button ion-button (click)="refreshTeeTimeSlot()"><i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i></button>
+        </ion-buttons>
+    </ion-navbar>
+    <!-- <ion-toolbar color = "light">
+        <ion-segment [(ngModel)] = "teeTimeList" color = "warning" padding>
+            <ion-segment-button (click) = "setBookingType(1)" value = "byClubs">
+                BY CLUBS
+            </ion-segment-button>
+            <ion-segment-button (click) = "setBookingType(2)" value = "byDates">
+                BY DATES
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar> -->
+    
+</ion-header>
+<ion-content>
+        <!-- <ion-toolbar color="light" >
+                <ion-searchbar *ngIf="searchToggle" [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                    (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+                </ion-searchbar>
+                
+            </ion-toolbar> -->
+    <!-- <ion-refresher pullMin = "100" (ionRefresh) = "onRefresh($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = ""
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher> -->
+    <ion-row *ngIf="!showAll" class="mygolf-table-caption" 
+                style="font-size: 1.2rem;border-color: yellowgreen;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 1em;
+    margin: 2px;">
+                        <ion-col *ngIf="prevPage(); else notBackBtn;" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                        <ion-col (click)="changeDate(-2)">
+                            <!-- *ngIf="prevPage(2)"  -->
+                            <span >{{getNavDate(-2,'day')}}<br>{{getNavDate(-2,'date')}}</span>
+                            <!-- <span *ngIf="!prevPage(2)" >&nbsp;</span> -->
+                    </ion-col>
+                        <ion-col (click)="changeDate(-1)">
+                                <!-- *ngIf="prevPage(1)"  -->
+                            <span >{{getNavDate(-1,'day')}}<br>{{getNavDate(-1,'date')}}</span>
+                            <!-- <span *ngIf="!prevPage(1)" >&nbsp;</span> -->
+                            </ion-col>
+                        
+                        <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;color:#5DBC81;border-bottom-color:#5DBC81;
+                        border-bottom-style: solid;border-bottom-width: 2px;"> 
+                            <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                                    <ion-datetime style="    margin-bottom: -2em;
+                                    margin-top: -0.5em" (ionChange)="confirmDate()"
+                                    displayFormat="DDD, DD MMM 'YY" 
+                                    pickerFormat="DD-MMM-YYYY" [(ngModel)]="currentDate" [min]="today" [max]="maxDate"></ion-datetime>
+                               
+                                <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                            <!-- </h3> -->
+                        </ion-col>
+                        <ion-col (click)="changeDate(1)">{{getNavDate(1,'day')}}<br>{{getNavDate(1,'date')}}</ion-col>
+                        <ion-col (click)="changeDate(2)">{{getNavDate(2,'day')}}<br>{{getNavDate(2,'date')}}</ion-col>
+
+                        <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+                    </ion-row>
+                    <div *ngFor="let course of currentCourses;">
+    <ion-card style="margin:0; width:100%" >
+            <!-- (click)="goBookingList(clubs)" -->
+                        <ion-row style="font-size: 1.2rem;" no-padding>
+                                <ion-col col-3 no-padding>
+                                        <!-- <ion-thumbnail> -->
+                                                
+                                                <!-- getClubImage(clubInfo) -->
+                                                <!-- clubs?getClubCourseImage(clubs):'img/course-default.png' -->
+                                                <img style="height: 8em;
+                                                object-fit: cover;" [src]="getClubCourseImage(course)"
+                                                onerror="this.src='img/course-default.png'">
+                                            <!-- </ion-thumbnail> -->
+                                </ion-col>
+                                <ion-col col-9 *ngIf="!clubs">
+                                        
+                                          
+
+                                        <h3 style="font-weight:bold">{{clubInfo?clubInfo.clubName:''}}</h3>
+                                        <!-- {{getCourseName(teeTimeSlotDisplayList[0])}}
+                                        ({{getCourseName(teeTimeSlotDisplayList[0])}}) -->
+                                        <!-- <h3 *ngIf="clubCourseInfo">({{clubCourseInfo?clubCourseInfo.name:''}})</h3> -->
+                                        <h3 *ngIf="course">({{course.name}})</h3>
+                                        <h4 *ngIf="clubInfo">{{getClubDetails(clubInfo,'addressOld')}}</h4>
+                                        <!-- (click)="toggleAvailable()" -->
+                                        <ion-item text-wrap text-center (click)="onChangeTimeSlots()"  style="font-size:x-small;width:100%; color:#5DBC81">
+                                            <span *ngIf="!toggleAvailableBoolean">
+                                                Displaying all slots from {{fromTime}} to {{toTime}}. Tap here to change
+                                            </span>
+                                            <span *ngIf="toggleAvailableBoolean">
+                                                Displaying available slots from {{fromTime}} to {{toTime}}.<br> Tap here to change
+                                            </span>
+                                            <!-- Displaying&nbsp;
+                                            <span *ngIf="!toggleAvailableBoolean">all</span>
+                                            <span *ngIf="toggleAvailableBoolean">only available</span>
+                                             &nbsp;slots from {{fromTime}} to {{toTime}}. Tap here to change -->
+                                            
+                                    </ion-item>
+                                        <!-- <h4 *ngIf="clubs.slots.length > 0">Slots : More available</h4>
+                                        <h4 *ngIf="clubs.slots.length === 0">Slots : Not slots available</h4>
+                                        <h4 *ngIf="clubs.slots.length > 0">From : <span>{{getSlotPrice(clubs.slots,'STD')}}</span></h4>  -->
+                                    </ion-col>
+                                <ion-col col-9 *ngIf="clubs">
+                                    <h3 style="font-weight:bold">{{getClubDetails(clubs.club,'name')}}</h3>
+                                    <!-- <h3 *ngIf="clubs && clubs.slots.length > 0">({{getCourseDetails(clubs.slots[0],'name')}})</h3> -->
+                                    <h3 *ngIf="course">({{course.name}})</h3>
+                                    <h4>{{getClubDetails(clubs.club,'address')}}</h4>
+                                    
+                                    <!-- (click)="toggleAvailable()"  -->
+                                    <ion-item text-center text-wrap (click)="onChangeTimeSlots()"  style="font-size:x-small;width:100%; color: #5DBC81">
+                                        <span *ngIf="!toggleAvailableBoolean">
+                                            Displaying all slots from {{fromTime}} to {{toTime}}. Tap here to change
+                                        </span>
+                                        <span *ngIf="toggleAvailableBoolean">
+                                            Displaying available slots from {{fromTime}} to {{toTime}}. <br>Tap here to change
+                                        </span>
+                                            <!-- Displaying&nbsp;
+                                            <span *ngIf="!toggleAvailableBoolean">all</span>
+                                            <span *ngIf="toggleAvailableBoolean">only available</span>
+                                             &nbsp;slots from {{fromTime}} to {{toTime}}. Tap here to change -->
+                                            
+                                    </ion-item>
+                                    <!-- <h4 *ngIf="clubs.slots.length > 0">Slots : More available</h4>
+                                    <h4 *ngIf="clubs.slots.length === 0">Slots : Not slots available</h4>
+                                    <h4 *ngIf="clubs.slots.length > 0">From : <span>{{getSlotPrice(clubs.slots,'STD')}}</span></h4>  -->
+                                </ion-col>
+                        </ion-row>
+                        
+                    </ion-card>
+                
+                    <!-- <button ion-button clear small style="width:100%">
+                            Display slots from {{fromTime}} to {{toTime}}
+                        </button> -->
+                    <!-- <ion-item>
+                            Display slots from {{fromTime}} to {{toTime}}. Tap here to change
+                    </ion-item> -->
+    <div [ngSwitch] = "bookingListType">
+    <ion-list *ngSwitchCase = "'single'" >
+            
+        <!-- <ion-card style="border-color: #5DBC81;
+        border-style: solid;
+        border-width: thin;
+        border-radius: 1em;"> -->
+        <ion-list *ngIf="refresh">
+                <ion-item style="text-align:center">
+                        <i class="fas fa-sync fa-spin"></i>
+                    </ion-item>
+        </ion-list>
+        <ion-list *ngIf="!refresh && filteredSlot.length > 0">
+                <!-- <ion-item class="time-slot-subheader">
+                    {{getCourseName(clubs.slots[0])}}
+                </ion-item> -->
+                <!-- <ion-grid > -->
+                    <ng-container *ngFor="let x of filteredSlot; let i = index;">
+                        <ion-card  style="border-color: #5DBC81;
+                        border-style: solid;
+                        border-width: thin;
+                        border-radius: 0.5em;"
+                         *ngIf="x.slot.startCourse.id === course.id;"
+                         (click)="goBookingDetails(x)">
+                         <div class="row" style="height:5em;align-items: center;">
+                             <div [class]="checkAvailable(x)" 
+                             style="height:100%;width:25%; text-align:center; font-weight: bold; font-size: 1.5em;line-height:1.5em;padding-top:3px;">
+                                    {{getTeeOffTime(x.slot.teeOffTime)}}<br>
+                                    {{getTeeOffTime(x.slot.teeOffTime,'am-pm')}}
+                                    <!-- {{x.available?'Available':'N/A'}} -->
+                            </div>
+                            <div class="column" style="width:65%; height: 100%">
+                                <div class="row" style="display:flex; flex-wrap: wrap; flex-direction: row; height: 100%; align-items: center;">
+                                    <div class="column" style="order:1;flex-grow: 1; flex-basis: auto; text-align: center; color: grey;font-size:1.2em;    padding-left: 5px;">
+                                        <!-- <p>{{x.slot.minPlayers}}-{{x.slot.maxPlayers}} Players, {{x.slot.eighteenHolesAllowed?18:9}} Holes, Cart</p> -->
+                                        <!-- <h2><i class="fas fa-fw fa-user-friends"></i> {{x.slot.minPlayers}}-{{x.slot.maxPlayers}} &#8226; <i class="fas fa-fw fa-golf-ball"></i> {{x.slot.eighteenHolesAllowed?18:9}} &#8226; <img style="width: 1.5em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-buggy-black.svg"> -->
+                                            <!-- <div> -->
+                                                <img style="width: 1.5em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-shirt.svg"> {{x.slot.minPlayers}}-{{x.slot.maxPlayers}} &#8226; 
+                                                <img style="max-width: 1.5em;height:1.5em;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-tee.svg"> 
+                                                <span *ngIf="x.slot.nineHolesAllowed && x.slot.eighteenHolesAllowed">
+                                                    {{x.slot.nineHolesAllowed?9:''}} / {{x.slot.eighteenHolesAllowed?18:''}} 
+                                                </span>
+                                                <span *ngIf="x.slot.nineHolesAllowed && !x.slot.eighteenHolesAllowed">
+                                                    {{x.slot.nineHolesAllowed?9:''}} 
+                                                </span>
+                                                <span *ngIf="!x.slot.nineHolesAllowed && x.slot.eighteenHolesAllowed">
+                                                    {{x.slot.eighteenHolesAllowed?18:''}} 
+                                                </span> 
+                                                <!-- {{x.slot.nineHolesAllowed?9:''}} / {{x.slot.eighteenHolesAllowed?18:''}}  -->
+                                                &#8226; 
+                                                <img style="width: 2em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-buggy-new.svg">
+    
+                                            
+                                        <!-- </div> -->
+                                        <!-- </ng-template> -->
+                                            <!-- <p *ngIf="x.slot.pricingPlanPromotional && x.slot.pricingPlanPromotional.promotional" style="color:red">Promotion Price available !</p> -->
+                                </div>
+                                <!-- (click)="getDisplayPricesA(x,$event)" -->
+                                <div  class="column" style="order:2;flex-grow: 1;flex-basis:auto;text-align:center;">
+                                        <!-- <button small no-padding ion-button clear strong style="font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices['STD'] | number: '1.0-0'}}</button> -->
+                                        <div style="font-weight:bold;color:#5DBC81;padding:0;margin:0;font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices['STD'] | number: '1.0-0'}}</div>
+                                </div>
+                                </div>
+                            </div>
+                            <div style="max-width: 2%;" class="column" *ngIf="x.slot.pricingPlanPromotional && x.slot.pricingPlanPromotional.promotional">
+                                <span style="color:red; writing-mode: vertical-lr;">Promo</span>
+                            </div>
+                            
+                         </div>
+                                <!-- <ion-row style="height:5em;align-items: center;">
+                                    <ion-col col-3 style="background-color: #cde2c3; text-align:center; font-weight: bold; font-size: 1.5em">
+                                            {{getTeeOffTime(x.slot.teeOffTime)}}<br>
+                                            {{getTeeOffTime(x.slot.teeOffTime,'am-pm')}}
+                                    </ion-col>
+                                    <ion-col style="color: grey;font-size:1.2em">
+                                        1-4 Players, 18 Holes, Cart <br>
+                                        <i class="fas fa-fw fa-user-friends"></i> 1-4 &#8226; <i class="fas fa-fw fa-golf-ball"></i> 18 &#8226; <i class="fas fa-fw fa-car-side"></i>
+                                    </ion-col>
+                                    <ion-col col-3>
+                                        <h4 style="color:#5DBC81;font-weight:bold;font-size:1.5em">{{x.currency.symbol}} {{x.displayPrices.STD}}</h4>
+                                            <button no-padding ion-button clear strong style="font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices.STD}}</button>
+                                    </ion-col>
+                                </ion-row> -->
+                            </ion-card>
+                        </ng-container>
+        </ion-list>
+                    <!-- <ion-item class="page-sub-title ">
+                                    {{clubInfo?clubInfo.clubName:''}}
+                        </ion-item>
+                <ion-list>
+                        <ion-item class="time-slot-subheader">
+                               {{clubCourseInfo?clubCourseInfo.name:''}}
+                        </ion-item>
+                        <ion-grid >
+                        <ion-row col-12 justify-content-around   *ngFor="let x of teeTimeSlotDisplayList; let i = index;"
+                         (click)="goBookingDetails(x)">
+                            <ion-col col-4 align-self-start style="text-align:left;">
+                                {{getTeeOffTime(x.slot.teeOffTime)}}
+                            </ion-col>
+                            <ion-col col-2 align-self-center style="text-align:right;">{{getHolesAllowed(x.slot)}}</ion-col>
+                            <ion-col col-6 align-self-end style="text-align:right;">RM {{x.displayPrices.STD}}</ion-col>
+                        </ion-row>
+
+                    </ion-grid>
+                </ion-list> -->
+        <!-- </ion-card> -->
+        </ion-list>
+        <ion-list *ngSwitchCase = "'favClubs'" >
+                <ion-list *ngIf="refresh">
+                        <ion-item style="text-align:center">
+                                <i class="fas fa-sync fa-spin"></i>
+                            </ion-item>
+                </ion-list>
+                <!-- *ngFor="let clubs of clubTeeTimeSlotList"  -->
+                
+                <!-- <ion-card style="border-color: #5DBC81;
+                border-style: solid;
+                border-width: thin;
+                border-radius: 1em;"> -->
+                            <!-- <ion-item class="page-sub-title ">
+                                            {{clubs?clubs.club.name:''}}
+                                </ion-item> -->
+                        <ion-list *ngIf="!refresh && filteredSlot.length > 0">
+                                <!-- <ion-item class="time-slot-subheader">
+                                    {{getCourseName(clubs.slots[0])}}
+                                </ion-item> -->
+                                <!-- <ion-grid > -->
+                                    <ng-container *ngFor="let x of filteredSlot; let i = index;"
+                                    >
+                                        <ion-card  style="border-color: #5DBC81;
+                                        border-style: solid;
+                                        border-width: thin;
+                                        border-radius: 0.5em;"
+                                         *ngIf="x.slot.startCourse.id === course.id;"
+                                         (click)="goBookingDetails(x)">
+                                         <div class="row" style="height:5em;align-items: center;">
+                                             <div [class]="checkAvailable(x)" style="height:100%;width:25%; text-align:center; font-weight: bold; font-size: 1.5em;line-height:1.5em;padding-top:3px;">
+                                                    {{getTeeOffTime(x.slot.teeOffTime)}}<br>
+                                                    {{getTeeOffTime(x.slot.teeOffTime,'am-pm')}}
+                                                    <!-- {{x.available?'Available':'N/A'}} -->
+                                            </div>
+                                            <!-- class="column" -->
+                                            <div class="column" style="width:65%; height: 100%">
+                                                <div class="row" style="display:flex; flex-wrap: wrap; flex-direction: row; height: 100%; align-items: center;">
+                                                    <div class="column" style="order:1;flex-grow: 1; flex-basis: auto; text-align: center; color: grey;font-size:1.2em;    padding-left: 5px;">
+                                                        <!-- <p>{{x.slot.minPlayers}}-{{x.slot.maxPlayers}} Players, {{x.slot.eighteenHolesAllowed?18:9}} Holes, Cart</p> -->
+                                                        <!-- <h2><i class="fas fa-fw fa-user-friends"></i> {{x.slot.minPlayers}}-{{x.slot.maxPlayers}} &#8226; <i class="fas fa-fw fa-golf-ball"></i> {{x.slot.eighteenHolesAllowed?18:9}} &#8226; <img style="width: 1.5em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-buggy-black.svg"> -->
+                                                            <!-- <div> -->
+                                                                <img style="width: 1.5em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-shirt.svg"> {{x.slot.minPlayers}}-{{x.slot.maxPlayers}} &#8226; 
+                                                                <img style="max-width: 1.5em;height:1.5em;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-tee.svg"> 
+                                                                <span *ngIf="x.slot.nineHolesAllowed && x.slot.eighteenHolesAllowed">
+                                                                    {{x.slot.nineHolesAllowed?9:''}} / {{x.slot.eighteenHolesAllowed?18:''}} 
+                                                                </span>
+                                                                <span *ngIf="x.slot.nineHolesAllowed && !x.slot.eighteenHolesAllowed">
+                                                                    {{x.slot.nineHolesAllowed?9:''}} 
+                                                                </span>
+                                                                <span *ngIf="!x.slot.nineHolesAllowed && x.slot.eighteenHolesAllowed">
+                                                                    {{x.slot.eighteenHolesAllowed?18:''}} 
+                                                                </span> &#8226; 
+                                                                <img style="width: 2em;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-buggy-new.svg">
+                    
+                                                            
+                                                        <!-- </div> -->
+                                                        <!-- </ng-template> -->
+                                                            <!-- <p *ngIf="x.slot.pricingPlanPromotional && x.slot.pricingPlanPromotional.promotional" style="color:red">Promotion Price available !</p> -->
+                                                </div>
+                                                <!-- (click)="getDisplayPricesA(x,$event)" -->
+                                                <div  class="column" style="order:2;flex-grow: 1;flex-basis:auto;text-align:center;">
+                                                        <!-- <button small no-padding ion-button clear strong style="font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices['STD'] | number: '1.0-0'}}</button> -->
+                                                        <div style="font-weight:bold;color:#5DBC81;padding:0;margin:0;font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices['STD'] | number: '1.0-0'}}</div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div style="max-width: 2%;" class="column" *ngIf="x.slot.pricingPlanPromotional && x.slot.pricingPlanPromotional.promotional">
+                                                <span style="color:red; writing-mode: vertical-lr;">Promo</span>
+                                            </div>
+                                         </div>
+                                                <!-- <ion-row style="height:5em;align-items: center;">
+                                                    <ion-col col-3 style="background-color: #cde2c3; text-align:center; font-weight: bold; font-size: 1.5em">
+                                                            {{getTeeOffTime(x.slot.teeOffTime)}}<br>
+                                                            {{getTeeOffTime(x.slot.teeOffTime,'am-pm')}}
+                                                    </ion-col>
+                                                    <ion-col style="color: grey;font-size:1.2em">
+                                                        1-4 Players, 18 Holes, Cart <br>
+                                                        <i class="fas fa-fw fa-user-friends"></i> 1-4 &#8226; <i class="fas fa-fw fa-golf-ball"></i> 18 &#8226; <i class="fas fa-fw fa-car-side"></i>
+                                                    </ion-col>
+                                                    <ion-col col-3>
+                                                        <h4 style="color:#5DBC81;font-weight:bold;font-size:1.5em">{{x.currency.symbol}} {{x.displayPrices.STD}}</h4>
+                                                            <button no-padding ion-button clear strong style="font-size:2rem;">{{x.currency.symbol}} {{x.displayPrices.STD}}</button>
+                                                    </ion-col>
+                                                </ion-row> -->
+                                            </ion-card>
+                                        </ng-container>
+                        </ion-list>
+                        <ion-list *ngIf="slots.length === 0">
+                            <ion-item>Currently there is no time slot for this club. 
+                                <!-- <br>{{clubs.club.name}} -->
+                            </ion-item>
+                        </ion-list>
+                <!-- </ion-card> -->
+                </ion-list>
+        <ion-list *ngSwitchCase = "'byDates'">
+
+                <ion-card *ngFor="let x of [1,2,3,4]; let i = index;" >
+                        <!-- <ion-card-header > -->
+                                <ion-item class="page-sub-title align-center">
+                                        <!-- <h3 style="font-weight:bold"> -->
+                                                Saturday 2{{x}}, April 2020
+                                        <!-- </h3> -->
+                                    </ion-item>
+                        <!-- </ion-card-header> -->
+                        <!-- <ion-card-content> -->
+                            <ion-list>
+                                    <ion-item class="time-slot-subheader">
+                                            Tasik Puteri Golf & Country Sdn Bhd 
+                                    </ion-item>
+                                <!-- <ion-item> -->
+                                    <ion-grid>
+                                    <ion-row justify-content-around>
+                                        <ion-col col-4 align-self-start style="text-align:left;">
+                                            07:30 AM
+                                        </ion-col>
+                                        <ion-col col-2 align-self-center style="text-align:right;">18H</ion-col>
+                                        <ion-col col-6 align-self-end style="text-align:right;">RM 70</ion-col>
+                                    </ion-row>
+                                    <ion-row justify-content-around class="book-unavailable">
+                                            <ion-col col-4 align-self-start style="text-align:left;">
+                                                07:45 AM
+                                            </ion-col>
+                                            <ion-col col-2 align-self-center style="text-align:right;">9H</ion-col>
+                                            <ion-col col-6 align-self-end style="text-align:right;">Unavailable</ion-col>
+                                        </ion-row>
+                                        <ion-row justify-content-around>
+                                                <ion-col col-4 align-self-start style="text-align:left;">
+                                                    08:00 AM
+                                                </ion-col>
+                                                <ion-col col-2 align-self-center style="text-align:right;">18H</ion-col>
+                                                <ion-col col-6 align-self-end style="text-align:right;">RM 70</ion-col>
+                                            </ion-row>
+                                </ion-grid>
+                                <ion-item class="time-slot-subheader">
+                                        Tropicana Golf Club & Resort
+                                </ion-item>
+                                <!-- <ion-item> -->
+                                    <ion-grid>
+                                    <ion-row justify-content-around>
+                                        <ion-col col-4 align-self-start style="text-align:left;">
+                                            07:30 AM
+                                        </ion-col>
+                                        <ion-col col-2 align-self-center style="text-align:right;">18H</ion-col>
+                                        <ion-col col-6 align-self-end style="text-align:right;">RM 70</ion-col>
+                                    </ion-row>
+                                    <ion-row justify-content-around class="book-unavailable">
+                                            <ion-col col-4 align-self-start style="text-align:left;">
+                                                07:45 AM
+                                            </ion-col>
+                                            <ion-col col-2 align-self-center style="text-align:right;">9H</ion-col>
+                                            <ion-col col-6 align-self-end style="text-align:right;">Unavailable</ion-col>
+                                        </ion-row>
+                                        <ion-row justify-content-around>
+                                                <ion-col col-4 align-self-start style="text-align:left;">
+                                                    08:00 AM
+                                                </ion-col>
+                                                <ion-col col-2 align-self-center style="text-align:right;">18H</ion-col>
+                                                <ion-col col-6 align-self-end style="text-align:right;">RM 70</ion-col>
+                                            </ion-row>
+                                </ion-grid>
+                            </ion-list>
+                            <!-- <h3></h3> -->
+                        <!-- </ion-card-content> -->
+                    </ion-card>
+                </ion-list>
+    </div>
+</div>
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2 (click)="onMyBookingsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+            <img style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onFAQClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2 (click)="openProfile()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+
+</ion-footer>

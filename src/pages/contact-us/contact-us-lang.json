@@ -1,0 +1,26 @@
+{
+    "en":{
+      "ContactUs": {
+        "title": "myGolf2u Contact Us",
+        "PleaseContact": "Please contact us on any of the following",
+        "Phone": "Phone",
+        "Fax": "Fax",
+        "Whatsapp": "Whatsapp",
+        "CopyrightLine1": "Copyright",
+        "CopyrightLine2": "All right reserved",
+        "DevelopedBy": "Developed by"
+      }
+    },
+    "my":{
+        "ContactUs": {
+          "title": "myGolf2u: Hubungi Kami",
+          "PleaseContact": "Please contact us on any of the following",
+          "Phone": "Phone",
+          "Fax": "Fax",
+          "Whatsapp": "Whatsapp",
+          "CopyrightLine1": "Copyright",
+          "CopyrightLine2": "All right reserved",
+          "DevelopedBy": "Applikasi dibangunkan oleh"
+          }
+      }
+  }

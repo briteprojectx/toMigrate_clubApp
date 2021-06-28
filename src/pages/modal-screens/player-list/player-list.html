@@ -1,0 +1,86 @@
+<ion-header>
+    <ion-navbar *ngIf="!forResultOnly">
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Select Player to view</ion-title>
+    </ion-navbar>
+    <ion-toolbar *ngIf="!forResultOnly" color="light">
+            <ion-searchbar placeholder="Search player by name or email" focuser #searchBar [(ngModel)]="searchPlayers"
+                           debounce="1500"
+                           (ionInput)="onSearchInput()" [showCancelButton]="true">
+    
+            </ion-searchbar>
+        </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <!-- <ion-list >
+        <ion-item *ngFor="let p of playerList.players" class="teebox">
+                <button ion-button  full solid (click)="onSelectPlayer(p)">
+                        {{p.playerId}} - {{p.playerName}}
+                     </button>
+        </ion-item>
+        
+    </ion-list> -->
+
+    <ion-list *ngIf="!forResultOnly && searchAttempted && playerList">
+                    <!-- <ion-list-header class = "list-header">
+                        Request Sent
+                    </ion-list-header> -->
+                    <button ion-item *ngFor = "let p of playerList.players"
+                            class = "friend-row"
+                            (click) = "onSelectPlayer(p)">
+                        <ion-avatar item-left>
+                            <img src = "{{p.thumbnail?p.thumbnail:p.photoUrl}}"
+
+                                    onerror = "this.src='img/default_user.png'">
+                        </ion-avatar>
+                        <h2>{{p.playerName}}</h2>
+                        <p><i class = "fa fa-calendar css-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Member
+                            Since:
+                            {{p.dateJoined|date:"MMM d, yyyy"}}
+                        </p>
+                        <span item-right style = "padding-right:10px;" *ngIf = "p.gender==='M'"
+                                class = "male"><i
+                                class = "fa fa-mars fa-2x" aria-hidden = "true"></i></span>
+                        <span item-right style = "padding-right:10px;" *ngIf = "p.gender==='F'"
+                                class = "female"><i
+                                class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                    </button>
+            <div *ngIf = "refreshAttempted && requestFriends.totalItems==0" padding>
+                <span danger>No data found!</span>
+            </div>
+        </ion-list>
+        <ion-list *ngIf="forResultOnly && bookingPlayers">
+                <!-- <ion-list-header class = "list-header">
+                    Request Sent
+                </ion-list-header> -->
+                <button ion-item *ngFor = "let p of bookingPlayers"
+                        class = "friend-row"
+                        (click) = "onSelectPlayer(p)">
+                    <ion-avatar item-left>
+                        <img src = "{{p.profile?p.profile:p.image}}"
+
+                                onerror = "this.src='img/default_user.png'">
+                    </ion-avatar>
+                    <h2>{{p.playerName}}</h2>
+                    <p><i class = "fa fa-calendar css-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Member
+                        Since:
+                        {{p.dateJoined|date:"MMM d, yyyy"}}
+                    </p>
+                    <span item-right style = "padding-right:10px;" *ngIf = "p.gender==='M'"
+                            class = "male"><i
+                            class = "fa fa-mars fa-2x" aria-hidden = "true"></i></span>
+                    <span item-right style = "padding-right:10px;" *ngIf = "p.gender==='F'"
+                            class = "female"><i
+                            class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                </button>
+        <div *ngIf = "refreshAttempted && requestFriends.totalItems==0" padding>
+            <span danger>No data found!</span>
+        </div>
+    </ion-list>
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-content>
+
+  <div class="content" padding>
+   <div text-center>
+     <ion-item no-lines text-center>
+      <ion-label color={{color}}>{{ event.title }}</ion-label>
+      <p style="font-size: 12px;">{{event.startTime | date: 'longDate'}}-{{event.endTime | date: 'longDate'}}</p>
+      <ion-icon item-right name="close" color="danger" (click)="dismiss()"></ion-icon>
+     </ion-item>
+  </div>
+  <div *ngIf="event.title != 'Sold Out'">
+    <ion-item class="event-items">
+      <ion-label>Walking Allowed</ion-label>
+      <ion-note item-right color="success">{{event.walkingAllowed}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Minimum Players</ion-label>
+      <ion-note item-right>{{event.minPlayer}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Maximum Players</ion-label>
+      <ion-note item-right>{{event.maxplayer}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Normal Price</ion-label>
+      <ion-note item-right>${{event.normalPrice}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Promotion Price</ion-label>
+      <ion-note item-right>${{event.promotionPrice}}</ion-note>
+    </ion-item>
+    </div>
+    <div *ngIf="event.title != 'Sold Out'">
+    <ion-item class="event-items">
+      <ion-label>Walking Allowed</ion-label>
+      <ion-note item-right color="success">{{event.walkingAllowed}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Minimum Players</ion-label>
+      <ion-note item-right>{{event.minPlayer}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Maximum Players</ion-label>
+      <ion-note item-right>{{event.maxplayer}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Normal Price</ion-label>
+      <ion-note item-right>${{event.normalPrice}}</ion-note>
+    </ion-item>
+    <ion-item class="event-items">
+      <ion-label>Promotion Price</ion-label>
+      <ion-note item-right>${{event.promotionPrice}}</ion-note>
+    </ion-item>
+    </div>
+    <div padding text-center>
+      <button ion-button round *ngIf="event.title != 'Sold Out'" (click)="openPage('PlayerOptionsPage')">More Info</button>
+      <button ion-button round *ngIf="event.title == 'Sold Out'" color="danger" (click)="dismiss()">close</button>
+    </div>
+  </div>
+  </ion-content>

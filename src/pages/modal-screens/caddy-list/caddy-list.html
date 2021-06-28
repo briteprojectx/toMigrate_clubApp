@@ -1,0 +1,362 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <ion-buttons start *ngIf="fromBooking">
+                <button ion-button icon-only (click)="close()"><i style="color:red" class="fa fa-2x fa-fw fa-times-circle "></i></button>
+                <!-- Remove preferred -->
+        </ion-buttons>
+        <img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+        <ion-buttons end>
+                <!-- <button ion-button icon-only (click)="searchBar = !searchBar">
+                        <ion-icon name="search" color="invert-text"></ion-icon>
+                    </button> -->
+                <button ion-button icon-only (click)="onRefreshClick()">
+                    <i class="fa fa-lg fa-refresh"></i>
+                </button>
+            </ion-buttons>
+        <!-- <ion-title>Caddy List</ion-title> -->
+
+    </ion-navbar>
+    <ion-toolbar color="light" >
+            <!-- *ngIf="searchBar" -->
+        <ion-row col-12 >
+            <ion-col>
+                    <!-- #searchBar -->
+                <ion-searchbar placeholder="Search caddy by name, nickname or starts with staff ID" focuser 
+                    [(ngModel)]="searchCaddies" debounce="1500" (ionInput)="onSearchInput()" [showCancelButton]="true">
+
+                </ion-searchbar>
+            </ion-col>
+            
+            <!-- <ion-col col-4>
+                <ion-item style="text-align:right;" >
+                    <ion-label>All</ion-label>
+                    <ion-toggle [(ngModel)]="showAll" (ionChange)="toggleClick()"></ion-toggle>
+                </ion-item>
+            </ion-col> -->
+        </ion-row>
+        <ion-row col-12>
+                <ion-col col-6 style="text-align:left">
+                        <span *ngIf="!switchView" (click)="switchView = true"><i class="fas fa-fw fa-list"></i>List View</span>
+                        <span *ngIf="switchView" (click)="switchView = false"><i class="fas fa-fw fa-grip-vertical"></i>Grid View</span>
+                        
+                </ion-col>
+                <ion-col *ngIf="!changeCaddie" col-6 style="text-align:right">
+                        <span *ngIf="!showAll" (click)="toggleAll(true)">Showing Available<i class="far fa-fw fa-check-square"></i></span>
+                        <!-- Show All -->
+                        <span *ngIf="showAll" (click)="toggleAll(false)">Showing All<i class="fas fa-fw fa-calendar-week"></i></span>
+                    </ion-col>
+            </ion-row>
+            <ion-item *ngIf="fromBooking && bookingClub" style="text-align:center" no-padding>
+                Showing Caddies for {{bookingClub.name}}
+            </ion-item>
+            <!-- !showAll &&  -->
+            <ion-row *ngIf="!fromBooking && !changeCaddie" class="page-sub-title align-center">
+                    <ion-col *ngIf="!fromBooking && !changeCaddie" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                    <!-- prevPage() -->
+                    <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                        <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                                <ion-datetime (ionChange)="confirmDate()"
+                                displayFormat="DDD, DD MMM YYYY" 
+                                pickerFormat="DD-MM-YYYY" [(ngModel)]="currentDate" [min]="today"></ion-datetime>
+                           
+                            <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                        <!-- </h3> -->
+                    </ion-col>
+                    <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+                </ion-row>
+                <ion-row *ngIf="changeCaddie" class="page-sub-title align-center">
+                    <ion-col col-12 style="text-align:center;font-weight: bold;font-size: 1.5em;">{{currentDate | date: 'EEEE, d MMM yyyy'}}</ion-col>
+                </ion-row>
+                <!-- <ion-item *ngIf="showAll" class="page-sub-title align-center" style="text-align:center;font-weight: bold;font-size: 1.5em;">
+                    Displaying all caddies
+                </ion-item> -->
+                <!-- <ion-row col-12 *ngIf="showAll" class="page-sub-title align-center" no-padding>
+                    <ion-col col-12 style="text-align:center;">
+                        <p>Displaying all caddies</p>
+                    </ion-col>
+                </ion-row> -->
+                
+    </ion-toolbar>
+    
+</ion-header>
+
+
+<ion-content>
+    <button *ngIf="fromBooking && 1==0" (click)="onCaddySelectionCriteria()" ion-button clear style="width:100%">
+        Could not find preferred caddy? Tap here
+</button>
+<!-- <ion-list-header>Caddy Selection Criteria</ion-list-header> -->
+    <ion-card *ngIf="caddySelectionCriteriaMode" class="sign-in-panel">
+                <ion-card-content >
+                    <ion-item style="background:none">
+                        <h1 style="color:#30bb5b"><strong>Caddy Selection Criteria</strong></h1>
+                    </ion-item>
+                    <ion-label style="padding-left:1em;" class="small-label">Gender</ion-label>
+                        <ion-segment [(ngModel)]="caddySelectionCriteria.gender" padding >
+                                <ion-segment-button value="M" >Male</ion-segment-button >
+                                <ion-segment-button value="F" >Female</ion-segment-button >
+                            </ion-segment>
+                    <!-- <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Phone 1 *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Mobile Number" [(ngModel)]="caddySelectionCriteria.gender" type="number"></ion-input>
+                    </ion-item> -->
+                            <ion-item style="background:none; color:#30bb5b">
+            <ion-label>Min Age : {{ageValues.lower}}, Max Age : {{ageValues.upper}}</ion-label>
+            <ion-range dualKnobs="true" pin="true" [(ngModel)]="ageValues" min="18" max="80" step="1" snaps="true"></ion-range>
+          </ion-item>
+          <button ion-button (click)="addCaddySelectionCriteria()">
+              Add Caddy Criteria
+          </button>
+          <button ion-button (click)="caddySelectionCriteriaMode = false;">
+            Caddy List
+        </button>
+          <button ion-button color="danger" (click)="close()">
+            Cancel
+        </button>
+                </ion-card-content>
+                        
+    </ion-card>
+    <ion-list *ngIf="filteredCaddyList && !caddySelectionCriteriaMode">
+            <div *ngIf="switchView && !showAll">
+        <ion-item *ngFor="let c of filteredCaddyList" class="friend-row">
+            <ion-avatar item-left  (click)="onCaddyDetails(c,c)">
+                <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.png'">
+            </ion-avatar>
+            <h2  (click)="onCaddyDetails(c,c)">{{c.firstName}} {{c.lastName}} (#{{c.staffId}})</h2>
+            <p  (click)="onCaddyDetails(c,c)">
+                <i style="color: green" *ngIf="c.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                            {{getFullStatus(c.status)}}
+                                                            <span item-right style="color:yellowgreen">{{c.averageRating | number: '1.1-1'}}<i class="fas fa-fw fa-star"></i></span>
+                <!-- {{p.dateJoined|date:"MMM d, yyyy"}} -->
+            </p>
+            <span item-right style="padding-right:10px;" *ngIf="c.gender==='M'" class="male"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i>
+            </span>
+            <span item-right style = "padding-right:10px;" *ngIf="c.gender==='F'"
+                    class = "female"><i
+                    class = "fa fa-venus fa-2x" aria-hidden = "true"></i>
+                </span>
+            
+            <span item-right *ngIf="this.getUserRoles('assignments') && !fromBooking"  (click)="onCaddySettings(c)">
+                <i class="fas fa-fw fa-ellipsis-v"></i>
+            </span>
+        </ion-item>
+    </div>
+    <div *ngIf="switchView && showAll"> 
+        <ion-item *ngFor="let c of filteredCaddyList" class="friend-row" >
+            <ion-avatar item-left (click)="onCaddyDetails(c.caddy,c)">
+                <img src="{{c.caddy.caddyImage?c.caddy.caddyImage:c.caddy.caddyImage}}" onerror="this.src='assets/img/caddie-image.png'">
+            </ion-avatar>
+            <h2 (click)="onCaddyDetails(c.caddy,c)">{{c.caddy.firstName}} {{c.caddy.lastName}} (#{{c.caddy.staffId}})</h2>
+            <p (click)="onCaddyDetails(c.caddy,c)">
+                <i style="color: green" *ngIf="c.present; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                            <!-- {{getFullStatus(c.caddy.status)}} -->
+                                                            {{c.present?'Available':'Not available'}}
+                                                            <span item-right style="color:yellowgreen">{{c.caddy.averageRating | number: '1.1-1'}}<i class="fas fa-fw fa-star"></i></span>
+                <!-- {{p.dateJoined|date:"MMM d, yyyy"}} -->
+            </p>
+            <span item-right style="padding-right:10px;" *ngIf = "c.caddy.gender==='M'" class="male"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i>
+            </span>
+            <span item-right style = "padding-right:10px;" *ngIf = "c.caddy.gender==='F'"
+                    class = "female"><i
+                    class = "fa fa-venus fa-2x" aria-hidden = "true"></i>
+                </span>
+            <span item-right *ngIf="this.getUserRoles('assignments') && !fromBooking"  (click)="onCaddySettings(c)">
+                <i class="fas fa-fw fa-ellipsis-v"></i>
+            </span>
+        </ion-item>
+    </div>
+        <div *ngIf="refreshAttempted && requestFriends.totalItems==0" padding>
+            <span danger>No data found!</span>
+        </div>
+<div *ngIf="!switchView && !caddySelectionCriteriaMode && !showAll">
+        <ion-row col-12>
+            <ion-col col-6 col-md-4 *ngFor="let c of filteredCaddyList" >
+                   
+                                <ion-card *ngIf="viewType === 4" class="friend-row" style="text-align:-webkit-center">
+                                        <ion-avatar item-left (click)="onCaddyDetails(c,c,currentDate)" >
+                                                <img class="boxy" src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+                                                
+                                                <!-- style="display: block;max-height: 4em;width: 4em;" -->
+                                            </ion-avatar>
+                                            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div (click)="onCaddyDetails(c,c,currentDate)"  class="column"
+                                                     style="align-self:center; text-transform: capitalize; text-align: left; min-width: 90%; max-width: 90%;">
+                                                        <span item-right style="padding-right:10px;" *ngIf = "c.gender==='M'" class="male"><i class="fa fa-mars fa-2x"
+                                                            aria-hidden="true"></i>
+                                                    </span>
+                                                    <span (click)="onCaddyDetails(c,c,currentDate)"  item-right style = "padding-right:10px;" *ngIf = "c.gender==='F'"
+                                                            class = "female"><i
+                                                            class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                                                                {{c.firstName}} {{c.lastName}}</div>
+                                                        <div *ngIf="this.getUserRoles('assignments') && !fromBooking" class="column" (click)="onCaddySettings(c)">
+                                                            <button ion-button clear item-end 
+                                                            no-padding no-margin small>
+                                                                <i class="fas fa-fw fa-ellipsis-v"></i>
+                                                            </button>
+                                                        </div>
+                                                </div>
+                                                <div  (click)="onCaddyDetails(c,c,currentDate)" style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div style="width:50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" 
+                                                    class="column mg-txt-left"># {{c.staffId}}</div>
+                                                    <div style="width:35%" class="column mg-txt-right">
+                                                        <span style="color:yellowgreen">{{c.averageRating | number: '1.1-1'}}<i class="fas fa-fw fa-star"></i></span>
+                                                    </div>
+                                                    <div style="width:15%" class="column mg-txt-right">
+                                                            <i style="color: green" *ngIf="c.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                        <!-- {{getFullStatus(c.status)}} -->
+                                                    </div>
+                                                </div>
+                                    </ion-card>
+            </ion-col>
+                
+        </ion-row>
+    </div>
+    <div *ngIf="!switchView && !caddySelectionCriteriaMode && showAll">
+        <ion-row col-12>
+            <ion-col col-6 col-md-4 *ngFor="let c of filteredCaddyList" >
+                   
+                                <ion-card *ngIf="viewType === 4" class="friend-row"  style="text-align:-webkit-center">
+                                        <ion-avatar item-left (click)="onCaddyDetails(c.caddy,c,currentDate)">
+                                                <img class="boxy" src="{{c.caddy.caddyImage?c.caddy.caddyImage:c.caddy.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+                                                
+                                                <!-- style="display: block;max-height: 4em;width: 4em;" -->
+                                            </ion-avatar>
+                                            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                <!-- *ngIf="c.caddy && c.caddy.gender"  -->
+                                                    <div (click)="onCaddyDetails(c.caddy,c,currentDate)" class="column"
+                                                     style="align-self:center; text-transform: capitalize; text-align: left; min-width: 90%; max-width: 90%;">
+                                                        <span item-right style="padding-right:10px;" *ngIf = "c.caddy && c.caddy.gender && c.caddy.gender==='M'" class="male"><i class="fa fa-mars fa-2x"
+                                                            aria-hidden="true"></i>
+                                                    </span>
+                                                    <span (click)="onCaddyDetails(c.caddy,c,currentDate)" item-right style = "padding-right:10px;" *ngIf = "c.caddy && c.caddy.gender && c.caddy.gender==='F'"
+                                                            class = "female"><i
+                                                            class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                                                                <!-- "c.gender==='M'" -->
+                                                                {{c.caddy.firstName}} {{c.caddy.lastName}}
+                                                        </div>
+                                                        <div *ngIf="this.getUserRoles('assignments') && !fromBooking"  class="column" (click)="onCaddySettings(c)">
+                                                            <button ion-button clear item-end 
+                                                            no-padding no-margin small>
+                                                                <i class="fas fa-fw fa-ellipsis-v"></i>
+                                                            </button>
+                                                        </div>
+                                                </div>
+                                                <div (click)="onCaddyDetails(c.caddy,c,currentDate)" style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div style="width:50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" 
+                                                    class="column mg-txt-left"># {{c.caddy.staffId}}</div>
+                                                    <div style="width:35%" class="column mg-txt-right">
+                                                        <span style="color:yellowgreen">{{c.caddy.averageRating | number: '1.1-1'}}<i class="fas fa-fw fa-star"></i></span>
+                                                    </div>
+                                                    <div style="width:15%" class="column mg-txt-right">
+                                                            <i style="color: green" *ngIf="c.present; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                        <!-- {{getFullStatus(c.status)}} -->
+                                                    </div>
+                                                </div>
+                                    </ion-card>
+            </ion-col>
+                
+        </ion-row>
+    </div>
+        
+    </ion-list>
+
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-item *ngIf="changeCaddie">
+        <button ion-button full color="danger" (click)="close()">Cancel</button>
+    </ion-item>
+    <ion-row *ngIf="!changeCaddie" style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+        <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+    </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+            <!-- <i style="font-size: 3rem;color:#1b6a34;margin:1rem;opacity: 40%;" class="fa fa-fw fa-2x fa-question"></i> -->
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+    
+</ion-footer>
+
+<!-- <ion-card *ngIf="viewType === 1" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+    <ion-avatar item-left>
+            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+            
+        </ion-avatar>
+        <h2 style="text-transform: capitalize;">
+                <span item-left
+                class = "female"><i
+                class = "fa fa-fw fa-venus" aria-hidden = "true"></i></span>
+                {{c.firstName}} {{c.lastName}}</h2>
+        <h3>
+            <span item-left *ngIf = "c.gender==='M'" class="male"><i class="fa fa-fw fa-mars"
+            aria-hidden="true"></i>
+            <span item-left *ngIf = "c.gender==='F'"
+                class = "female"><i
+                class = "fa fa-venus fa-fw" aria-hidden = "true"></i></span>
+    </span>
+    (#{{c.staffId}})</h3>
+        <p><i class="fa fa-calendar css-calendar" color="danger" aria-hidden="true"></i>&nbsp;Status:
+            {{getFullStatus(c.status)}}&nbsp;
+        </p>
+</ion-card>
+<ion-card *ngIf="viewType === 2" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+    <ion-avatar item-left>
+            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+            
+        </ion-avatar>
+        <div style="text-transform: capitalize;width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+            <div class="column">{{c.firstName}} {{c.lastName}}</div>
+        </div>
+        <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+            <div style="width:50%" class="column mg-txt-left"># {{c.staffId}}</div>
+            <div style="width:50%" class="column mg-txt-right">{{getFullStatus(c.status)}}</div>
+        </div>
+</ion-card>
+
+    <ion-card *ngIf="viewType === 3" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+            <div style="width:100%;" class="row">
+                    <div class="column" style="width:60%"><ion-avatar item-left>
+                            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+                        </ion-avatar>
+                    </div>
+                    <div class="column" style="width:40%">
+                            # {{c.staffId}}<br>
+                            {{getFullStatus(c.status)}}
+                    </div>
+                </div>
+            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                    <div class="column" style="text-transform: capitalize;">
+                        <span item-left
+                        class = "female"><i
+                        class = "fa fa-fw fa-venus" aria-hidden = "true"></i></span>
+                        {{c.firstName}} {{c.lastName}}</div>
+                </div>
+        </ion-card> -->

@@ -1,0 +1,234 @@
+<ion-header>
+    <ion-navbar class="hole-analysis-page">
+        <!--<button menuToggle (click)="goHomePage()" >-->
+        <!--<ion-icon style="font-size:3.2rem" name="arrow-back" ></ion-icon >-->
+        <!--<div showWhen="ios" >Back</div >-->
+        <!--</button >-->
+        <!--<div showWhen="ios" >-->
+        <!--<button menuToggle (click)="onMenuClick()" >-->
+        <!--<ion-icon name='menu' ></ion-icon >-->
+        <!--</button >-->
+        <!--</div >-->
+        <ion-title>Hole Analysis</ion-title>
+        <ion-buttons end>
+            <!--button style="box-shadow:none" *ngIf="isAndroid()" (click)="onMenuClick()">
+                <ion-icon name='menu'></ion-icon>
+            </button-->
+            <button ion-button icon-only (click)="goHomePage()">
+                <ion-icon name='home'></ion-icon>
+            </button>
+
+            <!--button (click)="onFilterClick()">
+                <ion-icon name="options"></ion-icon>
+            </button-->
+            <button ion-button icon-only (click)="onRefreshClick()">
+                <i class="fa fa-fw fa-lg fa-refresh"></i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-card >
+      <!-- class="custom-card" style="width:100%" -->
+        <ion-item style="padding-left:1rem">
+            <p>Now displaying : </p>
+            <button ion-button (click)="onFilterClick()" clear item-right>Change</button>
+
+            <p>
+                <span *ngIf="searchCriteria.useNGames"><b>Last {{searchCriteria.lastNGames}} game(s)</b></span>
+                <span *ngIf="!searchCriteria.useNGames">
+           <!--|| (searchCriteria.periodType=='CUSTOM' && (!checkStartDate() && !checkEndDate()))-->
+        <span *ngIf="searchCriteria.periodType=='DAY'"><b>Last {{searchCriteria.periodLength}} day(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='WEEK'"><b>Last {{searchCriteria.periodLength}} week(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='MONTH'"><b>Last {{searchCriteria.periodLength}} month(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='YEAR'"><b>Last {{searchCriteria.periodLength}} year(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='CUSTOM' && (checkStartDate() || checkEndDate())">Games from <b>{{convFilterDate(startDate)}}</b> to <b>{{convFilterDate(endDate)}}</b></span>
+                </span>
+            </p>
+
+        </ion-item>
+
+    </ion-card>
+</ion-header>
+
+<ion-content class="hole-analysis-page">
+
+    <ion-card class="course-info">
+
+        <ion-item *ngIf="courseType=='course'" >
+          <!-- (click)="goCoursePicklist()" -->
+            <ion-avatar item-left padding>
+                <img src="img/course-default.png" />
+            </ion-avatar>
+            <span *ngIf="clubName"><h2 >{{clubName}}</h2 >
+            <p ><i class="fa fa-pencil-square-o ph-pencil" aria-hidden="true" ></i >9 Holes | {{courseName}}</p >
+            </span>
+            <span *ngIf="!clubName"><p>Please select a club and a course</p>
+            </span>
+        </ion-item>
+        <ion-item *ngIf="courseType=='club'" (click)="goCoursePicklist()">
+            <ion-avatar item-left no-padding style="padding-left:16px;">
+                <img *ngIf="clubInfo.clubImage" src="{{clubInfo.clubImage?clubInfo.clubImage:'img/default_club.png'}}" onerror="this.src='img/default_club.png'">
+                <!-- <img *ngIf="!clubInfo.clubImage" src="img/default_club.png"> -->
+
+            </ion-avatar>
+            <span *ngIf="clubInfo.clubName"><h2 >{{clubInfo.clubName}}</h2 ></span>
+            <span *ngIf="!clubInfo.clubName"><p>Please select a club and a course</p>
+            </span>
+
+        </ion-item>
+    </ion-card>
+    <!--ion-toolbar light [attr.primary]="isAndroid ? '' : null" >
+        <ion-segment [(ngModel)]="analysis" >
+            <ion-segment-button value="course" >
+                Hole Analysis
+            </ion-segment-button >
+            <ion-segment-button value="hole" >
+                Course Analysis
+            </ion-segment-button >
+        </ion-segment >
+    </ion-toolbar -->
+
+    <div *ngIf="clubName" [ngSwitch]="analysis">
+        <!--ion-label>{{startDate}} {{endDate}}</ion-label-->
+        <!--ion-card class="analysis-info" *ngSwitchWhen="'course'">
+
+            <ion-row item-center>
+                <ion-col width-9>Hole</ion-col>
+                <ion-col width-13 class="custom-par-column">Par</ion-col>
+                <ion-col width-15>Eagle</ion-col>
+                <ion-col width-15>Birdie</ion-col>
+                <ion-col width-13>Par</ion-col>
+                <ion-col width-15>Bogey</ion-col>
+                <ion-col width-20>2 Bogey</ion-col>
+            </ion-row>
+            <span *ngFor="let c of courseHolePar; let i = index">
+              <span *ngFor="let ss of scoreStatistic; let j = index">
+            <ion-row *ngIf="i==j">
+              <ion-col width-9>{{c.holeNo}}</ion-col>
+              <ion-col width-13 class="custom-par-column">{{c.holePar}}</ion-col>
+              <ion-col width-15>{{ch.scoreStatistic.eagle}}</ion-col>
+              <ion-col width-15>{{ch.scoreStatistic.birdie}}</ion-col>
+              <ion-col width-13>{{ch.scoreStatistic.par}}</ion-col>
+              <ion-col width-15>{{ch.scoreStatistic.bogey}}</ion-col>
+              <ion-col width-20>{{ch.scoreStatistic.bogey2}}</ion-col>
+
+    </ion-row>
+          </span>
+        </span>
+      </ion-card-->
+    </div>
+    <div danger *ngIf="checkAnalysisHole()">
+        <p style="text-align:center">There is no game played for this club / course</p>
+    </div>
+
+    <div *ngIf="analysisHoleInfo">
+        <ion-card class="scorecard" style="background:none !important" *ngFor="let s of analysisHoleInfo.courseAnalysisInfo">
+            <ion-item *ngIf="courseType=='club'" style="padding-left:8px;margin-top:1rem">
+                <ion-avatar item-left padding style=" margin-top: 0; margin-bottom: 0;">
+                    <img src="img/course-default.png" />
+                </ion-avatar>
+                <span *ngIf="s.courseName"><h2 >{{s.courseName}}</h2 >
+            <p ><i class="fa fa-pencil-square-o ph-pencil" aria-hidden="true" ></i >Course Par : {{s.coursePar}}</p >
+          </span>
+            </ion-item>
+
+            <ion-card-content>
+                <ion-row class="scorecard-header">
+
+                    <ion-col class="name-col">Hole</ion-col>
+
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo;let i  = index">
+                        {{getCourseHole(ch.holeNo, s)}}
+                        <!-- {{ch.holeNo}} -->
+                    </ion-col>
+
+
+                </ion-row>
+
+                <ion-row class="hole-par-row ">
+                    <ion-col class="name-col">Par</ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo;let i  = index">{{ch.holePar}}</ion-col>
+                </ion-row>
+                <ion-row class="hole-index-row ">
+                    <ion-col class="name-col">Index</ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo;let i  = index">{{ch.holeIndex}}
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row">
+                    <ion-col class="name-col player-name">Albatross
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.albatros==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.albatros>0">{{ch.scoreStatistic.albatros}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row score-eagle">
+                    <ion-col class="name-col player-name">Eagle
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.eagle==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.eagle>0">{{ch.scoreStatistic.eagle}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row score-birdie">
+                    <ion-col class="name-col player-name">Birdie
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.birdie==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.birdie>0">{{ch.scoreStatistic.birdie}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row score-par">
+                    <ion-col class="name-col player-name">Par
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.par==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.par>0">{{ch.scoreStatistic.par}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row score-bogey">
+                    <ion-col class="name-col player-name">Bogey
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.bogey==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.bogey>0">{{ch.scoreStatistic.bogey}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row">
+                    <ion-col class="name-col player-name">Double Bogey
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.bogey2==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.bogey2>0">{{ch.scoreStatistic.bogey2}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row">
+                    <ion-col class="name-col player-name">Triple Bogey
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.bogey3==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.bogey3>0">{{ch.scoreStatistic.bogey3}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row ">
+                    <ion-col class="name-col player-name">Worse than triple
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.scoreStatistic.worse==0">-</div>
+                        <div *ngIf="ch.scoreStatistic.worse>0">{{ch.scoreStatistic.worse}}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="player-row score-average">
+                    <ion-col class="name-col player-name">Average
+                    </ion-col>
+                    <ion-col width-5 *ngFor="let ch of s.courseHoleAnalysisInfo; let j = index">
+                        <div *ngIf="ch.average==0">-</div>
+                        <div *ngIf="ch.average>0">{{ch.average}}</div>
+                    </ion-col>
+                </ion-row>
+
+
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+</ion-content>

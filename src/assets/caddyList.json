@@ -1,0 +1,39 @@
+[{
+	"id": 1,
+	"club": null,
+	"firstName": "Alex",
+	"lastName": "Martenson",
+	"nickName": "AM",
+	"staffId": "0123",
+	"identificationNo": "2341",
+	"dateOfBirth": "1990-01-01",
+	"dateJoined": "2020-01-01",
+	"nationality": "MYS",
+	"caddyImage": "assets/img/caddie-image.png",
+	"caddyQcode": "",
+	"description": "description here",
+	"status": "Available",
+	"authentication": null,
+	"lastAssigned": "2020-05-20",
+	"lastCompleted": "2020-05-20"
+
+}, {
+	"id": 2,
+	"club": null,
+	"firstName": "Chase",
+	"lastName": "Yoh",
+	"nickName": "AM",
+	"staffId": "0124",
+	"identificationNo": "2341",
+	"dateOfBirth": "1990-01-01",
+	"dateJoined": "2020-01-01",
+	"nationality": "MYS",
+	"caddyImage": "assets/img/caddie-image.png",
+	"caddyQcode": "",
+	"description": "description here",
+	"status": "Available",
+	"authentication": null,
+	"lastAssigned": "2020-05-20",
+	"lastCompleted": "2020-05-20"
+
+}]

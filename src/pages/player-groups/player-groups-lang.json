@@ -1,0 +1,9 @@
+{
+  "en" : {
+    "PlayerGroups" : {
+      "title": "Player Groups",
+      "SelectAndReturn": "Select And Return",
+      "SelectInstruction": "Click group name to select the player group"
+    }
+  }
+}

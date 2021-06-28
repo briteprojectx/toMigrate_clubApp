@@ -1,0 +1,113 @@
+<ion-header>
+    <ion-navbar>
+        <!-- <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <ion-title>{{headerName}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="refresh()">
+                <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid fixed>
+        <ion-row class="page-sub-title align-center" 
+        style="font-size: 1.2rem;border-color: yellowgreen;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 1em;
+    margin: 2px;">
+            <ion-col col-1 class="btn-back" (click)="prevDate()"></ion-col>
+            
+            <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                        <ion-datetime (ionChange)="confirmDate()"
+                        displayFormat="MMMM YYYY" 
+                        pickerFormat="MMMM-YYYY" [(ngModel)]="currentDate"></ion-datetime>
+                   
+                    <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                <!-- </h3> -->
+            </ion-col>
+            <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item>
+        
+        <button item-left ion-button clear>
+            <h1>Overall : {{overallRating| number:'1.1-1'}}<i style="color:yellowgreen" class="fas fa-fw fa-star"></i></h1>
+        </button>
+        <button item-right ion-button clear>
+            <h1>Mthly Avg : {{averageRating| number:'1.1-1'}}<i style="color:yellowgreen" class="fas fa-fw fa-star"></i></h1>
+        </button>
+        
+    </ion-item>
+    <ion-grid fixed *ngIf="!caddyRatings || caddyRatings.length === 0">
+        <ion-card>
+            <ion-row>
+                <ion-col>Currently, there is no ratings.</ion-col>
+            </ion-row>
+        </ion-card>
+    </ion-grid>
+    <ion-grid fixed *ngIf="caddyRatings && caddyRatings.length > 0">
+        <!-- class="teebox-container" -->
+        <!-- <ion-item *ngFor="let t of teeBoxes" class="teebox">
+                <button ion-button [color]="getTeeColor(t.name)" full solid (click)="onSelectTeebox(t)">
+                        {{t.name}}
+                     </button>
+        </ion-item> -->
+        <ion-card *ngFor="let rating of caddyRatings">
+        <ion-row (click)="goToBookingDetails(rating)">
+            <ion-col col-2>
+                <!-- <ion-avatar item-left> -->
+                    <img class="player-img" 
+                    src="{{rating&&rating.player?rating.player.profile:rating.player.image}}" 
+                    onerror="this.src='assets/img/caddie-image.png'">
+                <!-- </ion-avatar> -->
+            </ion-col>
+            <ion-col col-8>
+                <!-- <p>Rated On {{rating&&rating.ratedOn?getDate(rating.ratedOn):''}}</p>
+                <p>{{rating&&rating.player?rating.player.playerName:rating.playerName}}</p> -->
+                <p *ngIf="rating&&rating.review">
+                    <i style="opacity:0.2" class="fas fa-fw fa-quote-left"></i>
+                    {{getRatingComment(rating)}}
+                    <i style="opacity:0.2"  class="fas fa-fw fa-quote-right"></i></p>
+                <p><strong><i class="far fa-fw fa-calendar-alt"></i>{{rating&&rating.ratedOn?getDate(rating.ratedOn):''}}, 
+                    by {{rating&&rating.player?rating.player.playerName:rating.playerName}}</strong></p>
+                
+            </ion-col>
+            <ion-col><h1>{{rating&&rating.rating?rating.rating:'-'}} <i style="color:yellowgreen" class="fas fa-fw fa-star"></i></h1></ion-col>
+        </ion-row>
+    </ion-card>
+        <!-- <ion-card (click)="onSlotClick(x)" style="border-color: #5DBC81;
+        border-style: solid;
+        border-width: thin;
+        border-radius: 0.5em;"
+         *ngIf="x.slot.startCourse.id === course.id;">
+         <ion-row>
+         <ion-col [class]="checkAvailable(x)" 
+         style="width:25%; text-align:center; font-weight: bold; font-size: 1.5rem;
+         line-height:1.5em;" id="slot-left">
+          {{getTeeOffTime(x.slot.teeOffTime)}}
+  </ion-col>
+  <ion-col class="column" 
+  style="width:75%;color: grey;font-size:1.2rem;    padding-left: 5px;
+  white-space: nowrap;overflow-x: auto;" 
+  *ngIf="!x.available && bookingList" id="slot-left">
+    <span [innerHTML]="getBookingDetails(x)"></span>
+  </ion-col>
+  
+  <ion-col *ngIf="x.available" class="column" 
+  style="width:75%;color: grey;font-size:1.2rem;    padding-left: 5px;
+  white-space: nowrap;" id="slot-left">
+              <span><img style="width: 1.5rem;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-shirt.svg"> {{x.slot.minPlayers}}-{{x.slot.maxPlayers}} &#8226; <img style="max-width: 1.5rem;height:1.5rem;margin:0;display: -webkit-inline-box;" src="assets/img/icon-golf-tee.svg"> {{x.slot.nineHolesAllowed?9:''}} / {{x.slot.eighteenHolesAllowed?18:''}} &#8226; <img style="width: 2rem;object-fit: cover;margin:0;display: -webkit-inline-box;" src="assets/img/icon-buggy-new.svg">
+
+              
+              </span>
+  </ion-col> -->
+    </ion-grid>
+</ion-content>

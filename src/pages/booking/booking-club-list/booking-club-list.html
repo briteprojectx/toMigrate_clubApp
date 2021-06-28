@@ -1,0 +1,679 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-title center>Tee Time Slots</ion-title> -->
+        <ion-title center><img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /></ion-title>
+
+    </ion-navbar> 
+    <!-- <ion-toolbar color = "light">
+        <ion-segment [(ngModel)] = "teeTimeList" color = "warning" padding>
+            <ion-segment-button (click) = "setBookingType(1)" value = "byClubs">
+                BY CLUBS
+            </ion-segment-button>
+            <ion-segment-button (click) = "setBookingType(2)" value = "byDates">
+                BY DATES
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar> -->
+    
+</ion-header>
+<ion-content>
+        <!-- <ion-toolbar *ngIf="searchToggle" color="light" >
+                <ion-searchbar  [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                    (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+                </ion-searchbar>
+                
+            </ion-toolbar> -->
+    <!-- <ion-refresher pullMin = "100" (ionRefresh) = "onRefresh($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = ""
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher> -->
+    <ion-row  style="font-size: 1.2rem;border-color: yellowgreen;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 1em;
+    margin: 2px;" *ngIf="!showAll" class="mygolf-table-caption">
+            <ion-col *ngIf="prevPage(); else notBackBtn;" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+            <ion-col (click)="changeDate(-2)">
+                <!-- *ngIf="prevPage(2)"  --> 
+                <span >{{getNavDate(-2,'day')}}<br>{{getNavDate(-2,'date')}}</span>
+                <!-- <span *ngIf="!prevPage(2)" >&nbsp;</span> -->
+        </ion-col>
+            <ion-col (click)="changeDate(-1)">
+                <!-- *ngIf="prevPage(1)"  -->
+                <span >{{getNavDate(-1,'day')}}<br>{{getNavDate(-1,'date')}}</span>
+                <!-- <span *ngIf="!prevPage(1)" >&nbsp;</span> -->
+                </ion-col>
+            <!-- <ng-template #notBackBtn>
+                    <ion-col>&nbsp;</ion-col>
+            </ng-template> -->
+            <!-- <ng-template #notDateLessTwo>
+                    <ion-col *ngIf="prevPage()">&nbsp;</ion-col>
+            </ng-template>
+            <ng-template #notDateLessOne>
+                    <ion-col *ngIf="prevPage()">&nbsp;</ion-col>
+            </ng-template> -->
+            
+            <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;color:#5DBC81;border-bottom-color:#5DBC81;
+            border-bottom-style: solid;border-bottom-width: 2px;"> 
+                <!-- color:#5DBC81;border-bottom-color:#5DBC81;border-bottom-style: solid;border-bottom-width: 2px; -->
+                <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                        <ion-datetime style="    margin-bottom: -2em;
+                        margin-top: -0.5em"
+                        (ionChange)="confirmDate()"
+                        displayFormat="DDD, DD MMM 'YY" 
+                        pickerFormat="DD-MMM-YYYY" [(ngModel)]="currentDate" [min]="today" [max]="maxDate"></ion-datetime>
+                        <!-- pickerFormat="YYYY-MMM-DD" -->
+                   
+                    <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                <!-- </h3> -->
+            </ion-col>
+            <ion-col (click)="changeDate(1)">{{getNavDate(1,'day')}}<br>{{getNavDate(1,'date')}}</ion-col>
+            <ion-col (click)="changeDate(2)">{{getNavDate(2,'day')}}<br>{{getNavDate(2,'date')}}</ion-col>
+            <!-- <ion-col *ngIf="!nextPage(-1)" (click)="changeDate(3)">{{getNavDate(3,'day')}}<br>{{getNavDate(3,'date')}}</ion-col>
+            <ion-col *ngIf="!nextpage(-2)" (click)="changeDate(4)">{{getNavDate(4,'day')}}<br>{{getNavDate(4,'date')}}</ion-col> -->
+            <!-- <ng-template #notBackBtn>
+                    <ion-col (click)="changeDate(1)">{{getNavDate(3,'day')}}<br>{{getNavDate(3,'date')}}</ion-col>
+                    <ion-col (click)="changeDate(2)">{{getNavDate(4,'day')}}<br>{{getNavDate(4,'date')}}</ion-col>
+            </ng-template> -->
+            
+
+            <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+        </ion-row>
+        <!-- <ion-item> -->
+                <button (click)="onChangeTimeSlots()" ion-button clear small style="width:100%">
+                        Displaying slots from {{fromTime}} to {{toTime}}. Tap here to change
+                    </button>
+                
+        <!-- </ion-item> -->
+    <div [ngSwitch] = "bookingListType">
+            <ion-list *ngIf="refresh">
+                    <ion-item style="text-align:center">
+                            <i class="fas fa-sync fa-spin"></i>
+                        </ion-item>
+            </ion-list>
+            <div *ngIf="!refresh && clubTeeTimeSlotList && clubTeeTimeSlotList.length > 0">
+        <ion-list *ngSwitchCase = "'favClubs'" >
+            <ion-card *ngFor="let clubs of clubTeeTimeSlotList; let idx = index" 
+            style="border-color: #5DBC81;
+            border-style: solid;
+            border-width: thin;
+            border-radius: 1em;">
+                <ion-row col-12 no-padding >
+                        <ion-col col-3 no-padding (click)="goBookingList(clubs)">
+                                <!-- <ion-thumbnail no-padding style=""> -->
+                                    <!-- height: 8em -->
+                                        <img style="height:9em;
+                                        object-fit: cover;" [src]="getClubCourseImage(clubs)"
+                                        onerror="this.src='img/default_club.png'">
+                                    <!-- </ion-thumbnail> -->
+                        </ion-col>
+                        <ion-col col-9 style="display: grid;">
+                            <ion-row style="display:inline-flex; align-content: flex-start;" no-padding (click)="goBookingList(clubs)">
+                                <ion-col col-10>
+                                    <h3 style="font-weight:bolder;">{{getClubDetails(clubs.club,'name')}}</h3>
+                            <h4>{{getClubDetails(clubs.club,'country')}}</h4>
+                                    <!-- float:left; -->
+                                </ion-col>
+                            <ion-col col-2 style="text-align: right;">
+                                <h1 style="color:#5DBC81">
+                                    <i class="fas fa-fw fa-angle-right"></i>
+                                </h1>
+                            </ion-col>
+                            <!-- <h1 style="float:right;color:green">
+                                <i class="fi-xnlrxl-chevron"></i>
+                            </h1> -->
+                            <!-- <h4 style="float:right;color:green">{{clubs.distance?clubs.distance:clubs.distanceFrom?clubs.distanceFrom:'&nbsp;'}}</h4> -->
+                            <!-- <br> -->
+                            <!-- <h4>{{getClubDetails(clubs.club,'address')}}</h4> -->
+                            <!-- <h3>&nbsp;</h3> -->
+                            </ion-row>
+                            <!-- <ion-row>
+                            <h4>{{getClubDetails(clubs.club,'country')}}</h4>
+                            </ion-row> -->
+                            <ion-row no-padding (click)="goBookingList(clubs)" style="align-content: flex-end">
+                                <ion-col class="mg-txt-left">
+                                    <h4 item-left *ngIf="clubs.slots && clubs.slots.length > 0" style="color:#5DBC81"><b>{{getSlotsAvailable(clubs)}}</b> available slot(s)</h4>
+                                    <h4 item-left *ngIf="clubs.slots && clubs.slots.length === 0" style="color:red">No Slots Available</h4>
+                                </ion-col>
+                                <ion-col class="mg-txt-right">
+                                    <h4 item-right *ngIf="clubs.slots && clubs.slots.length > 0 && !hasPromo(clubs)">From : 
+                                        <span style="color:#5DBC81;font-weight:bold;">{{getSlotPrice(clubs.slots,'currency')}} 
+                                            <!-- {{getLowestPrice(clubs.slots[0],'value',idx) }} -->
+                                            <!-- {{minNormalPrice[idx] | number:'1.0-0'}} -->
+                                            {{getSlotPrice(clubs.slots,'STD') | number:'1.0-0'}}
+                                            <!-- | number:'1.0-0' -->
+                                            </span></h4>
+                                        <!-- {{getSlotPrice(clubs.slots,'STD')  | number:'1.0-0'}} -->
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="hasPromo(clubs)" no-padding  style="align-content: flex-end;">
+                                <ion-col (click)="onTogglePromo(clubs);" class="mg-txt-left" style="white-space: nowrap;overflow: hidden;">
+                                    <!-- scroll('deals-'+idx) -->
+                                    <h4 item-left style="color:red"><i class="fas fa-tags"></i>&nbsp;Deals available
+                                        <span *ngIf="clubs.showPromo"><i class="fas fa-fw fa-caret-down"></i></span>
+                                        <span *ngIf="!clubs.showPromo"><i class="fas fa-fw fa-caret-right"></i></span>
+                                </h4>
+                                    <!-- <h4 item-left *ngIf="clubs.slots.length > 0" style="color:#5DBC81"><b>{{getSlotsAvailable(clubs)}}</b> slot(s) found</h4>
+                                    <h4 item-left *ngIf="clubs.slots.length === 0" style="color:red">No Slots Available</h4> -->
+                                </ion-col>
+                                <!-- <ion-col no-padding style="text-align: center;">
+                                    <button no-padding ion-button clear>View Details</button>
+                                </ion-col> -->
+                                <ion-col class="mg-txt-right">
+                                    <!-- style="white-space: nowrap;overflow: hidden;" -->
+                                    <h4 item-right *ngIf="clubs.slots && clubs.slots.length > 0">Lowest : 
+                                        <span style="color:#5DBC81;font-weight:bold;">
+                                            {{getSlotPrice(clubs.slots,'currency')}} 
+                                            {{minNormalPrice[idx] | number:'1.0-0'}}
+                                            <!-- {{getSlotPrice(clubs.slots,'STD') | number:'1.0-0'}} -->
+                                        </span></h4> 
+                                        <!-- {{getLowestPrice(clubs.slots,'key')  | number:'1.0-0'}} -->
+                                </ion-col>
+                            </ion-row>
+                            
+                        </ion-col>
+                </ion-row>
+                
+                <ion-grid id="{{'deals-'+idx}}" *ngIf="getClubPackages(clubs) && getClubPackages(clubs).length > 0 && clubs.showPromo">
+                    <ion-row padding-left padding-right>
+                        <ion-col    style="text-align: -webkit-center;" col-12>
+                            <button ion-button outline full class="voucher-header">Packages Available</button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let price of getClubPackages(clubs)" col-12 padding-left>
+                        <ion-col no-padding class="price-field">{{price.name}}</ion-col>
+                        <ion-col no-padding class="price-param">
+                            <span style="color:#5DBC81;font-weight:bold;">{{clubs.slots[0].currency.symbol}} {{price.amount | number: '1.0-0'}}</span>
+                            <!-- <span [innerHTML]="getSlotPrice(clubs.slots[0],price.id)"></span> -->
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ng-container *ngIf="clubs.showPromo">
+                <ion-row padding-left padding-right>
+                    <ion-col style="text-align: -webkit-center;" *ngIf="getPromoPlan(clubs,'promo')" col-12>
+                        <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">Promotion(s) Available</button>
+                        <!-- (click)="clubs.showPromo = !clubs.showPromo" -->
+                    </ion-col>
+                    <ion-col col-12 *ngIf="getPromoPlan(clubs,'promo')" padding-left padding-right text-left>
+                        <b>{{getPromoPlan(clubs,'name')}}</b>
+                        <ul>
+                            <li>{{getPromoPlan(clubs,'description')}}</li>
+                            <li>Discount(s) Applicable : {{getPromoPlan(clubs,'discounts')?'Yes':'No'}}</li>
+                        </ul>
+                    </ion-col>
+                    </ion-row>
+                    <ion-row  padding-left padding-right>
+                    <!-- <ion-col padding-left padding-right no-padding text-right col-6>{{getPromoPlan(clubs,'currency')}} {{getPromoPlan(clubs,'prices')}}</ion-col> -->
+                    <ion-col *ngIf="checkPlayerVoucher(clubs.voucherSeries)" style="text-align: -webkit-center;" col-12>
+                        <!-- *ngIf="clubs.voucherSeries && clubs.voucherSeries.length > 0" -->
+                        <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">
+                            <!-- {{clubs.playerVoucher && clubs.playerVoucher.length>0?clubs.playerVoucher.length:'No'}} -->
+                            {{getPlayerVoucherClub(clubs.voucherSeries) && getPlayerVoucherClub(clubs.voucherSeries).length > 0?getPlayerVoucherClub(clubs.voucherSeries).length:'No'}} Voucher(s) Available
+                            <!-- {{clubs.voucherSeries && clubs.voucherSeries.length>0?clubs.voucherSeries.length:'No'}} Voucher(s) Available -->
+                        </button>
+                        <!-- (click)="clubs.showPromo = !clubs.showPromo" -->
+                    </ion-col>
+                </ion-row>
+                    <ng-container *ngIf="checkPlayerVoucher(clubs.voucherSeries)">
+                        <!-- *ngIf="clubs.voucherSeries && clubs.voucherSeries.length > 0" -->
+                        <ion-row *ngFor="let vs of getPlayerVoucherClub(clubs.voucherSeries)" padding-left padding-right>
+                            <ion-col col-12>
+                                <b>{{vs.name}} - {{vs.voucherSeries}}</b>
+                            </ion-col>
+                            <ion-col col-9 
+                            padding-left padding-right no-padding text-left>
+                               <!-- <ul>
+                                   <li>Valid {{vs.validFrom}} to {{vs.validUntil}}</li>
+                               </ul> -->
+                               <ul>
+                                <li *ngIf="vs.description" [innerHTML]="escapeCRLF(vs.description)"></li>
+                                   <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                        {{getVoucherApplicableText(vs,'allowDays')}}
+                                    </li>
+                                    <li>
+                                        {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                    </li>
+                                    <li>
+                                        {{getVoucherApplicableText(vs,'flight')}}
+                                    </li>
+                                    
+                                    <li *ngIf="getVoucherApplicableText(vs, 'appliesFor')">{{getVoucherApplicableText(vs, 'appliesFor')}}</li> 
+    
+                                    <!-- <li>
+                                        {{getDealsAmount(vs.voucherAmount, vs.voucherAmountType,vs.club?vs.club.address.countryData.currencySymbol:currency)}}
+                                    </li>                                         -->
+                                    <li>
+                                        Validity {{vs.validityDays}} days
+                                    </li>
+                            </ul>
+                           </ion-col>
+                           <ion-col col-3 text-right>
+                               <span [innerHTML]="getDealsAmount(vs.voucherAmount, vs.voucherAmountType,clubs.club.address.countryData.currencySymbol,vs, 'voucher')" 
+                               style="color:#5DBC81;font-weight:bold;">
+                                <!-- {{getDealsAmount(vs.voucherAmount, vs.voucherAmountType,clubs.club.address.countryData.currencySymbol,vs, 'voucher')}} -->
+                            </span>
+                           </ion-col>
+                        </ion-row>
+                      </ng-container>
+                      <ng-container *ngIf="0 && clubs.clubDiscounts && clubs.clubDiscounts.length > 0">
+                          <ion-row  padding-left padding-right>
+                        <ion-col style="text-align: -webkit-center;" col-12>
+                            <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">Club Discount(s) Available</button>
+                        </ion-col>
+                        </ion-row>
+                        <ng-container *ngFor="let cDiscounts of clubs.clubDiscounts">
+                        <ion-row *ngIf="cDiscounts && cDiscounts.active" padding-left padding-right>
+                            <ion-col col-12>
+                                <b>{{cDiscounts.name}}</b>
+                            </ion-col> 
+                            <ion-col col-9 
+                             padding-left padding-right no-padding text-left>
+                                <ul>
+                                    <li *ngIf="cDiscounts && cDiscounts.description" [innerHTML]="escapeCRLF(cDiscounts.description)">
+                                        <!-- {{cDiscounts.description}} -->
+                                    </li>
+                                    <li>Valid <b>{{getDateText(cDiscounts.validFrom)}}</b> to <b>{{getDateText(cDiscounts.validUntil)}}</b></li>
+                                    <li *ngIf="cDiscounts.appliestoBooking">Applies to Booking Amount</li>
+                                    <li *ngIf="getDiscountText(cDiscounts, 'appliesTo')">{{getDiscountText(cDiscounts, 'appliesTo')}}</li>
+                                    <li *ngIf="getDiscountText(cDiscounts, 'appliesFor')">{{getDiscountText(cDiscounts, 'appliesFor')}}</li> 
+                                    <!-- <li>Amount {{clubs.club.address.countryData.currencySymbol}} {{vs.voucherAmount}}</li> -->
+                                </ul>
+                            </ion-col>
+                           <ion-col col-3 text-right>
+                            <span [innerHTML]="getDealsAmount(cDiscounts.discount, cDiscounts.amountType,clubs.club.address.countryData.currencySymbol,cDiscounts)" 
+                            style="color:#5DBC81;font-weight:bold;">
+                             <!-- {{getDealsAmount(cDiscounts.discount, cDiscounts.amountType,clubs.club.address.countryData.currencySymbol,cDiscounts)}} -->
+                         </span>
+                        </ion-col>
+                        </ion-row>
+                    </ng-container>
+                          </ng-container>
+                          
+                      <ng-container *ngIf="clubs.activeClubDiscounts && clubs.activeClubDiscounts.length > 0">
+                          <ion-row  padding-left padding-right>
+                        <ion-col style="text-align: -webkit-center;" col-12>
+                            <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">
+                                Club Discounts/Privilege Cards
+                            </button>
+                            <!-- Discount(s) Available -->
+                        </ion-col>
+                    </ion-row>
+                        <ng-container *ngFor="let privilege of clubs.activeClubDiscounts">
+                            <ion-row *ngIf="privilege && privilege.active" padding-left padding-right>
+                                <ion-col col-12>
+                                    <b>{{privilege.name}}</b>
+                                </ion-col> 
+                                <ion-col col-9 
+                                 padding-left padding-right no-padding text-left>
+                                    <ul>
+                                <li *ngIf="privilege && privilege.description" [innerHTML]="escapeCRLF(privilege.description)">
+                                    <!-- {{privilege.description}} -->
+                                </li>
+                                <li>Valid <b>{{getDateText(privilege.validFrom)}}</b> to <b >{{getDateText(privilege.validUntil)}}</b></li>
+                                <li *ngIf="privilege.priceComponents && privilege.priceComponents.length > 0">{{getDiscountText(privilege, 'appliesFor')}}</li> 
+                                <li *ngIf="getDiscountText(privilege, 'appliesTo')">{{getDiscountText(privilege, 'appliesTo')}}</li>
+                                <!-- <li>{{getDiscountText(privilege,'amount')}}</li> -->
+                                    </ul>
+                                </ion-col>
+                               <ion-col col-3 text-right>
+                                <span [innerHTML]="getDealsAmount(privilege.discount, privilege.amountType,clubs.club.address.countryData.currencySymbol,privilege, 'privilege')" 
+                                style="color:#5DBC81;font-weight:bold;">
+                                 <!-- {{getDealsAmount(privilege.discount, privilege.amountType,clubs.club.address.countryData.currencySymbol,privilege, 'privilege')}} -->
+                             </span>
+                            </ion-col>
+                            </ion-row>
+                        </ng-container>
+                          </ng-container>
+                    <!-- <ion-col col-12>
+                        <button ion-button clear full (click)="getLowestPrice(clubs.slots)">Discount Available</button>
+                    </ion-col>
+                    <ion-col padding-left padding-right no-padding text-left col-6>Discount A</ion-col>
+                    <ion-col padding-left padding-right no-padding text-right col-6>- RM 10</ion-col>
+                    <ion-col padding-left padding-right no-padding text-left col-6>Discount N</ion-col>
+                    <ion-col padding-left padding-right no-padding text-right col-6>- RM 30</ion-col> -->
+                    <ion-col col-12>
+                        <button ion-button clear full (click)="clubs.showPromo = false">Close</button>
+                    </ion-col>
+            </ng-container>
+                
+            </ion-card>
+                <ion-card *ngIf="0" style="border-color: #5DBC81;
+                border-style: solid;
+                border-width: thin;
+                border-radius: 1em;">
+                 <!-- *ngFor="let clubs of clubTeeTimeSlotList" -->
+                            <ion-item class="page-sub-title ">
+                                            {{clubs?clubs.club.name:''}}
+                                            <!-- {{clubInfo?clubInfo.clubName:''}} -->
+                                </ion-item>
+                        <ion-list *ngIf="clubs.slots && clubs.slots.length > 0">
+                                <ion-item class="time-slot-subheader">
+                                    {{getCourseName(clubs.slots[0])}}
+                                    <!-- {{clubs.slots?clubs.slots[0].slot.startCourse.name:''}} -->
+                                       <!-- {{clubCourseInfo?clubCourseInfo.name:''}} -->
+                                </ion-item>
+                            <!-- <ion-item> -->
+                                <ion-grid >
+                                    <ng-container *ngFor="let x of clubs.slots; let i = index;">
+
+                                            <!-- *ngIf="i < 3" -->
+                                <ion-row *ngIf="i < 3 && !toggleSlots" col-12 justify-content-around
+                                 (click)="goBookingDetails(x)">
+                                    <ion-col col-4 align-self-start style="text-align:left;">
+                                        {{getTeeOffTime(x.slot.teeOffTime)}}
+                                    </ion-col>
+                                    <ion-col col-2 align-self-center style="text-align:right;">{{getHolesAllowed(x.slot)}}</ion-col>
+                                    <ion-col col-6 align-self-end style="text-align:right;">RM {{x.displayPrices.STD | number:'1.0-0'}}</ion-col>
+                                </ion-row>
+                                <ion-row *ngIf="toggleSlots" col-12 justify-content-around
+                                 (click)="goBookingDetails(x)">
+                                    <ion-col col-4 align-self-start style="text-align:left;">
+                                        {{getTeeOffTime(x.slot.teeOffTime)}}
+                                    </ion-col>
+                                    <ion-col col-2 align-self-center style="text-align:right;">{{getHolesAllowed(x.slot)}}</ion-col>
+                                    <ion-col col-6 align-self-end style="text-align:right;">RM {{x.displayPrices.STD | number:'1.0-0'}}</ion-col>
+                                </ion-row>
+                            </ng-container>
+        <button item-right small ion-button clear (click)="moreSlots()">
+            <span *ngIf="!toggleSlots">See More</span>
+            <span *ngIf="toggleSlots">See Less</span>
+        </button>
+                            </ion-grid>
+                        </ion-list>
+                        <ion-list *ngIf="clubs.slots.length === 0">
+                            <ion-item>Currently there is no time slot for this club. 
+                                <!-- <br>{{clubs.club.name}} -->
+                            </ion-item>
+                        </ion-list>
+                </ion-card>
+                
+                <ion-infinite-scroll (ionInfinite) = "doInfinite($event)"
+                threshold = "30%">
+                <ion-infinite-scroll-content
+                        loadingSpinner = "bubbles"
+                        loadingText = "">
+                    </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+                </ion-list>
+                <ion-list *ngSwitchCase = "'allClubs'" >
+                    <ion-card *ngFor="let clubs of clubTeeTimeSlotList; let idx = index" 
+                    style="border-color: #5DBC81;
+                border-style: solid;
+                border-width: thin;
+                border-radius: 1em;">
+                        <ion-row col-12 no-padding >
+                                <ion-col col-3 no-padding (click)="goBookingList(clubs)">
+                                        <!-- <ion-thumbnail no-padding style=""> -->
+                                            <!-- height: 8em -->
+                                                <img style="height:9em;
+                                                object-fit: cover;" [src]="getClubCourseImage(clubs)"
+                                                onerror="this.src='img/default_club.png'">
+                                            <!-- </ion-thumbnail> -->
+                                </ion-col>
+                                <ion-col col-9 style="display: grid;">
+                                    <ion-row style="display:inline-flex; align-content: flex-start;" no-padding (click)="goBookingList(clubs)">
+                                        <ion-col col-10>
+                                            <h3 style="font-weight:bolder;">{{getClubDetails(clubs.club,'name')}}</h3>
+                                    <h4>{{getClubDetails(clubs.club,'country')}}</h4>
+                                            <!-- float:left; -->
+                                        </ion-col>
+                                    <ion-col col-2 style="text-align: right;">
+                                        <h1 style="color:#5DBC81">
+                                            <i class="fas fa-fw fa-angle-right"></i>
+                                        </h1>
+                                    </ion-col>
+                                    <!-- <h1 style="float:right;color:green">
+                                        <i class="fi-xnlrxl-chevron"></i>
+                                    </h1> -->
+                                    <!-- <h4 style="float:right;color:green">{{clubs.distance?clubs.distance:clubs.distanceFrom?clubs.distanceFrom:'&nbsp;'}}</h4> -->
+                                    <!-- <br> -->
+                                    <!-- <h4>{{getClubDetails(clubs.club,'address')}}</h4> -->
+                                    <!-- <h3>&nbsp;</h3> -->
+                                    </ion-row>
+                                    <!-- <ion-row>
+                                    <h4>{{getClubDetails(clubs.club,'country')}}</h4>
+                                    </ion-row> -->
+                                    <ion-row no-padding (click)="goBookingList(clubs)" style="align-content: flex-end">
+                                        <ion-col class="mg-txt-left">
+                                            <h4 item-left *ngIf="clubs.slots && clubs.slots.length > 0" style="color:#5DBC81"><b>{{getSlotsAvailable(clubs)}}</b> available slot(s)</h4>
+                                            <h4 item-left *ngIf="clubs.slots && clubs.slots.length === 0" style="color:red">No Slots Available</h4>
+                                        </ion-col>
+                                        <ion-col class="mg-txt-right">
+                                            <h4 item-right *ngIf="clubs.slots && clubs.slots.length > 0 && !hasPromo(clubs)">From : 
+                                                <span style="color:#5DBC81;font-weight:bold;">{{getSlotPrice(clubs.slots,'currency')}} 
+                                                    <!-- {{getLowestPrice(clubs.slots[0],'value',idx) }} -->
+                                                    <!-- {{minNormalPrice[idx] | number:'1.0-0'}} -->
+                                                    {{getSlotPrice(clubs.slots,'STD') | number:'1.0-0'}}
+                                                    <!-- | number:'1.0-0' -->
+                                                    </span></h4>
+                                                <!-- {{getSlotPrice(clubs.slots,'STD')  | number:'1.0-0'}} -->
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row *ngIf="hasPromo(clubs)" no-padding  style="align-content: flex-end;">
+                                        <ion-col (click)="onTogglePromo(clubs);" class="mg-txt-left" style="white-space: nowrap;overflow: hidden;">
+                                            <!-- scroll('deals-'+idx) -->
+                                            <h4 item-left style="color:red"><i class="fas fa-tags"></i>&nbsp;Deals available
+                                                <span *ngIf="clubs.showPromo"><i class="fas fa-fw fa-caret-down"></i></span>
+                                                <span *ngIf="!clubs.showPromo"><i class="fas fa-fw fa-caret-right"></i></span>
+                                        </h4>
+                                            <!-- <h4 item-left *ngIf="clubs.slots.length > 0" style="color:#5DBC81"><b>{{getSlotsAvailable(clubs)}}</b> slot(s) found</h4>
+                                            <h4 item-left *ngIf="clubs.slots.length === 0" style="color:red">No Slots Available</h4> -->
+                                        </ion-col>
+                                        <!-- <ion-col no-padding style="text-align: center;">
+                                            <button no-padding ion-button clear>View Details</button>
+                                        </ion-col> -->
+                                        <ion-col class="mg-txt-right" >
+                                            <!-- style="white-space: nowrap;overflow: hidden;" -->
+                                            <h4 item-right *ngIf="clubs.slots && clubs.slots.length > 0">Lowest : 
+                                                <span style="color:#5DBC81;font-weight:bold;">
+                                                    {{getSlotPrice(clubs.slots,'currency')}} 
+                                                    {{minNormalPrice[idx] | number:'1.0-0'}}
+                                                    <!-- {{getSlotPrice(clubs.slots,'STD') | number:'1.0-0'}} -->
+                                                </span></h4> 
+                                                <!-- {{getLowestPrice(clubs.slots,'key')  | number:'1.0-0'}} -->
+                                        </ion-col>
+                                    </ion-row>
+                                    
+                                </ion-col>
+                        </ion-row>
+                        
+                        <ion-grid id="{{'deals-'+idx}}" *ngIf="getClubPackages(clubs) && getClubPackages(clubs).length > 0 && clubs.showPromo">
+                            <ion-row padding-left padding-right>
+                                <ion-col    style="text-align: -webkit-center;" col-12>
+                                    <button ion-button outline full class="voucher-header">Packages Available</button>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngFor="let price of getClubPackages(clubs)" col-12 padding-left padding-right>
+                                <ion-col no-padding class="price-field">{{price.name}}</ion-col>
+                                <ion-col no-padding class="price-param">
+                                    <span style="color:#5DBC81;font-weight:bold;">{{clubs.slots[0].currency.symbol}} {{price.amount | number: '1.0-0'}}</span>
+                                    <!-- <span [innerHTML]="getSlotPrice(clubs.slots[0],price.id)"></span> -->
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                        <ng-container *ngIf="clubs.showPromo">
+                        <ion-row padding-left padding-right>
+                            <ion-col style="text-align: -webkit-center;" *ngIf="getPromoPlan(clubs,'promo')" col-12>
+                                <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">Promotion(s) Available</button>
+                                <!-- (click)="clubs.showPromo = !clubs.showPromo" -->
+                            </ion-col>
+                            <ion-col col-12 *ngIf="getPromoPlan(clubs,'promo')" padding-left padding-right text-left>
+                                <b>{{getPromoPlan(clubs,'name')}}</b>
+                                <ul>
+                                    <li>{{getPromoPlan(clubs,'description')}}</li>
+                                    <li>Discount(s) Applicable : {{getPromoPlan(clubs,'discounts')?'Yes':'No'}}</li>
+                                </ul>
+                            </ion-col>
+                            </ion-row>
+                            <ion-row  padding-left padding-right>
+                            <!-- <ion-col padding-left padding-right no-padding text-right col-6>{{getPromoPlan(clubs,'currency')}} {{getPromoPlan(clubs,'prices')}}</ion-col> -->
+                            <ion-col *ngIf="checkPlayerVoucher(clubs.voucherSeries)"  style="text-align: -webkit-center;" col-12>
+                                <!-- *ngIf="clubs.voucherSeries && clubs.voucherSeries.length > 0" -->
+                                <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">
+                                    <!-- {{clubs.playerVoucher && clubs.playerVoucher.length>0?clubs.playerVoucher.length:'No'}} -->
+                                    {{getPlayerVoucherClub(clubs.voucherSeries) && getPlayerVoucherClub(clubs.voucherSeries).length > 0?getPlayerVoucherClub(clubs.voucherSeries).length:'No'}} Voucher(s) Available
+                                    <!-- {{clubs.voucherSeries && clubs.voucherSeries.length>0?clubs.voucherSeries.length:'No'}} Voucher(s) Available -->
+                                </button>
+                                <!-- (click)="clubs.showPromo = !clubs.showPromo" -->
+                            </ion-col>
+                        </ion-row>
+                            <ng-container *ngIf="checkPlayerVoucher(clubs.voucherSeries)">
+                                <!-- *ngIf="clubs.voucherSeries && clubs.voucherSeries.length > 0" -->
+                                <ion-row *ngFor="let vs of getPlayerVoucherClub(clubs.voucherSeries)" padding-left padding-right>
+                                    <!-- clubs.voucherSeries -->
+                                    <ion-col col-12>
+                                        <b>{{vs.name}} - {{vs.voucherSeries}}</b>
+                                    </ion-col>
+                                    <ion-col col-9 
+                                    padding-left padding-right no-padding text-left>
+                                       <!-- <ul>
+                                           <li>Valid {{vs.validFrom}} to {{vs.validUntil}}</li>
+                                       </ul> -->
+                                       <ul>
+                                        <li *ngIf="vs.description" [innerHTML]="escapeCRLF(vs.description)"></li>
+                                           <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                                {{getVoucherApplicableText(vs,'allowDays')}}
+                                            </li>
+                                            <li>
+                                                {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                            </li>
+                                            <li>
+                                                {{getVoucherApplicableText(vs,'flight')}}
+                                            </li>
+                                            
+                                            <li *ngIf="getVoucherApplicableText(vs, 'appliesFor')">{{getVoucherApplicableText(vs, 'appliesFor')}}</li> 
+            
+                                            <!-- <li>
+                                                {{getDealsAmount(vs.voucherAmount, vs.voucherAmountType,vs.club?vs.club.address.countryData.currencySymbol:currency)}}
+                                            </li>                                         -->
+                                            <li>
+                                                Validity {{vs.validityDays}} days
+                                            </li>
+                                    </ul>
+                                   </ion-col>
+                                   <ion-col col-3 text-right>
+                                       <span [innerHTML]="getDealsAmount(vs.voucherAmount, vs.voucherAmountType,clubs.club.address.countryData.currencySymbol,vs, 'voucher')" 
+                                       style="color:#5DBC81;font-weight:bold;">
+                                        <!-- {{getDealsAmount(vs.voucherAmount, vs.voucherAmountType,clubs.club.address.countryData.currencySymbol,vs, 'voucher')}} -->
+                                    </span>
+                                   </ion-col>
+                                </ion-row>
+                              </ng-container>
+                              <ng-container *ngIf="0 && clubs.clubDiscounts && clubs.clubDiscounts.length > 0">
+                                  <ion-row  padding-left padding-right>
+                                <ion-col style="text-align: -webkit-center;" col-12>
+                                    <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">Club Discount(s) Available</button>
+                                </ion-col>
+                                </ion-row>
+                                <ng-container *ngFor="let cDiscounts of clubs.clubDiscounts">
+                                <ion-row *ngIf="cDiscounts && cDiscounts.active" padding-left padding-right>
+                                    <ion-col col-12>
+                                        <b>{{cDiscounts.name}}</b>
+                                    </ion-col> 
+                                    <ion-col col-9 
+                                     padding-left padding-right no-padding text-left>
+                                        <ul>
+                                            <li *ngIf="cDiscounts && cDiscounts.description" [innerHTML]="escapeCRLF(cDiscounts.description)">
+                                                <!-- {{cDiscounts.description}} -->
+                                            </li>
+                                            <li>Valid <b>{{getDateText(cDiscounts.validFrom)}}</b> to <b>{{getDateText(cDiscounts.validUntil)}}</b></li>
+                                            <li *ngIf="cDiscounts.appliestoBooking">Applies to Booking Amount</li>
+                                            <li *ngIf="getDiscountText(cDiscounts, 'appliesTo')">{{getDiscountText(cDiscounts, 'appliesTo')}}</li>
+                                            <li *ngIf="getDiscountText(cDiscounts, 'appliesFor')">{{getDiscountText(cDiscounts, 'appliesFor')}}</li> 
+                                            <!-- <li>Amount {{clubs.club.address.countryData.currencySymbol}} {{vs.voucherAmount}}</li> -->
+                                        </ul>
+                                    </ion-col>
+                                   <ion-col col-3 text-right>
+                                    <span [innerHTML]="getDealsAmount(cDiscounts.discount, cDiscounts.amountType,clubs.club.address.countryData.currencySymbol,cDiscounts)" 
+                                    style="color:#5DBC81;font-weight:bold;">
+                                     <!-- {{getDealsAmount(cDiscounts.discount, cDiscounts.amountType,clubs.club.address.countryData.currencySymbol,cDiscounts)}} -->
+                                 </span>
+                                </ion-col>
+                                </ion-row>
+                            </ng-container>
+                                  </ng-container>
+                                  
+                              <ng-container *ngIf="clubs.activeClubDiscounts && clubs.activeClubDiscounts.length > 0">
+                                  <ion-row  padding-left padding-right>
+                                <ion-col style="text-align: -webkit-center;" col-12>
+                                    <button class="voucher-header" ion-button outline full (click)="getLowestPrice(clubs.slots)">
+                                        Club Discounts/Privilege Cards
+                                    </button>
+                                    <!-- Discount(s) Available -->
+                                </ion-col>
+                            </ion-row>
+                                <ng-container *ngFor="let privilege of clubs.activeClubDiscounts">
+                                    <ion-row *ngIf="privilege && privilege.active" padding-left padding-right>
+                                        <ion-col col-12>
+                                            <b>{{privilege.name}}</b>
+                                        </ion-col> 
+                                        <ion-col col-9 
+                                         padding-left padding-right no-padding text-left>
+                                            <ul>
+                                        <li *ngIf="privilege && privilege.description" [innerHTML]="escapeCRLF(privilege.description)">
+                                            <!-- {{privilege.description}} -->
+                                        </li>
+                                        <li>Valid <b>{{getDateText(privilege.validFrom)}}</b> to <b >{{getDateText(privilege.validUntil)}}</b></li>
+                                        <li *ngIf="privilege.priceComponents && privilege.priceComponents.length > 0">{{getDiscountText(privilege, 'appliesFor')}}</li> 
+                                        <li *ngIf="getDiscountText(privilege, 'appliesTo')">{{getDiscountText(privilege, 'appliesTo')}}</li>
+                                        <!-- <li>{{getDiscountText(privilege,'amount')}}</li> -->
+                                            </ul>
+                                        </ion-col>
+                                       <ion-col col-3 text-right>
+                                        <span [innerHTML]="getDealsAmount(privilege.discount, privilege.amountType,clubs.club.address.countryData.currencySymbol,privilege, 'privilege')" 
+                                        style="color:#5DBC81;font-weight:bold;">
+                                         <!-- {{getDealsAmount(privilege.discount, privilege.amountType,clubs.club.address.countryData.currencySymbol,privilege, 'privilege')}} -->
+                                     </span>
+                                    </ion-col>
+                                    </ion-row>
+                                </ng-container>
+                                  </ng-container>
+                            <!-- <ion-col col-12>
+                                <button ion-button clear full (click)="getLowestPrice(clubs.slots)">Discount Available</button>
+                            </ion-col>
+                            <ion-col padding-left padding-right no-padding text-left col-6>Discount A</ion-col>
+                            <ion-col padding-left padding-right no-padding text-right col-6>- RM 10</ion-col>
+                            <ion-col padding-left padding-right no-padding text-left col-6>Discount N</ion-col>
+                            <ion-col padding-left padding-right no-padding text-right col-6>- RM 30</ion-col> -->
+                            <ion-col col-12>
+                                <button ion-button clear full (click)="clubs.showPromo = false">Close</button>
+                            </ion-col>
+                    </ng-container>
+                        
+                    </ion-card>
+                        
+                    <ion-infinite-scroll (ionInfinite) = "doInfinite($event)"
+                    threshold = "30%">
+                    <ion-infinite-scroll-content
+                            loadingSpinner = "bubbles"
+                            loadingText = "">
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                        </ion-list>
+            </div>
+    </div>
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2 (click)="onMyBookingsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+            <img style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onFAQClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2 (click)="openProfile()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+
+</ion-footer>

@@ -1,0 +1,391 @@
+<ion-header >
+    <ion-navbar class="mg2u-navbar" hideBackButton >
+        <ion-title >Select deals to use</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <ion-list *ngIf="changeType==='slot'">
+        <div *ngFor="let course of startCourses;let i = index" >
+            <ion-list-header color="darkyellow">{{course.name}}</ion-list-header >
+                <ng-container *ngFor="let slot of teeSlot">
+            <button ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot,'slot')">
+                <!-- <span *ngIf="!slot.available; else available" style="font-style: italic; color:red">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </span>
+            <ng-template #available style="color:green">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                    <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                    <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </ng-template> -->
+            <span [ngClass]="getSlotClass(slot)">
+                <ion-row col-12>
+                    <ion-col col-4>Slot #{{slot.slot.slotNo}}</ion-col>
+                    <ion-col col-4>{{getSlotDetails(slot,'time')}}</ion-col>
+                    <ion-col col-4>{{slot.available?'Available':'Not Available' }}</ion-col>
+                </ion-row> 
+            <!-- <ion-label>Slot #{{slot.slot.slotNo}} | {{getSlotDetails(slot,'time')}} | {{slot.available?'Available':'Not Available' }}</ion-label> -->
+            </span>
+        </button >
+        </ng-container>
+    </div>
+
+    </ion-list >
+    <ion-list *ngIf="changeType==='course'">
+        <div *ngFor="let slot of teeSlot">
+            <!-- *ngFor="let course of startCourses;let i = index" -->
+            <button ion-item (click)="changeSlot(slot,'course')" [ngClass]="getSlotClass(slot)">{{slot.slot.startCourse.name}}</button>
+                <!-- <ng-container *ngFor="let slot of teeSlot">
+            <button clear full ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot)">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+                </button >
+        </ng-container> -->
+    </div>
+
+    </ion-list >
+    <ion-segment [disabled]="true" [(ngModel)] = "option" color = "warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button value = "discounts" (click) = "setOptionType(1)">
+        <!-- [disabled]="getDisabledMode('discount')" 
+        *ngIf="getVisibleMode('discount')" 
+          -->
+            DISCOUNTS
+        </ion-segment-button>
+        <ion-segment-button value = "vouchers" (click) = "setOptionType(2)">
+        <!-- [disabled]="getDisabledMode('voucher')" 
+        *ngIf="getVisibleMode('voucher')" 
+          -->
+            VOUCHERS
+        </ion-segment-button>
+    </ion-segment>
+    <ion-list *ngIf="option === 'vouchers'">
+        <ion-row col-12>
+            <ion-col col-9 style="padding-left:1em">
+        <!-- <ion-label color="primary">Code</ion-label> -->
+        <ion-input placeholder="Search by voucher name / number" [(ngModel)]="searchVoucher"></ion-input>
+            </ion-col>
+            <ion-col col-3 style="text-align: right; align-self: center;">
+        <button ion-button (click)="onSearchVoucherClick()">Search</button>
+            </ion-col>
+        </ion-row>
+    </ion-list>
+    
+    <ion-row *ngIf="0 && appliedVouchers && appliedVouchers.length > 0 && !showVoucherActive">
+        <ion-list-header>
+            <button ion-button block outline color="danger">
+                Applied Vouchers
+            </button>
+        </ion-list-header>
+        <ng-container *ngFor="let voucher of appliedVouchers; let idx = index">
+            <ion-card style="font-size: small;">
+                <ion-row>
+                    <ion-col col-8 text-left>
+                        <b>{{getVoucherDetails(voucher.voucherApplied,'voucherName')}}</b>
+                    </ion-col>
+                    <ion-col col-4 text-right>
+                        <b item-end>{{getExpiryDate(voucher.voucherApplied)}}</b>
+                    </ion-col>
+                </ion-row>
+                <ion-row >
+                    <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Valid from <b>{{getDateText(voucher.voucherApplied.validFrom)}}</b> till <b >{{getDateText(voucher.voucherApplied.validUntil)}}</b></li>
+                        <li *ngIf="voucher.voucherApplied.allowOnWeekdays || voucher.voucherApplied.allowOnWeekends || voucher.voucherApplied.allowOnPublicHolidays">
+                            {{getVoucherApplicableText(voucher.voucherApplied,'allowDays')}}
+                        </li>
+                        <li *ngIf="voucher.voucherApplied.appliesToBookingAmount">
+                          {{getVoucherApplicableText(voucher.voucherApplied,'bookingAmount')}}
+                        </li>
+                        <li *ngIf="voucher.voucherApplied.appliesToFlight">
+                            {{getVoucherApplicableText(voucher.voucherApplied,'flight')}}
+                        </li>
+                        <!-- <li>Amount {{getVoucherCurrency(voucher)}} {{voucher.voucherAmount}}</li> -->
+                        <li *ngIf="getVoucherAmountDetails(voucher.voucherApplied)">{{getVoucherAmountDetails(voucher.voucherApplied)}}</li>
+                    </ul>           
+                </ion-col>
+                <ion-col *ngIf="forBooking" style="align-self: center;">
+                        <button (click)="onRemoveThisVoucher(voucher.voucherApplied)" ion-button outline color="danger">Remove</button>
+                </ion-col>
+               </ion-row>
+               <ion-row>
+                    <ion-col no-padding padding-left>
+                        <h4 style="text-align: left;">({{getVoucherDetails(voucher.voucherApplied, 'playerName')}})</h4>
+                    </ion-col>
+                   <ion-col no-padding padding-right>
+               <h5 style="text-align:right;">Voucher No. #{{voucher.voucherApplied.voucherNumber}}</h5>   
+                   </ion-col>
+               </ion-row>
+            </ion-card>
+        </ng-container>
+    </ion-row>
+    <ion-list *ngIf="option === 'vouchers'">
+        <ion-row no-padding>
+        <ion-col col-12 no-padding>
+            <button ion-button full>Voucher(s) Available</button>
+            <!-- {{playerVoucher&&playerVoucher.length>0?playerVoucher.length+' ':''}} -->
+        </ion-col>
+    </ion-row>
+    <!-- <ng-container *ngFor="let voucher of playerVoucher; let idx = index">
+        <ion-card>
+            <ion-row>
+                <ion-col col-8 text-left>
+                    <b>{{voucher.name}}</b>
+                </ion-col>
+                <ion-col col-4 text-right>
+                    <b item-end>{{getExpiryDate(voucher)}}</b>
+                </ion-col>
+            </ion-row>
+            <ion-row >
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                <ul>
+                    <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li>
+                    <li *ngIf="voucher.allowOnWeekdays || voucher.allowOnWeekends || voucher.allowOnPublicHolidays">
+                        {{getVoucherApplicableText(voucher,'allowDays')}}
+                    </li>
+                    <li *ngIf="voucher.appliesToBookingAmount">
+                      {{getVoucherApplicableText(voucher,'bookingAmount')}}
+                    </li>
+                    <li *ngIf="voucher.appliesToFlight">
+                        {{getVoucherApplicableText(voucher,'flight')}}
+                    </li>
+                    <li>Amount {{clubInfo.address.countryData.currencySymbol}} {{voucher.voucherAmount}}</li>
+                </ul>           
+            </ion-col>
+            <ion-col style="align-self: center;">
+                <button (click)="onUseThisVoucher(voucher)" ion-button outline [disabled]="voucher.redeemed">{{voucher.redeemed?'Claimed':'Use'}}</button>
+            </ion-col>
+            
+           </ion-row>
+           <ion-row>
+               <ion-col no-padding padding-left>
+                   <h4 style="text-align: left;">{{getVoucherForWho(voucher)}}</h4>
+               </ion-col>
+               <ion-col no-padding padding-right>
+           <h5 style="text-align:right;">Voucher No. #{{voucher.voucherNumber}}</h5>   
+               </ion-col>
+           </ion-row>
+        </ion-card>
+
+    </ng-container> -->
+    <ng-container *ngFor="let voucher of playerVoucher; let idx = index">
+        <ion-card>
+            <ion-row>
+                <ion-col col-8 text-left>
+                    <b>{{getVoucherDetails(voucher,'voucherName')}}</b>
+                </ion-col>
+                <ion-col col-4 text-right>
+                    <b item-end>{{getVoucherDetails(voucher,'expiry')}}</b>
+                </ion-col>
+            </ion-row>
+            <ion-row >
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <!-- <b>{{voucher.name}}</b>
+                    {{getExpiryDate(voucher)}}<br> -->
+                <ul>
+                    <li>{{getVoucherDetails(voucher,'validRange')}}</li>
+                    <li>{{getVoucherDetails(voucher,'allowDays')}}</li>
+                    <li *ngIf="getVoucherDetails(voucher,'bookingAmount')">{{getVoucherDetails(voucher,'bookingAmount')}}</li>
+                    <li *ngIf="getVoucherDetails(voucher,'flight')">{{getVoucherDetails(voucher,'flight')}}</li>
+                    <li>{{getVoucherDetails(voucher,'voucherAmount')}}</li>
+
+                </ul>           
+            </ion-col>
+            <ion-col style="align-self: center;">
+                <img *ngIf="getVoucherDetails(voucher, 'image')" (click)="onImageClick(getVoucherDetails(voucher, 'image'))" style="width: 4em;" [src]="getVoucherDetails(voucher, 'image')" />
+                <br>
+                <button (click)="onUseThisVoucherSeries(voucher)" ion-button outline [disabled]="voucher.redeemed">{{voucher.redeemed?'Claimed':'Use'}}</button>
+                <!-- <button (click)="onRemoveThisVoucher(voucher)" ion-button outline [disabled]="voucher.redeemed" color="danger">Remove</button> -->
+            </ion-col>
+            
+           </ion-row>
+           <ion-row>
+               <ion-col no-padding padding-left>
+                   <h4 style="text-align: left;">({{getVoucherDetails(voucher, 'playerName')}})</h4>
+               </ion-col>
+               
+            <ion-col no-padding padding-right text-right>
+                <!-- <b>{{getVoucherAmount(vs,'voucher')}}</b> assigned<br> -->
+                <b>{{getVoucherAmount(voucher,'voucher')}}</b> remaining
+            </ion-col>
+               <!-- <ion-col no-padding padding-right>
+                <h5 style="text-align:right;">Voucher No. #{{voucher.voucherNumber}}</h5>   
+                    </ion-col> -->
+           </ion-row>
+        </ion-card>
+
+    </ng-container>
+        <!-- <ion-card>
+            <ion-row >
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <b>Voucher A</b><br>
+                <ul>
+                    <li>Valid only for xxx</li>
+                    <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                </ul>               
+            </ion-col>
+            <ion-col style="align-self: center;">
+                <button ion-button outline>Use</button>
+            </ion-col>
+           </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <b>Voucher N</b>
+                    <ul>
+                        <li>Applicable only for xxx</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul></ion-col>
+                    <ion-col style="align-self: center;">
+                        <button ion-button outline>Use</button>
+                    </ion-col>
+
+            </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row >
+
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <b>Voucher A</b><br>
+                <ul>
+                    <li>Valid only for xxx</li>
+                    <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                </ul>               
+            </ion-col>
+            <ion-col style="align-self: center;">
+                <button ion-button outline>Use</button>
+            </ion-col>
+            </ion-row>
+        </ion-card>
+        <ion-card disabled>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <b>Voucher N</b>
+                    <ul>
+                        <li>Applicable only for xxx</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul></ion-col>
+                    
+            <ion-col style="align-self: center;">
+                <button disabled ion-button outline>Used</button>
+            </ion-col>
+
+            </ion-row>
+        </ion-card> -->
+    </ion-list>
+    <ion-list *ngIf="option === 'discounts' && appliedBookingDiscounts && appliedBookingDiscounts.length > 0">
+        <!-- <ng-container > -->
+            <!-- *ngIf="mode === 'apply'" -->
+            <ion-list-header>
+                <button ion-button block color="danger">
+                    Applied Discounts
+                </button>
+            </ion-list-header>
+            <ng-container *ngIf="getAppliedDiscounts() && getAppliedDiscounts().length === 0 || !getAppliedDiscounts()">
+                <ion-item>
+                    Currently, there is no applied discounts for this booking 
+                </ion-item>
+            </ng-container>
+            <ng-container *ngIf="getAppliedDiscounts() && getAppliedDiscounts().length > 0">
+            <ion-card *ngFor="let bookingDiscount of getAppliedDiscounts()">
+                <ion-row>
+                    <ion-col no-padding padding-left><b>{{bookingDiscount&&bookingDiscount.discountApplied?bookingDiscount.discountApplied.name:''}}</b>
+                        <ul class="no-bullets">
+                            <!-- <li><i class="fas fa-fw fa-hashtag"></i>ID : AGSSG123</li>
+                            <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li> -->
+                </ul>
+            </ion-col>
+                    <ion-col no-padding padding-right col-4 text-right>{{getExpiryDate(bookingDiscount.discountApplied,'discount')}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col padding-left padding-right no-padding text-left col-9>
+                        <ul>
+                            <li *ngIf="bookingDiscount.discountApplied && bookingDiscount.discountApplied.description">{{bookingDiscount.discountApplied.description}}</li>
+                            <li>Valid from <b>{{getDateText(bookingDiscount.discountApplied.validFrom)}}</b> till <b >{{getDateText(bookingDiscount.discountApplied.validUntil)}}</b></li>
+                            <li>Auto Apply? {{bookingDiscount.discountApplied.autoApply?"Yes":"No"}}</li>
+                            <li  *ngIf="getDiscountText(bookingDiscount.discountApplied, 'appliesFor')">{{getDiscountText(bookingDiscount.discountApplied, 'appliesFor')}}</li> 
+                            <li *ngIf="getDiscountText(bookingDiscount.discountApplied, 'appliesTo')">{{getDiscountText(bookingDiscount.discountApplied, 'appliesTo')}}</li>
+                            <!-- Applies for {{bookingDiscount.discountApplied.priceComponents[0].priceComponent.name}} -->
+                            <!-- <li>Applies to {{bookingDiscount.discountApplied.playerTypes[0].bookingPlayerType.name}}</li> -->
+                            <li>{{getDiscountText(bookingDiscount.discountApplied,'amount')}}</li>
+                            <!-- <li>Valid only for Club A</li>
+                            <li>Valid only for Club B</li>
+                            <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                        </ul>       
+                    </ion-col>
+                    <ion-col style="align-self: center;text-align: right;">
+                        <button color="danger" ion-button outline *ngIf="mode==='apply'" (click)="onRemoveThisDiscount(bookingDiscount.discountApplied)" ><i class="fas fa-fw fa-times"></i></button>
+                        <!-- <button ion-button outline (click)="onEditClick('playerDiscount')" ><i class="far fa-fw fa-edit"></i></button>
+                        <button ion-button outline (click)="onRemoveClick('playerDiscount')" color="danger"><i class="far fa-fw fa-trash-alt"></i></button> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </ng-container>
+    <!-- </ng-container> -->
+    </ion-list>
+    <ion-list *ngIf="option === 'discounts'" >
+
+            <!-- *ngIf="mode === 'apply'" -->
+            <ion-list-header>
+                <button ion-button block>
+                    Active Discounts
+                </button>
+            </ion-list-header>
+            <ng-container *ngIf="playerActiveClubDiscount && playerActiveClubDiscount.length === 0">
+                <ion-item>
+                    Currently, there is no applicable discounts for this booking 
+                </ion-item>
+            </ng-container>
+            <ng-container *ngIf="playerActiveClubDiscount && playerActiveClubDiscount.length > 0">
+            <ion-card *ngFor="let discount of playerActiveClubDiscount">
+                <ion-row>
+                    <ion-col no-padding padding-left><b>{{discount.name}}</b>
+                        <ul class="no-bullets">
+                            <!-- <li><i class="fas fa-fw fa-hashtag"></i>ID : AGSSG123</li>
+                            <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li> -->
+                </ul>
+            </ion-col>
+                    <ion-col no-padding padding-right col-4 text-right>{{getExpiryDate(discount,'discount')}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col padding-left padding-right no-padding text-left col-9>
+                        <ul>
+                            <li *ngIf="discount && discount.description">{{discount.description}}</li>
+                            <li>Valid from <b>{{getDateText(discount.validFrom)}}</b> till <b >{{getDateText(discount.validUntil)}}</b></li>
+                            <li>Auto Apply? {{discount.autoApply?"Yes":"No"}}</li>
+                            <li>{{getDiscountText(discount,'appliesFor')}}</li> 
+                            <li>{{getDiscountText(discount,'appliesTo')}}</li>
+                            <li>{{getDiscountText(discount,'amount')}}</li>
+                            <!-- <li>Valid only for Club A</li>
+                            <li>Valid only for Club B</li>
+                            <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                        </ul>       
+                    </ion-col>
+                    <ion-col style="align-self: center;text-align: right;">
+                        <button ion-button outline *ngIf="mode==='apply'" (click)="onUseThisDiscount(discount)" ><i class="fas fa-fw fa-check"></i></button>
+                        <!-- <button ion-button outline (click)="onEditClick('playerDiscount')" ><i class="far fa-fw fa-edit"></i></button>
+                        <button ion-button outline (click)="onRemoveClick('playerDiscount')" color="danger"><i class="far fa-fw fa-trash-alt"></i></button> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+    </ng-container>
+    </ion-list>
+    
+</ion-content >
+<ion-footer style="background:white">
+    <!-- <button full outline ion-button color="primary" style="font-weight: bold"> -->
+        <!-- Current Slot Details :  -->
+        <!-- {{getCurrentSlotDetails('courseName')}}
+        {{getCurrentSlotDetails('time')}} -->
+    <!-- </button> -->
+    
+    <button (click)="close()"  ion-button full color='danger'>Close</button>
+</ion-footer>

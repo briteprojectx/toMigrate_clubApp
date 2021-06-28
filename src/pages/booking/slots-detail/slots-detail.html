@@ -1,0 +1,379 @@
+<!-- Generated template for the SlotsDetailComponent component -->
+<!-- <ion-content>
+
+  <div class="content" padding>
+   <div text-center>
+     <ion-item no-lines text-center>
+     <ion-label color="success">Slot Available !</ion-label>
+      <ion-icon item-right name="close" color="danger" (click)="dismiss()"></ion-icon>
+     </ion-item>
+  </div>
+        <div padding text-center>
+      <button ion-button round class="shadow-1" color="warning" (click)="openPage('BookingsPage')">Proceed to Book Slot</button>
+    </div>
+  </div>
+
+  </ion-content> -->
+  <ion-header>
+    <ion-navbar class="mg2u-navbar">
+
+        <ion-title center><img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /></ion-title>
+    <ion-buttons end>
+      
+      <!-- <button ion-button >Refresh</button> -->
+      <!-- (click)="onRefreshClick()" -->
+      <!-- <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i> -->
+  </ion-buttons>
+  </ion-navbar>
+  </ion-header>
+  <!-- <ion-header no-border>
+    <ion-toolbar class="shadow-3">
+      <ion-item class="item-logo" no-lines>
+        <ion-icon *ngIf="index > 0" item-left name="arrow-back" color="primary" (click)="back()"></ion-icon>
+      <div class="logo" text-center>
+        <img src="assets/logo.jpeg" width="40px" height="40px">
+      <ion-title color="dark"><b>my<ion-note color="primary">Golf</ion-note>2u</b></ion-title>
+      </div>
+      <ion-icon item-right name="close-circle" color="primary" (click)="dismiss()"></ion-icon>
+      
+    </ion-item>
+    </ion-toolbar>
+  </ion-header> -->
+  <ion-content padding>
+    <ion-card>
+      <ion-card-header>
+
+        <ion-item style="text-align: center;">Selected Time : 7:00AM</ion-item>
+        <!-- {{event&&selectedTime?selectedTime:''}} -->
+        <ion-item style="text-align: center;">Amverton 1 - 9</ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-list-header>SLOTS AVAILABLE</ion-list-header>
+          <ion-item>SLOT 1 - 07:12AM 
+            <button ion-button item-right>Book</button>
+            <button ion-button item-right>Book & Register</button>
+          </ion-item>
+          <ion-item>SLOT 2 - 07:24AM
+            <button ion-button item-right>Book</button>
+            <button ion-button item-right>Book & Register</button></ion-item>
+          <ion-list-header>SLOTS BOOKED</ion-list-header>
+          <!-- <ion-item>SLOT 1 - 07:12AM
+            <button ion-button item-right>Register/Check-in</button>
+          </ion-item> -->
+          <ion-item>SLOT 2 - 07:24AM
+            <button ion-button item-right>Register/Check-in</button>
+          </ion-item>
+          <!-- <ion-list-header>SLOTS CHECKED-IN</ion-list-header>
+          <ion-item>SLOT 1 - 07:12AM
+            <button ion-button item-right>View</button>
+          </ion-item> -->
+        </ion-list>
+        <ion-list>
+          <ion-list-header>Other Events</ion-list-header>
+          <ion-item>xxx</ion-item>
+          <ion-item>yyy</ion-item>
+          <ion-item>zzz</ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- <div class="shadow-2 booking-content">
+      <ion-item no-lines>
+        <ion-label padding-horizontal>Wednesday,1 July 2020<span style="float: right;">7:00 AM</span></ion-label>
+      </ion-item>
+    </div> -->
+    <ion-slides (ionSlideDidChange)="slideChanged()">
+      <ion-slide>
+        <div class="main-content" margin-top>
+  
+          <!-- <ion-row text-center class="tee-time shadow-2">
+            <ion-col col-3 col-sm-2 col-md-3 col-lg-3>
+                <ion-item no-lines text-center class="tee-time">
+                  <img src="assets/logo.jpeg" width="40px" height="40px" />
+                </ion-item>
+            </ion-col>
+            <ion-col col-7 col-sm-8 col-md-6 col-lg-6>
+              <ion-item no-lines text-center class="tee-time">
+                <ion-label color="success">Tee Time Informartion</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col col-2 col-sm-2 col-md-3 col-lg-3>
+              <ion-item no-lines text-center class="tee-time">
+                <div class="help">
+                  <ion-icon name="help"></ion-icon>
+              </div>
+              </ion-item>
+            </ion-col>
+          </ion-row> -->
+      
+          <div text-center>
+            <ion-label color="success">Slot Available!</ion-label>
+            <h4 style="margin: 10px 5px; color: #000; font-weight: 800;">Amverton Cove Golf & Island</h4>
+            <p style="margin: 10px 5px; color: #979494; font-weight: 800;">Amverton 1 - 9</p>
+          </div>
+          <div class="players_count">
+            <ion-row>
+              <ion-col col-6 col-sm-6 col-md-7 col-lg-7 text-center align-self-center>
+                <ion-item no-lines>
+                  <ion-label color="medium"><b>How many Golfers Playing?</b></ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col col-6 col-sm-6 col-md-5 col-lg-5 align-self-center>
+                <ion-row>
+                  <ion-col col-4 col-sm-4 col-md-3 col-lg-3 align-self-center>
+                    <ion-item no-lines>
+                      <button ion-button color="light" (click)="remove('booking')" class="shadow-1">
+                        <ion-icon style="color: #f54141;" name="remove"></ion-icon>
+                      </button>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col col-4 col-sm-4 col-md-2 col-lg-2 align-self-center>
+                    <ion-input type="number" placeholder="1" [(ngModel)]="bookings"></ion-input>
+                  </ion-col>
+                  <ion-col col-4 col-sm-4 col-md-6 col-lg-6 align-self-center>
+                    <ion-item no-lines>
+                      <button ion-button color="light" (click)="add('booking')" class="shadow-1">
+                        <ion-icon style="color: #0ecf38;" name="add"></ion-icon>
+                      </button>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </div>
+      
+          <div class="golf_holes_count">
+            <ion-row>
+              <ion-col col-6 col-sm-6 col-md-7 col-lg-7 align-self-center>
+                <ion-item no-lines>
+                  <ion-label color="medium"><b>Playing 9 or 18 holes?</b></ion-label>
+                </ion-item>
+      
+              </ion-col>
+              <ion-col col-6 col-sm-6 col-md-5 col-lg-5 align-self-center>
+                <ion-segment [(ngModel)]="golfHoles" color="primary" (ionChange)="segmentChanged($event)">
+                  <ion-segment-button value="9">
+                    9 <ion-icon *ngIf="golfHoles == '9'" name="checkmark"></ion-icon>
+                  </ion-segment-button>
+                  <ion-segment-button value="18">
+                    18 <ion-icon *ngIf="golfHoles == '18'" name="checkmark"></ion-icon>
+                  </ion-segment-button>
+                </ion-segment>
+              </ion-col>
+            </ion-row>
+          </div>
+      
+          <div>
+            <ion-row>
+              <ion-col col-7 align-self-center>
+                <ion-item (click)="toggle($event)" no-lines>
+                  <ion-label color="medium"><b>Are you booking for someone else ?</b></ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col col-5 align-self-center>
+                <ion-item no-lines>
+                  <ion-toggle [(ngModel)]="bookForOthers"></ion-toggle>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+      
+          <div text-center margin-horizontal>
+            <ion-item text-center no-lines>
+              <ion-label>
+                <i><s><b>RM 510</b></s></i> <span style="color:red; padding-left:5px"><b>RM 410</b></span>
+              </ion-label>  
+            </ion-item>
+            <ion-item text-center no-lines>
+              <ion-label color="primary"><b>See other Packages!</b></ion-label>
+            </ion-item>
+          </div>
+          <ion-fab bottom right (click)="nextPage()">
+            <ion-fab-button size="large" ion-fab>
+              <ion-icon name="arrow-forward" color="success"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+          <!-- <div class="book"></div> -->
+        </div>
+    
+      </ion-slide>
+      <ion-slide>
+        <div padding>
+        
+          <div padding-vertical>
+            <ion-row justify-content-center text-center class="modal-margin">
+              <ion-col class="col-lg-1 col-md-1 col-sm-2 col-3">
+                  <div class="img" float-right style="width: 60px;">
+                      <img src="assets/imgs/avt2.jpg">
+                  </div>
+              </ion-col>
+              <ion-col col-lg-10 col-md-10 col-sm-10 col-9>
+                  <ion-item no-lines>
+                      <ion-label padding-left color="success">Fazel NahgShineh (# 11)
+                        <p>No Promotion</p>
+                      </ion-label>
+                        <ion-icon item-right color="danger" name="close"></ion-icon>
+                  </ion-item>
+              </ion-col>
+          </ion-row>
+            <ion-row justify-content-center text-center class="modal-margin">
+                <ion-col class="col-lg-1 col-md-1 col-sm-2 col-3">
+                    <div class="img" float-right style="width: 60px;">
+                        <img src="assets/imgs/avt6.jpg">
+                    </div>
+                </ion-col>
+                <ion-col col-lg-10 col-md-10 col-sm-10 col-9>
+                    <ion-item no-lines>
+                        <ion-label padding-left color="success">{{ playerName ? playerName: 'Tap here to Add Member' }}
+                          <p *ngIf="playerName">No Promotion</p>
+                        </ion-label>
+                        <!-- <ion-icon item-right color="secondary" name="close" *ngIf="collapseCard"></ion-icon>
+                        <ion-icon item-right color="secondary" name="add" *ngIf="!collapseCard"></ion-icon> -->
+                    </ion-item>
+                    <div>
+                      <ion-row>
+                      <ion-col col-6>
+                        <ion-input placeholder="Club M/Ship no." [(ngModel)]="playerName"></ion-input>
+                    </ion-col>
+                    <ion-col col-4>
+                      <ion-input placeholder="mg2u ID" [(ngModel)]="mg2uId"></ion-input>
+                    </ion-col>
+                    <ion-col col-2>
+                      <ion-icon style="margin-top: 20px;" color="danger" name="close"></ion-icon>
+                    </ion-col>
+                    </ion-row>
+                    </div>
+                </ion-col>
+            </ion-row>
+        
+            <div class="add_me" text-center>
+                <button ion-button round *ngIf="togglebtn" color="secondary" class="shadow-3" (click)="addPlayerToggle()">Add me</button>
+                <button ion-button round color="danger" class="shadow-3" (click)="toggleCancel()">Cancel</button>
+            </div>
+        </div>
+        </div>
+        <ion-fab bottom right (click)="nextPage()">
+          <ion-fab-button size="large" ion-fab>
+            <ion-icon name="arrow-forward" color="success"></ion-icon>
+          </ion-fab-button>
+      </ion-fab>
+      </ion-slide>
+      <ion-slide>
+        <div padding>
+<!-- 
+          <div *ngIf="covidMessage">
+            <ion-row>
+              <ion-col col-10>
+                <ion-item no-lines color="danger" padding-vertical style="border-radius: 16px;">
+                  <ion-icon padding-horizontal color="light" item-left name="alert-outline"></ion-icon>
+                  <ion-note color="light" style="line-height: 2rem;"><b>COVID-19 MGA recommends that all players should include their adderesses for contact tracing!</b></ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col col-2>
+                <div text-center (click)="covidMessage = false">
+                <ion-icon style="margin: 30px 0 0 0; font-size: 28px;" large color="danger" item-right name="close"></ion-icon>
+              </div>
+              </ion-col>
+            </ion-row>
+          </div> -->
+        
+        <div>
+          <ion-row class="modal-margin">
+            <ion-col text-center>
+             <h5 style="position: relative; top: 20px; color: gray;"><b>Buggies</b></h5>
+              <ion-row>
+                <ion-col text-right col-4>
+                  <ion-item text-right no-lines>
+                    <button ion-button color="light" (click)="remove('buggies')" class="shadow-1">
+                      <ion-icon style="color: #f54141;" name="remove-outline"></ion-icon>
+                    </button>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-4>
+                  <ion-input type="number" placeholder="1" [(ngModel)]="buggies"></ion-input>
+                </ion-col>
+                <ion-col text-left col-4>
+                  <ion-item text-left no-lines>
+                    <button ion-button color="light" (click)="add('buggies')" class="shadow-1">
+                      <ion-icon style="color: #0ecf38;" name="add"></ion-icon>
+                    </button>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            
+            </ion-col>
+            <ion-col text-center>
+              <h5 style="position: relative; top: 20px; color: gray"><b>Caddies</b></h5>
+              <ion-row>
+                <ion-col text-right col-4>
+                  <ion-item text-right no-lines>
+                    <button ion-button color="light" (click)="remove('caddies')" class="shadow-1">
+                      <ion-icon style="color: #f54141;" name="remove-outline"></ion-icon>
+                    </button>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-4>
+                  <ion-input type="number" placeholder="1" [(ngModel)]="caddies"></ion-input>
+                </ion-col>
+                <ion-col text-left col-4>
+                  <ion-item text-left no-lines>
+                    <button ion-button color="light" (click)="add('caddies')" class="shadow-1">
+                      <ion-icon style="color: #0ecf38;" name="add"></ion-icon>
+                    </button>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            
+            </ion-col>
+          </ion-row>
+        </div>
+        
+          <div>
+    
+            <ion-row justify-content-center text-center class="modal-margin">
+                <ion-col class="col-lg-1 col-md-1  col-sm-2 col-3">
+                    <div class="img" float-right style="width: 60px;">
+                        <img src="assets/imgs/avt6.jpg">
+                    </div>
+                </ion-col>
+                <ion-col col-lg-10 col-md-10 col-sm-10 col-9>
+                    <ion-item no-lines tappable (click)="collapseCard = !collapseCard">
+                        <ion-label padding-left color="success">John (# 23)
+                          <p>Tap for more Options</p>
+                        </ion-label>
+                        <ion-icon item-right color="success" name="settings" (click)="openModal()"></ion-icon>
+                      </ion-item>
+                      <ion-item class="caddies-icons">
+                        <ion-row>
+                          <ion-col align-self-center *ngIf="buggies != ''">
+                            <img src="assets/caddie.svg"/>
+                            <ion-note >{{buggies}}</ion-note>
+                          </ion-col>
+                          <ion-col align-self-center *ngIf="caddies != ''">
+                            <img src="assets/player.svg"/>
+                            <ion-note>{{caddies}}</ion-note>
+                          </ion-col>
+                          <ion-col align-self-center>
+                            <img src="https://img.icons8.com/color/32/000000/driver.png"/>
+                            <ion-note>{{driverValue == true ? 'Yes': 'No' }}</ion-note>
+                          </ion-col>
+                        </ion-row>
+                    
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </div>
+        <!-- <div padding text-center>
+          <button ion-button round color="warning" class="shadow-1" (click)="openPage('PaymentPage')"><b>Continue to Payment</b></button>
+        </div> -->
+        </div>
+        <ion-fab bottom right (click)="openPage('PaymentPage')">
+          <ion-fab-button size="large" ion-fab>
+            <ion-icon name="arrow-forward" color="success"></ion-icon>
+          </ion-fab-button>
+      </ion-fab>
+      </ion-slide>
+    </ion-slides>
+  
+  </ion-content>

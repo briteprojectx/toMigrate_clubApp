@@ -1,0 +1,37 @@
+<ion-header style="border:none;">
+    <ion-navbar >
+        <ion-title >About myGolf2u</ion-title >
+    </ion-navbar >
+</ion-header >
+<ion-content padding primary style="text-align:center;" class="mygolf-special-page-background">
+	<br><br>
+	<div *ngIf="isCordova()">
+        {{appInfo.appName}}
+        <span>Version {{appInfo.versionNumber}}.{{appInfo.versionCode}}</span>
+        <div style="font-size: smaller"><b>Device Information</b>
+            <div>Device ID: {{deviceInfo.deviceId}}</div>
+            <div>Virtual: {{deviceInfo.virtual}}</div>
+            <div>Platform: {{deviceInfo.platform}}</div>
+            <div>Manufacturer: {{deviceInfo.manufacturer}}</div>
+            <div>Model: {{deviceInfo.model}}</div>
+            <div>Serial: {{deviceInfo.serial}}</div>
+        </div>
+    </div>
+
+    <div *ngIf="!isCordova()">
+		{{appInfo.appName}}
+        <div style="font-size: smaller"><b>Device Information</b>
+		<div >Device ID: {{deviceInfo.deviceId}}</div>
+        <div>Platform: {{deviceInfo.platform}}</div>
+        </div>
+	</div>
+  	<!--{{appName?appName: 'myGolf2u'}}<br>-->
+	<!--<span >Version {{versionNumber}}.{{buildNumber}}<br></span>-->
+	<div class="main-logo" ></div ><br>
+	Copyright &copy; 2020 BriteSoft Solutions.<br>
+	All right reserved.<br><br>
+	Developed by BriteSoft Solutions<br>
+	<div class="britesoft-logo"></div>
+
+	<a href="http://www.mygolf2u.com" style="text-decoration:none;">www.mygolf2u.com</a>
+</ion-content>

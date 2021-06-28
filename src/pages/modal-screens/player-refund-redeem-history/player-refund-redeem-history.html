@@ -1,0 +1,237 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar" hideBackButton>
+        <ion-title>Refund & Redeem History</ion-title>
+        <ion-buttons start (click)="close()">
+            <button ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end (click)="getPlayerRefundRedeemHistory()">
+            <button ion-button icon-only>
+                <i class="fa fa-fw fa-sync"></i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="has-header">
+    <!-- <ion-segment [(ngModel)] = "optionTypes" color = "warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button (click) = "setOptionType(1)" value = "types">
+            TYPES
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(2)" value = "discount">
+            DISCOUNT CARDS
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(3)" value = "voucher">
+            VOUCHERS
+        </ion-segment-button>
+    </ion-segment> -->
+
+    <ion-grid fixed>
+        <div *ngIf="playerCredits">
+            <button ion-button full>
+                    <span *ngIf="clubCredit && clubCredit.club">{{clubCredit.club.name}}</span> 
+                </button>
+                <ion-item style="color:#30bb5b; font-weight: bold; padding-left:1rem; padding-right:1rem; font-size: 2rem">
+                    <ion-label item-start>Club Balance : </ion-label>
+                    <ion-label item-end text-right>{{getTotalClubCredits()}}</ion-label>
+                </ion-item>
+                <!-- <button *ngIf="optionTypes === 'club'" ion-button full color="gold">
+                    Current Club Credits :   {{getTotalClubCredits()}}</button> -->
+                <ion-row>
+                    <ion-col col-6 no-padding>
+                        <ion-item>
+                            <ion-label text-left style="max-width:10vw !important" item-start>From</ion-label>
+                            <ion-datetime text-right style="margin:0" item-end (ionChange)="confirmDate($event)"
+                                displayFormat="DD MMM YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="startDate">
+                            </ion-datetime>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 no-padding>
+                        <ion-item>
+                            <ion-label text-left style="max-width:10vw !important" item-start>To</ion-label>
+                            <ion-datetime text-right style="margin:0" item-end (ionChange)="confirmDate($event)"
+                                displayFormat="DD MMM YYYY" pickerFormat="DD-MM-YYYY" [(ngModel)]="endDate"></ion-datetime>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 no-padding>
+                        <ion-item (click)="onFilterIncludeClick()">
+                            <!-- <span class="fa-stack">
+                                <i class="fas fa-stack-2x fa-undo"></i>
+                                <i class="fas fa-stack-1x fa-dollar-sign"></i>
+                            </span> -->
+                            Transactions : <b>{{getFilterIncludeName()}}</b>
+                            <!-- {{filterInclude}} -->
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-6 no-padding>
+                        <ion-item (click)="onChangeGroupByClick()" text-right>
+                            Group By <b>{{getGroupByName()}}</b>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+        <!-- <ng-container *ngFor="let clubCredit of filteredPlayerCredits()">
+            <ion-list-header>
+                <ion-avatar item-left>
+                    <img [src]="clubCredit.club&&clubCredit.club.clubLogo?clubCredit.club.clubLogo:clubCredit.club.clubImage"
+                    onerror="this.src='img/default_club.png'" />
+                </ion-avatar>
+                <ion-label item-right>{{clubCredit.club.name}}</ion-label>
+            </ion-list-header>
+            <ion-item>
+                Credits Balance : {{clubCredit.currency.symbol}} {{clubCredit.balance | number: '1.2-2'}}
+            </ion-item>
+        </ng-container> -->
+        <ion-row style="font-weight: bold; justify-content: space-between; align-items: center;
+        flex-wrap: nowrap;
+        background-color: #30bb5b;
+        color: white;">
+            <ion-col no-padding *ngIf="groupByName !== 'none'" style="max-width: 1em">&nbsp;</ion-col>
+            <ion-col *ngIf="groupByName !== 'transactionDate' && groupByName !== 'none'" col-3 no-padding>Tranx. Date</ion-col>
+            <ion-col *ngIf="groupByName !== 'reference' && groupByName !== 'none'" col-4 no-padding>Ref. #</ion-col>
+            <ion-col *ngIf="groupByName === 'none'" no-padding>Transaction Details</ion-col>
+            <ion-col *ngIf="groupByName !== 'type' && groupByName !== 'player' && groupByName !== 'none'" col-2 no-padding>Mode</ion-col>
+            <ion-col col-3 no-padding text-right>Amount {{preferredCountry?"("+preferredCountry.currencySymbol+")":""}}</ion-col>
+        </ion-row>
+    <ng-container *ngIf="(groupByName !== 'none') && clubCreditHistory && clubCreditHistory.length > 0">
+        <div *ngFor="let cgroup of creditHistoryGroup(groupByName)">
+            
+            <ion-item style="font-weight: bold;" *ngIf="groupByName === 'transactionDate'">{{getDate(cgroup.transactionDate)}}</ion-item>
+            <ion-item style="font-weight: bold;" *ngIf="groupByName === 'reference'">#{{cgroup.reference}}</ion-item>
+            <ion-item style="font-weight: bold;" *ngIf="groupByName === 'type'">{{cgroup.type}}</ion-item>
+            <ion-row (click)="expandDetails(credit)" style="justify-content: space-between; align-items: center;" *ngFor="let credit of creditHistoryFiltered(cgroup, groupByName)" [class]="getAmountClass(credit)">
+                <ion-col no-padding style="max-width: 1em">
+                    <span *ngIf="credit.type === 'Refund'">
+                        <!-- <span class="small fa-stack">
+                            <i class="fas fa-stack-2x fa-undo"></i>
+                            <i class="fas fa-stack-1x fa-dollar-sign"></i>
+                        </span> -->
+                        <svg class="history-image refund-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.667 14c1.781 0 3.333-.671 3.333-1.5s-1.552-1.5-3.333-1.5c-1.781 0-3.333.671-3.333 1.5s1.551 1.5 3.333 1.5zm.062-1.34c-.199-.06-.81-.111-.81-.45 0-.189.223-.358.639-.396v-.148h.214v.141c.156.004.33.021.523.06l-.078.229c-.147-.034-.311-.066-.472-.066l-.048.001c-.321.013-.347.191-.125.267.364.112.844.195.844.493 0 .238-.289.366-.645.397v.146h-.214v-.139c-.22-.002-.451-.038-.642-.102l.098-.229c.163.042.367.084.552.084l.139-.01c.247-.034.296-.199.025-.278zm-.062 5.34c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0-3.333c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0 1.666c1.261 0 2.57-.323 3.333-.935v.435c0 .828-1.552 1.5-3.333 1.5-1.781 0-3.333-.672-3.333-1.5v-.435c.763.612 2.071.935 3.333.935zm-12.167-3.833c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5zm3.236-1.14l-.09.411c-.192-.067-.405-.128-.611-.116-.372.022-.405.344-.145.479.428.201.985.35.985.886.001.429-.334.659-.749.716v.264h-.251v-.25c-.259-.004-.526-.066-.749-.181l.113-.411c.239.092.558.191.807.135.287-.065.346-.36.028-.503-.233-.108-.944-.201-.944-.811 0-.341.261-.646.746-.713v-.266h.251v.254c.179.005.382.037.609.106zm6.264-5.36h-17v10h-1v-11h18v1zm2 1v2.834c-.715.059-1.401.214-2 .458v-1.292h-14v7h12v2h-14v-11h18z"/></svg>
+                    </span>
+                    <span *ngIf="credit.type === 'Redeem'">
+                        <!-- <span class="small fa-stack">
+                            <i class="fas fa-stack-2x fa-dollar-sign"></i>
+                        </span> -->
+                        <svg class="history-image redeem-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.502 5c-.257-1.675.04-3.562 1.229-5h7.259c-.522.736-1.768 2.175-1.391 5h-1.154c-.147-1.336.066-2.853.562-4h-4.725c-.666 1.003-.891 2.785-.657 4h-1.123zm10.498-1v20h-14v-20h2.374v.675c0 .732.583 1.325 1.302 1.325h6.647c.721 0 1.304-.593 1.304-1.325v-.675h2.373zm-9 17h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm-6-2h-2v1h2v-1zm3 0h-2v1h2v-1zm3 0h-2v1h2v-1zm1-7h-10v5h10v-5z"/></svg>                                
+                    </span>
+                </ion-col>
+                <ion-col *ngIf="groupByName !== 'transactionDate' && groupByName !== 'player'" col-3 no-padding>{{getDate(credit.transactionDate)}}</ion-col>
+                <ion-col *ngIf="groupByName !== 'reference' && groupByName !== 'player'" col-4 no-padding>{{credit.reference}}</ion-col>
+                <ion-col *ngIf="groupByName === 'player'" no-padding>
+                    <ion-row style="flex-wrap: nowrap; align-items: center; max-width: 3em" >
+                        <ion-col no-padding>
+                            <span *ngIf="credit.type === 'Refund'">
+                                <!-- <span class="fa-stack">
+                                    <i class="fas fa-stack-2x fa-undo"></i>
+                                    <i class="fas fa-stack-1x fa-dollar-sign"></i>
+                                </span> -->
+                                <svg class="history-image refund-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.667 14c1.781 0 3.333-.671 3.333-1.5s-1.552-1.5-3.333-1.5c-1.781 0-3.333.671-3.333 1.5s1.551 1.5 3.333 1.5zm.062-1.34c-.199-.06-.81-.111-.81-.45 0-.189.223-.358.639-.396v-.148h.214v.141c.156.004.33.021.523.06l-.078.229c-.147-.034-.311-.066-.472-.066l-.048.001c-.321.013-.347.191-.125.267.364.112.844.195.844.493 0 .238-.289.366-.645.397v.146h-.214v-.139c-.22-.002-.451-.038-.642-.102l.098-.229c.163.042.367.084.552.084l.139-.01c.247-.034.296-.199.025-.278zm-.062 5.34c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0-3.333c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0 1.666c1.261 0 2.57-.323 3.333-.935v.435c0 .828-1.552 1.5-3.333 1.5-1.781 0-3.333-.672-3.333-1.5v-.435c.763.612 2.071.935 3.333.935zm-12.167-3.833c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5zm3.236-1.14l-.09.411c-.192-.067-.405-.128-.611-.116-.372.022-.405.344-.145.479.428.201.985.35.985.886.001.429-.334.659-.749.716v.264h-.251v-.25c-.259-.004-.526-.066-.749-.181l.113-.411c.239.092.558.191.807.135.287-.065.346-.36.028-.503-.233-.108-.944-.201-.944-.811 0-.341.261-.646.746-.713v-.266h.251v.254c.179.005.382.037.609.106zm6.264-5.36h-17v10h-1v-11h18v1zm2 1v2.834c-.715.059-1.401.214-2 .458v-1.292h-14v7h12v2h-14v-11h18z"/></svg>                            </span>
+                            <span *ngIf="credit.type === 'Redeem'">
+                                <!-- <img item-left style="max-height:1.5em;width:webkit-fill-available"
+                                src="assets/img/booking-item-payment.svg" /> -->
+                                <!-- <span class="fa-stack">
+                                    <i class="fas fa-stack-2x fa-dollar-sign"></i>
+                                </span> -->
+                                <svg class="history-image redeem-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.502 5c-.257-1.675.04-3.562 1.229-5h7.259c-.522.736-1.768 2.175-1.391 5h-1.154c-.147-1.336.066-2.853.562-4h-4.725c-.666 1.003-.891 2.785-.657 4h-1.123zm10.498-1v20h-14v-20h2.374v.675c0 .732.583 1.325 1.302 1.325h6.647c.721 0 1.304-.593 1.304-1.325v-.675h2.373zm-9 17h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm-6-2h-2v1h2v-1zm3 0h-2v1h2v-1zm3 0h-2v1h2v-1zm1-7h-10v5h10v-5z"/></svg>                                
+                            </span>
+                        </ion-col>
+                        <ion-col no-padding>
+                            <h6 *ngIf="credit.type === 'Refund'" style="color:gray; font-weight: bold; white-space: nowrap;">
+                                Booking Refund {{credit.refundMode?'('+credit.refundMode+')':''}}
+                                <!-- Refund by {{credit.refundedBy.name}} -->
+                            </h6>
+                            <h6 *ngIf="credit.type === 'Redeem'" style="color:gray; font-weight: bold; white-space: nowrap;">Booking Payment (Redeemed)</h6>
+                            <h6 style="color:dimgray; margin:0; white-space: nowrap;">
+                                {{getDate(credit.transactionDate)}}&nbsp;#{{credit.reference}}
+                            </h6>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+                <ion-col *ngIf="groupByName !== 'type' && groupByName !== 'player'" col-2 no-padding>{{credit.type === 'Refund'?credit.refundMode:'Redeemed'}}</ion-col>
+                <!-- <ion-col *ngIf="groupByName !== 'type'" col-2 no-padding>{{credit.type === 'Refund'?credit.refundMode+' (Refund)':'(Redeem)'}}</ion-col> -->
+                <ion-col col-3 no-padding text-right>{{getCreditAmount(credit)}}</ion-col>
+                <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'" style="font-style: italic">
+                    Refunded By : {{credit.refundedBy && credit.refundedBy.name}}<br>
+                    <span *ngIf="credit && credit.reason">Reason : {{credit.reason}}</span>
+                </ion-item>
+                <!-- <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'">
+                    Refunded By : {{credit.refundedBy && credit.refundedBy.name}}
+                </ion-item>
+                <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'">
+                    Reason : {{credit.reason}}
+                </ion-item> -->
+            </ion-row>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="(groupByName === 'none') && clubCreditHistory && clubCreditHistory.length > 0">
+    <ion-row (click)="expandDetails(credit)"  style="justify-content: space-between; align-items: center;" *ngFor="let credit of clubCreditHistory" [class]="getAmountClass(credit)">
+        <ion-col no-padding>
+            <ion-row style="flex-wrap: nowrap; align-items: center; max-width: 3em" >
+                <ion-col no-padding>
+                    <span *ngIf="credit.type === 'Refund'">
+                        <!-- <span class="fa-stack">
+                            <i class="fas fa-stack-2x fa-undo"></i>
+                            <i class="fas fa-stack-1x fa-dollar-sign"></i>
+                        </span> -->
+                        <svg class="history-image refund-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.667 14c1.781 0 3.333-.671 3.333-1.5s-1.552-1.5-3.333-1.5c-1.781 0-3.333.671-3.333 1.5s1.551 1.5 3.333 1.5zm.062-1.34c-.199-.06-.81-.111-.81-.45 0-.189.223-.358.639-.396v-.148h.214v.141c.156.004.33.021.523.06l-.078.229c-.147-.034-.311-.066-.472-.066l-.048.001c-.321.013-.347.191-.125.267.364.112.844.195.844.493 0 .238-.289.366-.645.397v.146h-.214v-.139c-.22-.002-.451-.038-.642-.102l.098-.229c.163.042.367.084.552.084l.139-.01c.247-.034.296-.199.025-.278zm-.062 5.34c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0-3.333c1.261 0 2.57-.323 3.333-.934v.434c0 .829-1.552 1.5-3.333 1.5-1.781 0-3.333-.671-3.333-1.5v-.434c.763.611 2.071.934 3.333.934zm0 1.666c1.261 0 2.57-.323 3.333-.935v.435c0 .828-1.552 1.5-3.333 1.5-1.781 0-3.333-.672-3.333-1.5v-.435c.763.612 2.071.935 3.333.935zm-12.167-3.833c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5zm3.236-1.14l-.09.411c-.192-.067-.405-.128-.611-.116-.372.022-.405.344-.145.479.428.201.985.35.985.886.001.429-.334.659-.749.716v.264h-.251v-.25c-.259-.004-.526-.066-.749-.181l.113-.411c.239.092.558.191.807.135.287-.065.346-.36.028-.503-.233-.108-.944-.201-.944-.811 0-.341.261-.646.746-.713v-.266h.251v.254c.179.005.382.037.609.106zm6.264-5.36h-17v10h-1v-11h18v1zm2 1v2.834c-.715.059-1.401.214-2 .458v-1.292h-14v7h12v2h-14v-11h18z"/></svg>
+                    </span>
+                    <span *ngIf="credit.type === 'Redeem'">
+                        <!-- <img item-left style="max-height:1.5em;width:webkit-fill-available"
+                        src="assets/img/booking-item-payment.svg" /> -->
+                        <!-- <span class="fa-stack">
+                            <i class="fas fa-stack-2x fa-dollar-sign"></i>
+                        </span> -->
+                        <svg class="history-image redeem-amount" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8.502 5c-.257-1.675.04-3.562 1.229-5h7.259c-.522.736-1.768 2.175-1.391 5h-1.154c-.147-1.336.066-2.853.562-4h-4.725c-.666 1.003-.891 2.785-.657 4h-1.123zm10.498-1v20h-14v-20h2.374v.675c0 .732.583 1.325 1.302 1.325h6.647c.721 0 1.304-.593 1.304-1.325v-.675h2.373zm-9 17h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm3 4h-2v1h2v-1zm0-2h-2v1h2v-1zm0-2h-2v1h2v-1zm-6-2h-2v1h2v-1zm3 0h-2v1h2v-1zm3 0h-2v1h2v-1zm1-7h-10v5h10v-5z"/></svg>                                
+                        </span>
+                    </ion-col>
+                <ion-col no-padding>
+                    <h6 *ngIf="credit.type === 'Refund'" style="color:gray; font-weight: bold; white-space: nowrap;">Booking Refund {{credit.refundMode?'('+credit.refundMode+')':''}}
+                        <!-- (Refund by {{credit.refundedBy.name}}) -->
+                    </h6>
+                    <h6 *ngIf="credit.type === 'Redeem'" style="color:gray; font-weight: bold; white-space: nowrap;">Booking Payment (Redeemed)</h6>
+                    <h6 style="color:dimgray; margin:0; white-space: nowrap;">
+                        {{getDate(credit.transactionDate)}}&nbsp;#{{credit.reference}}
+                    </h6>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+        <!-- <ion-col col-3 no-padding>{{getDate(credit.transactionDate)}}</ion-col>
+        <ion-col col-4 no-padding>{{credit.reference}}</ion-col> -->
+        <!-- <ion-col col-2 no-padding>{{credit.type === 'Refund'?credit.refundMode:'Redeemed'}}</ion-col> -->
+        <!-- <ion-col col-2 no-padding>{{credit.type === 'Refund'?credit.refundMode+' (Refund)':'(Redeem)'}}</ion-col> -->
+        <ion-col style="font-weight: bold; font-size: 1.5em" col-3 no-padding text-right>{{getCreditAmount(credit)}}</ion-col>
+        <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'" style="font-style: italic">
+            Refunded By : {{credit.refundedBy && credit.refundedBy.name}}<br>
+            <span *ngIf="credit && credit.reason">Reason : {{credit.reason}}</span>
+        </ion-item>
+        <!-- <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'">
+            Refunded By : {{credit.refundedBy && credit.refundedBy.name}}
+        </ion-item>
+        <ion-item *ngIf="credit.expandMode && credit.type === 'Refund'">
+            Reason : {{credit.reason}}
+        </ion-item> -->
+    </ion-row>
+</ng-container>
+    <ng-container *ngIf="(clubCreditHistory && clubCreditHistory.length === 0)">
+        There is no record for {{filterInclude}} credits history.
+    </ng-container>
+    </div>
+
+</ion-grid>
+</ion-content>
+<ion-footer style="background:white">
+    <!-- <button *ngIf="optionTypes === 'club'" ion-button full color="gold">
+        Current Club Credits :   {{getTotalClubCredits()}}</button> -->
+    <button (click)="close()" ion-button full style="background-color: #659c76;">Close</button>
+</ion-footer>
+<!-- <i class="fas fa-hand-holding-usd"></i> -->
+<!-- <i class="fas fa-coins"></i> -->
+<!-- <i class="fas fa-undo"></i> -->
+<!-- <i class="fas fa-dollar-sign"></i> -->
+<!-- <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-payment.svg" /> -->
+                            
+                            <!-- <span class="fa-stack">
+                                <i class="fas fa-stack-2x fa-undo"></i>
+                                <i class="fas fa-stack-1x fa-dollar-sign"></i>
+                            </span> -->

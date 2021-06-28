@@ -1,0 +1,73 @@
+scorecard-local-list {
+
+    .item-ios, .item-md {
+        &.item-block {
+            &.scorecard-item{
+                //@extend %gradient-item;
+                padding-left: 10px;
+            }
+        }
+    }
+
+    .fa-people {
+
+        padding-right: 5px;
+
+    }
+    .fa-location {
+        color: #D92929;
+        padding-right: 5px;
+    }
+    .competition-name {
+        font-size: $font-size-base;
+        font-weight: bold;
+        word-wrap: break-word;
+    }
+    .played-on {
+        font-size: $font-size-base*1.3;
+        font-weight: bold;
+        button {
+            float: right;
+            margin-right: 10px;
+            height: 1.8rem;
+            font-size: medium;
+            i{
+                font-size: x-large;
+            }
+        }
+    }
+    .club-name{
+        font-size: $font-size-base * 0.9;
+        color:#28BB5B;
+        font-weight: bold;
+    }
+    .scorer-name {
+        font-size: $font-size-base * 0.9;
+        color:#ff1010;
+        font-weight: bold;
+    }
+    .course-names, .flight-members {
+        font-size: $font-size-base * 0.8;
+    }
+    .total-scores{
+        min-width: 55px;
+        padding-right: 5px;
+        .total-score{
+            font-size: $font-size-base * 2;
+            text-align: center;
+        }
+        .front-back{
+            font-size: $font-size-base * 0.9;
+            text-align: center;
+        }
+    }
+    h1 {
+        font-size: 3.5rem;
+    }
+    p.wrap-text {
+        word-wrap: break-word;
+        width: 10px !important;
+        line-height: 1.7rem;
+    }
+
+}

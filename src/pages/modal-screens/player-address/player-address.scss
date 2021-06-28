@@ -1,0 +1,76 @@
+player-address-page {
+	#myInput {
+    width: calc(100% - 10px);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+
+	.css-calendar{
+		color:#D92929;
+		padding-right:5px;
+	}
+	
+	.custom-avatar-img{
+		min-width:4rem;
+		min-height:4rem;
+	}
+	
+		[item-left]{
+			background-image:none;
+		}
+
+		.small-label {
+			// color: #30bb5b;
+			margin: 3px 0px;
+			// font-size: 1.2rem;
+			font-size: 1.8rem;
+			font-weight: bold;
+		  }
+
+		  ion-segment-button.segment-button,
+		  ion-segment.segment-md .segment-button,
+		   ion-segment.segment-ios .segment-button,
+		    ion-segment.segment-wp .segment-button {
+			height: 3em !important;
+			max-width: 100%;
+		}
+
+		
+
+		ion-segment.segment-md .segment-button.segment-activated,
+    ion-segment.segment-ios .segment-button.segment-activated,
+    ion-segment.segment-wp .segment-button.segment-activated,
+    ion-segment.segment-button.segment-activated {
+        border-color: transparent;
+        letter-spacing: 2px;
+	}
+	
+	.player-address-field {
+		font-size: normal;
+	}
+
+	.player-address-param {
+		color: #30bb5b;
+		font-weight: bold;
+	}
+	.sign-in-panel {
+        background-color: #DDF6D6;
+        border: #629F52;
+    border-radius: 20px;
+    max-width: calc(100% - 4em);
+    font-size: 1.4rem;
+    border-style: solid;
+    border-width: 1px;    
+    margin-left: 2em;
+	}
+	
+	.player-address-box {
+		border: #629F52 !important; 
+		border-radius: 10px !important;
+		border-style: solid !important;
+		border-width: 1px !important;
+		margin-bottom: 5px !important;
+	} 
+}

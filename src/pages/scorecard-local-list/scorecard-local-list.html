@@ -1,0 +1,62 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons end>
+            <button ion-button icon-left (click) = "onDeleteAllClick()">
+                Delete All
+            </button>
+        </ion-buttons>
+        <ion-title center>Scorecards</ion-title>
+    </ion-navbar>
+    <!--<ion-toolbar color = "light">-->
+        <!--<ion-searchbar focuser #searchBar [(ngModel)] = "searchQuery"-->
+                <!--debounce = "1500"-->
+                <!--(ionInput) = "onSearchInput()" [showCancelButton] = "true">-->
+        <!--</ion-searchbar>-->
+    <!--</ion-toolbar>-->
+</ion-header>
+<ion-content>
+    <ion-refresher pullMin = "200" (ionRefresh) = "refreshScorecards($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = "drag down to reload"
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-list class = "scorecard-list">
+        <ion-item *ngFor = "let scorecardObj of scorecards;let i=index"
+                (click) = "onScorecardClick(scorecardObj.scorecard)"
+                class = "scorecard-item">
+            <p class = "played-on">
+                <i class = "fa fa-calendar" aria-hidden = "true"></i>
+                {{scorecardObj.scorecard.playedOn | date:"MMMM d, yyyy"}}
+                <button ion-button icon-only clear small color="danger" (click)="onDeleteAtIndex($event, i)">
+                    <i class="mdi mdi-delete-circle"></i>
+                </button>
+            </p>
+            <p *ngIf = "scorecardObj.scorecard.competition">
+                <span item-left><i ion-text color = "danger" class = "fa fa-trophy" aria-hidden = "true"></i></span>
+                <span danger>
+                    {{scorecardObj.scorecard.competitionName}} - R{{scorecardObj.scorecard.roundNumber}}
+                </span>
+            </p>
+            <p class = "club-name">{{scorecardObj.scorecard.clubName}}</p>
+            <p class="scorer-name">Scorer: {{scorecardObj.scorerName}} ( {{scorecardObj.flight}} )</p>
+
+            <!--<span item-right class = "total-scores">-->
+                <!--<p class = "total-score">{{scorecardObj.scorecard.totalScore}}</p>-->
+                <!--<p class = "front-back">{{scorecardObj.scorecard.playerTotals}}</p>-->
+            <!--</span>-->
+            <p class = "course-names">
+                <i class = "fa fa-map-marker fa-location" aria-hidden = "true"></i>
+                {{scorecardObj.scorecard.courseNames}}
+            </p>
+            <p color = "blue" class = "flight-members">
+                <i class = "fa fa-users fa-people" aria-hidden = "true"></i>{{scorecardObj.scorecard.participants}}
+            </p>
+        </ion-item>
+        <div *ngIf = "refreshAttempted && (!scorecards || !scorecards.length)" padding>
+            <span color = "danger">No data found!</span>
+        </div>
+    </ion-list>
+</ion-content>

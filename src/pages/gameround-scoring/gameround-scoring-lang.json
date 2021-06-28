@@ -1,0 +1,40 @@
+{
+  "en": {
+    "ScoringPage": {
+      "title": "myGolf2u - Scoring",
+      "editTitle": "Editing Scorecard",
+      "ScorePar": "Par",
+      "GPS": "GPS",
+      "GotoHole": "Go to",
+      "HoleInOne": "Hole in One",
+      "Albatross": "Albatross",
+      "Eagle": "Eagle",
+      "Birdie": "Birdie",
+      "Par": "Par",
+      "Bogey": "Bogey",
+      "DoubleBogey": "Double Bogey",
+      "TrippleBogey": "Triple Bogey",
+      "Disaster": "Disaster",
+      "GameCancelTitle": "Cancel Current Game",
+      "GameCancelMessage": "This will delete the current game along with its scores. Do you want to continue?",
+      "GameCancelYes": "Yes",
+      "GameCancelNo": "No",
+      "GameFinishTitle": "Finish Current Game",
+      "GameFinishMessage": "Do you want to Finish the current game?",
+      "GameFinishYes": "Finish",
+      "GameFinishNo": "No",
+      "ReloadScoreTitle": "Reload Scorecard",
+      "ReloadScoreMessage": "You have some unsaved scores. How would you like to proceed?",
+      "MissingScoresTitle": "Missing Scores",
+      "MissingScoresMessage": "Scores for all holes not filled in. Do you still want to save the game?",
+      "MissingScoresYes": "Finish",
+      "MissingScoresNo": "No",
+      "GameSaveMessage": "Do you want to Save the current game?",
+      "GameSaveYes": "Save",
+      "GameSaveNo": "No",
+      "GameSaveTitle": "Save Current Game",
+
+      "ScorerIs": "Scorer is"
+    }
+  }
+}

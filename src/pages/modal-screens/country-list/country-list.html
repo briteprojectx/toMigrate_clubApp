@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Select preferred region</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-toolbar>
+        <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                        (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+                    </ion-searchbar>
+    </ion-toolbar>
+    <ion-list >
+        <!-- <button *ngIf="!excludeAll" ion-item (click)="countrySelected(-999)">
+            <img style="max-height:2em" src="img/flag/default_worldwide.png">
+            &nbsp; All countries</button> -->
+        <button *ngIf="!excludeAll" ion-button icon-start full clear (click)="countrySelected(-999)">
+            <img style="max-height:2em" src="img/flag/default_worldwide.png">
+            &nbsp; All countries</button>
+            <button *ngFor="let country of countryList" (click)="countrySelected(country)" ion-button icon-start full clear>
+                <img style="max-height:2em" [src]="getFlagUrl(country.flagUrl)" onerror="this.src='img/flag/default_worldwide.png'">
+                &nbsp; {{country.name}} ({{country.id}})</button>
+        <!-- <button ion-item *ngFor="let country of countryList" (click)="countrySelected(country)">
+            <img style="max-height:2em" [src]="getFlagUrl(country.flagUrl)" onerror="this.src='img/flag/default_worldwide.png'">
+            &nbsp; {{country.name}} ({{country.id}})
+        </button> -->
+    </ion-list>
+</ion-content>

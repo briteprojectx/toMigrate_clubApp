@@ -1,0 +1,117 @@
+profile-page {
+
+  img{
+    border-radius: 50%;
+  }
+  .player-info{
+    padding-left:5px;
+    .player-name {
+      font-size: medium;
+      font-weight: bold;
+    }
+    .player-email {
+      font-size: smaller;
+    }
+    .player-phone {
+      font-size: smaller;
+
+    }
+    .player-handicap {
+      font-size: smaller;
+
+    }
+    .player-teeoff {
+      font-size: smaller;
+
+    }
+    .player-joined {
+      font-size: smaller;
+    }
+  }
+  .custom-main-lbl {
+    font-size: 1.7rem;
+    padding-left: 5px;
+  }
+
+  .custom-badge-home {
+    border: none;
+    background-color: $light;
+    color: $primary;
+    font-size: 1.7rem;
+  }
+
+  .link-item {
+    background-image: -webkit-linear-gradient($danger, darken($danger, 30%));
+    background-image: -moz-linear-gradient($danger, darken($danger, 30%));
+    background-image: -ms-linear-gradient($danger, darken($danger, 30%));
+    background-image: -o-linear-gradient($danger, darken($danger, 30%));
+    background-image: linear-gradient(to bottom, $danger, darken($danger, 30%));
+    color: white;
+    font-weight: bolder;
+    font-size: $font-size-base;
+  }
+
+  .course-name {
+    color: #28BB5B;
+    font-weight: bold !important;
+    white-space: normal;
+    font-size: $font-size-base;
+  }
+
+  .nhs-number {
+    padding-right: 10px;
+    font-size: x-small;
+    font-weight:bold;
+  }
+  .add-membership{
+    //border-left: solid 1px;
+    width: 30px;
+  }
+  .remove-button {
+    margin-right: 10px;
+  }
+  .home-club{
+
+    font-size: small;
+  }
+  .club-name{
+    color: $primary;
+    font-size: medium; //small;
+    font-weight: bold;
+    margin: 0;
+    white-space: normal;
+  }
+  .membership-number{
+    font-size: small; //medium; //x-small;
+    margin: 0;
+  }
+  .handicap {
+    font-size: small; //medium; //x-small;
+    margin: 0;
+  }
+  .set-home{
+    margin-left: 10px;
+    font-size: x-large;
+  }
+  .remove-membership {
+    font-size: x-large;
+  }
+  .status{
+    min-width: 50px;
+  }
+  .status-pending {
+    text-align: center;
+    font-size: small; //xx-small;
+    color: red;
+  }
+
+  .status-active {
+    font-size: small; //xx-small;
+    color: black;
+  }
+
+  .club-hcp-value {
+    font-size: small;
+  }
+
+}

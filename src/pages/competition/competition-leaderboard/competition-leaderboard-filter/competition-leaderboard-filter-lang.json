@@ -1,0 +1,15 @@
+{
+  "en":{
+    "LeaderboardFiltersPage": {
+      "title": "Filters",
+      "apply":"Apply",
+      "roundNoText":"Round No",
+      "sortByText":"Sort By",
+      "groupByText":"Group By",
+      "gross":"Gross",
+      "net":"Net",
+      "noCategory":"No Category",
+      "overall":"Overall"
+    }
+  }
+}

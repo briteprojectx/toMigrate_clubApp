@@ -1,0 +1,174 @@
+caddy-schedule-display-page {
+    div.scroll-content {
+        padding-bottom: 13em !important;
+    }
+
+    .item-divider-ios,
+    .item-divider-md {
+        &.list-subHeader {
+            //background-color: $badge-background;
+            color: $primary;
+            padding-top: 1rem;
+            //padding-bottom:0.5rem;
+            border-bottom: solid thin $badge-background;
+
+            font-weight: bold;
+            vertical-align: middle;
+            font-size: $font-size-base * 0.8 !important;
+
+        }
+    }
+
+    .item-wrap {
+        ion-label {
+            color: #666;
+            font-size: small;
+            white-space: normal !important;
+
+        }
+
+        border-bottom: solid thin $dark;
+
+    }
+
+    .teebox {
+        padding-left: 0;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+
+    .page-sub-title {
+        background-color: white; //#cde2c3 !important;
+        // background: none !important;
+    }
+
+    .btn-back {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        // transform: translate(10px, 10px);
+        transform: translate(12px, 15px);
+    }
+
+    .btn-next {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        transform: scale(-1, 1) translate(12px, 15px);
+    }
+
+    // ion-card ion-avatar img {
+    //     height: 5em !important;
+    //     object-fit: scale-down !important;
+    //     width: 100%;
+    // }
+
+    // ion-avatar,
+    // ion-thumbnail {
+    //     display: block;
+    //     line-height: 1;
+    //     max-height: 5em !important;
+    //     object-fit: scale-down !important;
+    //     max-width: 1.25em !important;
+    // }
+
+    // ion-card ion-avatar img.boxy {
+    //     height: 9em !important;
+    //     object-fit: scale-down !important;
+    //     width: 100%;
+    // }
+
+    // ion-avatar,
+    // ion-thumbnail .boxy {
+    //     display: block;
+    //     line-height: 1;
+    //     max-height: 9em !important;
+    //     object-fit: scale-down !important;
+    //     max-width: 1.25em !important;
+    // }
+
+    // .item-md ion-avatar img,
+    // .item-md ion-avatar ion-img,
+    // .item-ios ion-avatar img,
+    // .item-ios ion-avatar ion-img {
+    //     // border-radius: 50%;
+    //     overflow: hidden;
+    //     width: 40px;
+    //     height: 40px;
+    //     object-fit: scale-down;
+    // }
+
+	.player-address-field {
+		font-size: normal;
+	}
+
+	.player-address-param {
+		color: #30bb5b;
+		font-weight: bold;
+	}
+	.sign-in-panel {
+        background-color: #DDF6D6;
+        border: #629F52;
+        border-radius: 20px;
+        max-width: calc(100% - 4em);
+        font-size: 1.4rem;
+        border-style: solid;
+        border-width: 1px;    
+        margin-left: 2em;
+	}
+	
+	.player-address-box {
+		border: #629F52 !important; 
+		border-radius: 10px !important;
+		border-style: solid !important;
+		border-width: 1px !important;
+		margin-bottom: 5px !important;
+    } 
+    
+    .row-status-o {
+        background-color: #4dd176;
+        color: white;
+    }
+    .row-status-c {
+        background-color: $gold;
+        color: black;
+    }
+    .row-status-d {
+        background-color: $danger; //$primary;
+        color: white;
+    }
+
+    .mygolf-table-row, .mygolf-table-row-alt {
+        padding-left: 0 !important;
+    }
+
+    .mygolf-table-header {
+        padding-left: 0 !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+        
+        .caddie-image {
+            min-height: 4rem !important;
+            min-width: 4rem !important; 
+            max-height: 4rem !important; 
+            max-width: 4rem !important;
+            object-fit: cover;
+        }
+    }
+    @media only screen and (min-width: 600) {
+        .caddie-image {
+            min-height: 4rem !important;
+            min-width: 4rem !important; 
+            max-height: 4rem !important; 
+            max-width: 4rem !important;
+            object-fit: cover;
+        }
+    }
+    .caddie-image {
+        min-height: 4rem !important;
+        min-width: 4rem !important; 
+        max-height: 4rem !important; 
+        max-width: 4rem !important;
+        object-fit: cover;
+    }
+    
+}

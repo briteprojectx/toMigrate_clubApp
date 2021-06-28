@@ -1,0 +1,56 @@
+ratings-list-page {
+    .item-divider-ios, .item-divider-md{
+        &.list-subHeader {
+            //background-color: $badge-background;
+            color: $primary;
+            padding-top: 1rem;
+            //padding-bottom:0.5rem;
+            border-bottom: solid thin $badge-background;
+
+            font-weight: bold;
+            vertical-align: middle;
+            font-size: $font-size-base * 0.8 !important;
+
+        }
+    }
+
+    .item-wrap {
+        ion-label {
+            color: #666;
+            font-size: small;
+            white-space: normal !important;
+
+        }
+        border-bottom: solid thin $dark;
+
+    }
+    
+    .teebox {
+        padding-left: 0;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+
+    .gold {
+        background-color: #FFD700 !important;
+        color: black !important;
+    }
+    .player-img {
+        max-width: 4rem;
+        float:left;
+        object-fit: cover;
+        border-radius:2rem; 
+        height: 4rem;
+      }
+      .btn-back {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        // transform: translate(10px, 10px);
+        transform: translate(12px, 15px);
+    }
+    .btn-next {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        transform: scale(-1,1) translate(12px, 15px);
+    }
+}

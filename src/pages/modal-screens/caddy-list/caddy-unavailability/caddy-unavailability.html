@@ -1,0 +1,59 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title></ion-title>
+        <ion-buttons end>
+                <button ion-button icon-only large (click)="onApplyClick()">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="competition-details mygolf-page-background">
+    <ion-card class="custom-card ">
+        <ion-card-header>
+            <h2><b>Caddy Unavailability</b></h2>
+            <ion-row *ngIf="!fromBooking && !changeCaddie" class="page-sub-title align-center">
+                <ion-col *ngIf="prevPage()" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                    <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                            <ion-datetime (ionChange)="confirmDate()"
+                            displayFormat="DDD, DD MMM YYYY" 
+                            pickerFormat="DD-MM-YYYY" [(ngModel)]="currentDate" [min]="today"></ion-datetime>
+                       
+                        <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                    <!-- </h3> -->
+                </ion-col>
+                <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+                </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+                <ion-item>
+                        <ion-label>Official Allocated Tee-off Date *</ion-label>
+                        <!-- (ionFocus)="setPrevTime()" 
+                        (ionBlur)="cancel()"  -->
+                        <!-- (ionChange)="validTime()" -->
+                        <!-- (ionChange)="validDate()" -->
+                        <ion-datetime 
+                        displayFormat="YYYY-MM-DD" 
+                        [(ngModel)]="myTDate"></ion-datetime>
+                      </ion-item>
+                <ion-item>
+                        <ion-label>Official Allocated Tee-off Time *</ion-label>
+                        <!-- (ionFocus)="setPrevTime()" 
+                        (ionBlur)="cancel()" (ionChange)="validTime()"  -->
+                        <!-- (ionChange)="validTime()" -->
+                        <ion-datetime 
+                        displayFormat="HH:mm" [(ngModel)]="teeTime"></ion-datetime>
+                      </ion-item>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+<!--<ion-footer>-->
+    <!--<button ion-button block color="dark" (click)="close()">Close</button>-->
+<!--</ion-footer>-->

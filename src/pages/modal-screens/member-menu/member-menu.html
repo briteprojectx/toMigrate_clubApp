@@ -1,0 +1,152 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <ion-title center>Club Members</ion-title>
+    </ion-navbar>
+    <ion-toolbar color = "light">
+        <ion-segment [(ngModel)] = "members" color = "warning" padding>
+            <ion-segment-button (click) = "setFriendType(1)" value = "members">
+                Members
+            </ion-segment-button>
+            <ion-segment-button (click) = "setFriendType(2)" value = "request">
+                Requests
+            </ion-segment-button>
+            <ion-segment-button (click) = "setFriendType(3)" value = "find">
+                Find Members
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-refresher pullMin = "100" (ionRefresh) = "onRefresh($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = ""
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div [ngSwitch] = "members">
+        <ion-list *ngSwitchCase = "'request'">
+            <div *ngIf = "requestFriends.totalItems!==0">
+                <div *ngIf = "sentExist">
+                    <ion-list-header class = "list-header">
+                        Request Sent
+                    </ion-list-header>
+                    <button ion-item *ngFor = "let sent of sentList"
+                            class = "friend-row"
+                            (click) = "requestSelected($event, sent)">
+                        <ion-avatar item-left>
+                            <img src = "{{sent.player.thumbnail?sent.player.thumbnail:sent.player.photoUrl}}"
+
+                                    onerror = "this.src='img/default_user.png'">
+                        </ion-avatar>
+                        <h2>{{sent.player.playerName}} {{sent.player&&sent.player.playerId?'(# '+sent.player.playerId+')':''}}</h2>
+                        <p><i class = "fa fa-calendar css-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Member
+                            Since:
+                            {{sent.player.dateJoined|date:"MMM d, yyyy"}}
+                        </p>
+                        <span item-right style = "padding-right:10px;" *ngIf = "sent.player.gender==='M'"
+                                class = "male"><i
+                                class = "fa fa-mars fa-2x" aria-hidden = "true"></i></span>
+                        <span item-right style = "padding-right:10px;" *ngIf = "sent.player.gender==='F'"
+                                class = "female"><i
+                                class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                    </button>
+                </div>
+                <div *ngIf = "receiveExist">
+                    <ion-list-header class = "list-header">
+                        Request Received
+                    </ion-list-header>
+                    <button ion-item *ngFor = "let received of receivedList"
+                            class = "friend-row"
+                            (click) = "requestSelected($event, received)">
+                        <ion-avatar item-left >
+                            <img
+                                    src = "{{received.player.thumbnail?received.player.thumbnail:received.player.photoUrl}}"
+
+                                    onerror = "this.src='img/default_user.png'">
+                        </ion-avatar>
+                        <h2>{{received.player.playerName}} {{received.player&&received.player.playerId?'(# '+received.player.playerId+')':''}}</h2>
+                        <p><i class = "fa fa-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Member Since:
+                            {{received.player.dateJoined|date:'MMM d, yyyy'}}</p>
+                        <span item-right style = "padding-right:10px;" *ngIf = "received.player.gender==='M'"
+                                class = "male"><i
+                                class = "fa fa-mars fa-2x" aria-hidden = "true"></i></span>
+                        <span item-right style = "padding-right:10px;" *ngIf = "received.player.gender==='F'"
+                                class = "female"><i
+                                class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+                    </button>
+                </div>
+            </div>
+            <div *ngIf = "refreshAttempted && requestFriends.totalItems==0" padding>
+                <span danger>No data found!</span>
+            </div>
+        </ion-list>
+        <ion-list *ngSwitchCase = "'friend'">
+            <ion-searchbar [(ngModel)] = "searchFriend"
+                    debounce = "1500"
+                    (ionInput) = "onSearchInput($event)" [showCancelButton] = "true">
+            </ion-searchbar>
+            <div *ngIf = "listFriends.totalItems>0">
+                <button ion-item *ngFor = "let friend of listFriends.players"
+                        (click) = "friendSelected($event, friend)">
+                    <ion-avatar item-left >
+                        <img src = "{{friend.thumbnail?friend.thumbnail : friend.photoUrl}}" 
+                                onerror = "this.src='img/default_user.png'">
+                    </ion-avatar>
+                    <h2>{{friend.playerName}} {{friend&&friend.playerId?'(# '+friend.playerId+')':''}}&nbsp;&nbsp;
+                        <i *ngIf = "friend.allowEdit" color = "danger" class = "fa fa-edit"></i></h2>
+                    <p *ngIf = "friend.friendSince">
+                        <i class = "fa fa-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;
+                        Friend Since: {{friend.friendSince|date:"MMM d, yyyy"}}
+                    </p>
+                    <span item-right style = "padding-right:10px;" *ngIf = "friend.gender==='M'" class = "male">
+                        <i class = "fa fa-mars fa-2x" aria-hidden = "true"></i>
+                    </span>
+                    <span item-right style = "padding-right:10px;" *ngIf = "friend.gender==='F'" class = "female"><i
+                            class = "fa fa-venus fa-2x"
+                            aria-hidden = "true"></i></span>
+                </button>
+            </div>
+            <div *ngIf = "refreshAttempted && listFriends.totalItems==0" padding>
+                <span danger>No data found!</span>
+            </div>
+        </ion-list>
+        <ion-list *ngSwitchCase = "'find'">
+            <button ion-button clear small (click) = "openNewContact()" style = "width:100%;border-top:none;">Player not found?
+                Register Here
+                <span padding style = "color:red;"><i class = "fa fa-2x fa-user-plus" aria-hidden = "true"></i></span>
+            </button>
+
+            <ion-searchbar [(ngModel)] = "searchPlayer"
+                    debounce = "1500"
+                    (ionInput) = "onPlayerInput($event)" [showCancelButton] = "true">
+            </ion-searchbar>
+            <button ion-item *ngFor = "let player of playerList.players" (click) = "playerSelected($event, player)">
+                <ion-avatar item-left>
+                    <img src = "{{player.thumbnail?player.thumbnail : player.photoUrl}}" class = "custom-avatar-img"
+                            onerror = "this.src='img/default_user.png'">
+                </ion-avatar>
+                <h2>{{player.playerName}} {{player&&player.playerId?'(# '+player.playerId+')':''}}</h2>
+                <p><i class = "fa fa-calendar" color="danger" aria-hidden = "true"></i>&nbsp;
+                  Member Since: {{player.dateJoined|date:"MMM d, yyyy"}}
+                </p>
+                <span item-right style = "padding-right:10px;" *ngIf = "player.gender==='M'" class = "male"><i
+                        class = "fa fa-mars fa-2x"
+                        aria-hidden = "true"></i></span>
+                <span item-right style = "padding-right:10px;" *ngIf = "player.gender==='F'" class = "female"><i
+                        class = "fa fa-venus fa-2x"
+                        aria-hidden = "true"></i></span>
+            </button>
+            <div *ngIf = "refreshPlayer && playerList.totalItems==0" padding>
+                <span danger>No data found!</span>
+            </div>
+            <ion-infinite-scroll (ionInfinite) = "doInfinite($event)"
+                    threshold = "30%">
+                <ion-infinite-scroll-content
+                        loadingSpinner = "bubbles"
+                        loadingText = ""></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </ion-list>
+    </div>
+</ion-content>

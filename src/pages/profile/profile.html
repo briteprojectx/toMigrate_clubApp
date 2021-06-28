@@ -1,0 +1,340 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button icon-only block *ngIf="openedModal" color="dark" (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Profile</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="type==='playerProfile'" (click)="refreshProfile()">
+                <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true" large></i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content class="profile-page">
+    <ion-list>
+        <ion-item>
+            <ion-thumbnail item-left (click)="editPhoto()">
+                <img src="{{playerPhoto$ | async}}" onerror="this.src='img/default_user.png'">
+            </ion-thumbnail>
+            <div class="player-info">
+                <p class="player-name">{{(player$|async)?.playerName}}</p>
+                <p *ngIf="type==='playerProfile'" class="player-email">
+                    <i color="pagetitle" class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+                    &nbsp;{{(player$|async)?.email}}
+                </p>
+                <p *ngIf="type==='friendProfile' && status==='friend'" class="player-email">
+                    <i color="pagetitle" class="fa fa-envelope fa-fw" aria-hidden="true"></i>
+                    &nbsp;<b>{{(player$|async)?.email}}</b>
+                </p>
+                <p *ngIf="(type==='friendProfile' && status==='friend') || status == 'fromScoring'"
+                    class="player-phone">
+                    <i color="skyblue" class="fa fa-phone fa-fw"
+                        aria-hidden="true"></i>&nbsp;<b>{{(player$|async)?.phone}}</b>
+                </p>
+                <!-- <p *ngIf = "(player$|async)?.handicapIndex" class = "player-handicap">
+                    <i class = "fa fa-info  fa-fw" aria-hidden = "true"></i>
+                    &nbsp;&nbsp;NHS Index: <b>{{((player$|async)?.handicapIndex || (player$|async)?.handicapIndex ==
+                    '')?(player$|async)?.handicapIndex:(player$|async)?.playerHandicap}}</b>
+                    &nbsp;&nbsp;Handicap: <span
+                    *ngIf = "(player$|async)?.handicap"><b>
+                {{((player$|async)?.handicap || (player$|async)?.handicap == '')?(player$|async)?.handicap:(player$|async)?.playerHandicap}}&nbsp;
+                <span *ngIf="((playerHomeInfo$|async)?.player)?.handicapIn !== 'Default'">
+                        ({{((playerHomeInfo$|async)?.player)?.handicapIn}})
+                    </span>
+            </b>
+            </span>
+                </p> -->
+
+                <!-- <p class = "player-handicap">
+                    <i class = "fa fa-pencil-square-o ph-pencil fa-fw" aria-hidden = "true"></i>
+                    &nbsp;&nbsp;Handicap: <span
+                        *ngIf = "(player$|async)?.handicap"><b>
+                    {{((player$|async)?.handicap || (player$|async)?.handicap == '')?(player$|async)?.handicap:(player$|async)?.playerHandicap}}&nbsp;
+                    <span *ngIf="((playerHomeInfo$|async)?.player)?.handicapIn !== 'Default'">
+                            ({{((playerHomeInfo$|async)?.player)?.handicapIn}})
+                        </span>
+                </b>
+                </span>
+                </p> -->
+                <p class="player-teeoff">
+                    <!-- <i color="blue" class="fa fa-flag fa-fw" aria-hidden="true"></i> -->
+                    <i class="fa fa-fw fa-hashtag"></i>
+                    &nbsp;MG2U ID: <b>{{(player$|async)?.playerId}}</b>
+                </p>
+                <p class="player-teeoff">
+                    
+                    <i color="blue" class="fa fa-flag fa-fw" aria-hidden="true"></i>
+                    &nbsp;Tee Off: <b>{{(player$|async)?.teeOffFrom}}</b>
+                </p>
+                <p class="player-joined">
+                    <i color="danger" class="fa fa-calendar fa-fw" aria-hidden="true"></i>
+                    &nbsp;Joined: <b>{{(player$|async)?.dateJoined|date:"MMM d, yyyy"}}</b>
+                </p>
+                <p class="player-handicap">
+                    <span><img style="max-height:1em" [src]="getFlagUrl((player$|async)?.nationalityFlag)"
+                            onerror="this.src='img/flag/default_worldwide.png'" /> </span>
+                    &nbsp;&nbsp;Nationality: <b>{{(player$|async)?.nationalityName}}</b>
+                </p>
+                <p class="player-handicap">
+                    <span><img style="max-height:1em" [src]="getFlagUrl((player$|async)?.flagUrl)"
+                            onerror="this.src='img/flag/default_worldwide.png'" /> </span>
+                    &nbsp;&nbsp;Residing In: <b>{{(player$|async)?.countryName?(player$|async).countryName:(player$|async).addressInfo.countryName}}</b>
+                </p>
+                <p text-wrap *ngIf="type === 'playerProfile' && !(player$|async)?.birthdate" class="player-handicap" style="color: red;">
+                    <span>Fill-in your date of birth to enjoy amazing booking deals</span>
+                </p>
+                <span *ngIf="type==='friendProfile'">
+                    <button ion-button clear item-right *ngIf="(player$|async)?.allowEdit">Edit Profile</button>
+                </span>
+                <span *ngIf="type==='playerProfile'" (click)="openEditProfile()">
+                    <button ion-button clear item-right>Edit Profile</button>
+                </span>
+                <!-- <span *ngIf = "type==='playerProfile'" (click) = "openSubscription()">
+                    <button ion-button clear item-right>View Subscription</button>
+                    </span> -->
+            </div>
+        </ion-item>
+        <button ion-item class="gradient" (click)="onMygolfCredit()" *ngIf="type==='playerProfile'">
+            
+            <i item-start color="darkyellow" class="fas fa-fw fa-dollar-sign"></i>
+            <!-- <i color="darkyellow" class="fa fa-lock fa-fw" aria-hidden="true"></i> -->
+            <span item-start>myGolf2u Credits</span>
+            <span item-end>Total : {{getClubCreditsCurrency()}} 
+                {{getTotalClubCredits()}}
+                <!-- {{totalClubCredits?totalClubCredits:0 | number: '1.2-2' }} -->
+            </span>
+            <!-- C$C -->
+            <!-- <span item-end>Total M$C : 1234</span> -->
+        </button>
+        <button ion-item class="gradient" (click)="changePassword()" *ngIf="type==='playerProfile'">
+            <i item-start color="darkyellow" class="fa fa-lock fa-fw" aria-hidden="true"></i>
+            <span item-start>Change Password</span>
+        </button>
+        <!-- *ngIf = "type==='playerProfile'" -->
+        <button ion-item class="gradient">
+            <!-- *ngIf = "hasM2uHandicap()" -->
+            <!-- <i class = "fa fa-pencil fa-fw" aria-hidden = "true"></i> -->
+            <i *ngIf="hcpIdxSubs && hcpIdxSubs.active && type==='playerProfile'" style="color:green"
+                class="fa fa-check-circle fa-fw" aria-hidden="true"></i>
+            <i *ngIf="!hcpIdxSubs || (hcpIdxSubs && !hcpIdxSubs.active) && type==='playerProfile'" style="color:red"
+                class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            <span >{{getPlayerHcpSysDetail((player$|async)?.defaultHandicapSystem)}} Hcp Idx&nbsp;
+                <!-- <span
+                    *ngIf="((player$|async)?.mygolfHandicapIndex !== null || (player$|async)?.mygolfHandicapIndex == 0)"
+                    style="font-weight: 600;">
+                    {{handicapIndex?handicapIndex:"-"}} 
+                </span> -->
+                <!-- <span *ngIf="(player$|async)?.mygolfHandicapIndex === null && type==='playerProfile'">N/A</span> -->
+                <span
+                    *ngIf="(handicapIndex !== null || handicapIndex == 0)"
+                    style="font-weight: 600;">{{handicapIndex | number: '1.1-1'}} 
+                    </span>
+                    <span *ngIf="handicapIndex === null && type==='playerProfile'">N/A</span>
+                <p *ngIf="(playerHomeInfo$ | async)?.playerId" style="padding-left: 2em"># 
+                    {{(player$ | async)?.playerId}}</p>
+                <!-- && (hcpIdxSubs && hcpIdxSubs.feature) -->
+            </span>
+            <!-- (hcpIdxSubs && (!hcpIdxSubs.active)) ||  -->
+
+            <!--  || (hcpIdxSubs && hcpIdxSubs.feature === null) -->
+            <!-- <p *ngIf="hcpIdxSubs && hcpIdxSubs.active">Subscription : Active</p>
+            <p *ngIf="hcpIdxSubs && !hcpIdxSubs.active">Subscription : Inactive</p> -->
+            <p *ngIf="hcpIdxSubs && !hcpIdxSubs.active"><span *ngIf="handicapHistory && handicapHistory.calculatedOn">As
+                    of {{handicapHistory.calculatedOn | date:"d MMMM yyyy" }}</span></p>
+
+            <!-- <button ion-button padding item-right outline (click) = "getSubscribe()" style = "margin-right:10px;">
+                Sub
+            </button> -->
+            <!-- <button ion-button padding item-right outline (click) = "getm2uHandicap()" style = "margin-right:10px;">Get
+            </button> -->
+            <!-- *ngIf = "hasM2uHandicap()"  --> 
+            <button *ngIf="type === 'playerProfile'" ion-button padding item-right outline (click)="onChangeDefaultHcpSystem()" style="margin-right:10px;">Change
+            </button>
+            <button *ngIf="0" ion-button padding item-right outline (click)="onRenewClick()" style="margin-right:10px;">Info
+            </button>
+            <button ion-button padding item-right outline (click)="openHcpHistory()" style="margin-right:10px;">View
+            </button>
+        </button>
+        <button ion-item class="gradient" *ngIf="type==='playerProfile'">
+            <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+            <span *ngIf="getPlayerNHS()">NHS Hcp Index <span
+                    style="font-weight: 600;">
+                    <!-- {{(player$|async)?.handicapIndex}} -->
+                    <!-- (player$|async)?.handicapIndex -->
+                {{getPlayerNHS()}}
+            </span></span>
+            <span *ngIf="!getPlayerNHS()">NHS Hcp Index <b>N/A</b></span>
+            <!-- (player$|async)?.handicapIndex -->
+
+            <!-- <span *ngIf = "(player$|async)?.nhsNumber !=''">NHS #{{(player$|async)?.nhsNumber}}&nbsp;</span><span style="font-weight: 600;">{{(player$|async)?.handicapIndex}}</span>
+            <span *ngIf = "(player$|async)?.nhsNumber ==''">NHS #N/A</span> -->
+            <button ion-button padding item-right outline (click)="changeNHSPrompt()" style="margin-right:10px;">
+                Edit
+            </button>
+            <button ion-button padding item-right outline (click)="getHandicap()" style="margin-right:10px;">Sync
+            </button>
+            <p *ngIf="(player$|async)?.nhsNumber !== null &&  (player$|async)?.nhsNumber !== '' "
+                style="padding-left: 2em">
+                <span># {{(player$|async)?.nhsNumber}}</span>
+            </p>
+            <p style="padding-left: 2em"
+                *ngIf="(player$|async)?.nhsNumber ==='' || (player$|async)?.nhsNumber === null">
+                <span># N/A</span>
+            </p>
+        </button>
+
+        <button ion-item class="gradient" (click)="openPlayerFavouriteList()" *ngIf="type==='playerProfile'">
+            <i color="blue" class="fa fa-star fa-fw" aria-hidden="true"></i>
+            <span>Favourite Clubs</span>
+        </button>
+
+
+        <!-- <button ion-item class = "gradient" (click) = "openHcpHistory()" *ngIf = "type==='playerProfile'">
+                    <i class = "fa fa-history fa-fw" aria-hidden = "true"></i>
+                    <span *ngIf = "(player$|async)?.mygolfHandicapIndex !=''">HCP History</span>
+                    <span *ngIf = "(player$|async)?.mygolfHandicapIndex ==''">HCP History</span>
+                    <button ion-button padding item-right outline (click) = "getHandicap()" style = "margin-right:10px;">Get m2uHCP
+                    </button>
+                </button> -->
+
+        <button ion-item class="gradient" (click)="openPlayerVoucherList()" *ngIf="type==='playerProfile'">
+            <i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+            <span>Vouchers / Privilege Cards</span>
+        </button>
+        <ion-item *ngIf="type==='playerProfile'" class="gradient">
+            <i color="skyblue" class="fa fa-users fa-fw" aria-hidden="true"></i>
+            <span>Club Membership & Handicaps</span>
+            <button ion-button padding item-right outline (click)="openAddClubMembership()" style="margin-right:10px;">
+                Add
+            </button>
+        </ion-item>
+        <span *ngIf="type==='playerProfile'">
+            <ion-item *ngFor="let membership of memberships" [hidden]="hasM2uHandicap()">
+                <span (click)="openMembershipOptions(membership.club, membership.membershipNumber)">
+                    <span *ngIf="membership.homeClub" class="home-club">
+                        <ion-icon name="home" style="color:green;font-size:18px"></ion-icon>
+                        &nbsp;HOME CLUB
+                    </span>
+                    <p class="club-name">{{membership.club.clubName}}</p>
+                    <p class="membership-number">
+                        Membership #: <b>{{membership.membershipNumber}}</b>
+                    </p>
+                    <p class="handicap" *ngIf="membership.hcpDetail && membership.hcpDetail.handicap && !membership.club.virtualClub">
+                        Handicap: <b>{{membership.hcpDetail.handicap}}</b>
+                    </p>
+                    <!-- <p class="handicap" *ngIf="membership.clubHandicap && !membership.club.virtualClub">
+                        Handicap: <b>{{membership.clubHandicap}}</b>
+                    </p> -->
+                </span>
+                <span item-right class="status">
+                    <p class="course-distance status-pending">{{membership.status}}</p>
+                    <ion-icon color="danger" large name="trash" class="remove-membership"
+                        (click)="deleteMembership(membership)"></ion-icon>
+                    <ion-icon color="primary" large name="home" *ngIf="!membership.homeClub" class="set-home"
+                        (click)="setHomeClub(membership)"></ion-icon>
+                </span>
+            </ion-item>
+
+            <ion-item *ngFor="let pch of playerClubHcp" [hidden]="!hasM2uHandicap()">
+                <span (click)="openMembershipOptions(pch.club, pch.membershipNumber)">
+                    <span *ngIf="pch.homeClub" class="home-club">
+                        <ion-icon name="home" style="color:green;font-size:18px"></ion-icon>
+                        &nbsp;HOME CLUB
+                    </span>
+                    <p class="club-name">{{pch.club.clubName}}</p>
+                    <p class="membership-number">
+                        Membership #: <b class="club-hcp-value">{{pch.membershipNumber?pch.membershipNumber:'-'}}</b>
+                    </p>
+                    <p class="handicap" *ngIf="pch.hcpDetail && !pch.nhsHcpDetail && !pch.club.virtualClub">
+                        Course Rating : <b class="club-hcp-value"
+                            *ngIf="pch.hcpDetail && pch.hcpDetail.rating">{{pch.hcpDetail.rating.courseRating}}</b> |
+                        Slope Rating : <b class="club-hcp-value"
+                            *ngIf="pch.hcpDetail && pch.hcpDetail.rating">{{pch.hcpDetail.rating.slopeRating}}</b>
+                    </p>
+                    <p class="handicap" *ngIf="!pch.hcpDetail && pch.nhsHcpDetail && !pch.club.virtualClub">
+                        Course Rating : <b class="club-hcp-value"
+                            *ngIf="pch.nhsHcpDetail && pch.nhsHcpDetail.rating">{{pch.nhsHcpDetail.rating.courseRating}}</b> |
+                        Slope Rating : <b class="club-hcp-value"
+                            *ngIf="pch.nhsHcpDetail && pch.nhsHcpDetail.rating">{{pch.nhsHcpDetail.rating.slopeRating}}</b>
+                    </p>
+                    <p class="handicap" *ngIf="pch.hcpDetail && pch.nhsHcpDetail && !pch.club.virtualClub">
+                        Course Rating : <b class="club-hcp-value"
+                            *ngIf="pch.hcpDetail && pch.hcpDetail.rating">{{pch.hcpDetail.rating.courseRating}}</b> |
+                        Slope Rating : <b class="club-hcp-value"
+                            *ngIf="pch.hcpDetail && pch.hcpDetail.rating">{{pch.hcpDetail.rating.slopeRating}}</b>
+                    </p>
+                    <p class="handicap" *ngIf="pch.nhsHcpDetail || pch.clubHandicap && !pch.club.virtualClub">
+                        NHS Handicap: <b class="club-hcp-value">{{pch.nhsHcpDetail && pch.nhsHcpDetail.handicap?pch.nhsHcpDetail.handicap:pch.clubHandicap}}</b>
+                        <!-- {{pch.clubHandicap}} -->
+                        <span *ngIf="pch.hcpDetail "> | {{pch.hcpDetail.handicapSystem.shortCode}}  Handicap:
+                            <b class="club-hcp-value">{{pch.hcpDetail.handicap}}</b></span>
+                    </p>
+                    <p class="handicap" *ngIf="!pch.clubHandicap && !pch.club.virtualClub">
+                        <span *ngIf="pch.hcpDetail">{{pch.hcpDetail.handicapSystem.shortCode}}  Handicap:
+                            <b class="club-hcp-value">{{pch.hcpDetail.handicap}}</b></span>
+                    </p> 
+                    <!-- <p class="handicap" *ngIf="pch.hcpDetail && pch.club.virtualClub">
+                        {{pch.hcpDetail.handicapSystem.shortCode}} Handicap: <b class="club-hcp-value" *ngIf="pch.hcpDetail">{{pch.hcpDetail.handicap}}</b>
+                    </p> -->
+                    <!-- <p class = "handicap" *ngIf = "pch.hcpDetail.handicap">
+                            
+                        </p> -->
+                </span>
+                <span item-right class="status">
+                    <p class="course-distance status-pending">{{pch.status}}</p>
+                    <ion-icon color="danger" large name="trash" class="remove-membership"
+                        (click)="deleteMembership(pch)"></ion-icon>
+                    <ion-icon color="primary" large name="home" *ngIf="!pch.homeClub" class="set-home"
+                        (click)="setHomeClub(pch)"></ion-icon>
+                </span>
+            </ion-item>
+        </span>
+        <ion-item *ngIf="type==='friendProfile' && status!='fromScoring'">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+            <span class="custom-main-lbl">Friend Status: <span color="primary"><span
+                        *ngIf="status==='friend'">Friends</span><span *ngIf="status==='pendingFriend'">Pending
+                        Request</span><span *ngIf="status==='notFriend'"> Not Friend</span></span></span>
+        </ion-item>
+        <div padding>
+            <button ion-button *ngIf="type==='friendProfile' && status==='friend' && !(player$|async)?.allowEdit"
+                color="danger" outline block (click)="deleteFriendConfirm()">Remove Friend
+            </button>
+            <button ion-button *ngIf="status==='pendingFriend' && !requestByPlayer" color="primary" block
+                (click)="acceptFriend()">Accept
+                Friend
+            </button>
+            <button ion-button *ngIf="status==='pendingFriend' && requestByPlayer" color="danger" outline block
+                (click)="deleteRequestConfirm()">Cancel Request
+            </button>
+            <button ion-button *ngIf="status==='pendingFriend' && !requestByPlayer" color="danger" outline block
+                (click)="deleteRequestConfirm()">Reject Request
+            </button>
+            <button ion-button *ngIf="status==='notFriend'" color="primary" block (click)="requestFriend()">
+                Request Friend
+            </button>
+        </div>
+    </ion-list>
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+            <img style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onFAQClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+
+</ion-footer>

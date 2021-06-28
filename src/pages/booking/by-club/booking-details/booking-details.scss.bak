@@ -1,0 +1,267 @@
+byclub-booking-details-page {
+
+  //.css-calendar {
+  //  color: #D92929;
+  //  padding-right: 5px;
+  //}
+  //.friend-row {
+  //  @extend .custom-item;
+  //}
+  //.custom-avatar-img {
+  //  min-width: 4rem;
+  //  min-height: 4rem;
+  //}
+
+  //[item-left] {
+  //  background-image: none;
+  //}
+  .male {
+    color: $skyblue;
+  }
+
+  .female {
+    color: $eagle-color;
+  }
+
+  ion-item.item.item-block {
+    border-bottom-width: 0;
+  }
+
+  .page-sub-title {
+    background-color: #30bb5b !important;
+    color: white !important;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .time-slot-subheader {
+    // background-color: #30bb5b !important;
+
+    background-color: #cde2c3 !important;
+
+    color: black;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .mygolf-table-caption {
+    text-align: center;
+    font-weight: bold;
+    background-color: #cde2c3 !important;
+    color: black !important;
+  }
+
+  .player-img-flight {
+    border-radius: 50%;
+    max-height: 2em;
+    width: auto;
+    // margin-right: 0.5em;
+    // margin-left: 0.5em;
+  }
+
+  .item-md ion-avatar,
+  .item-ios ion-avatar {
+    width: 2em !important;
+    height: 2em !important;
+    max-height: 2em !important;
+    max-width: 2em !important;
+    min-height: 2rem !important;
+    min-width: 2rem !important;
+  }
+
+  .slot-box {
+    border-style: solid;
+    border-width: thin;
+    border-radius: 1em;
+    border-color: #1b6a34;
+  }
+
+  .slot-subtitle-box {
+    font-size: 2rem;//1.5em;
+    font-weight: bold;
+  }
+
+  .slot-detail-box {
+    border-top-width: thin;
+    border-top-style: solid;
+    border-top-color: #1b6a34;
+    padding-top: 0.7em !important;
+  }
+
+  .booking-alert {
+    .alert-wrapper {
+      height: 80% !important;
+      max-width: 90% !important;
+    }
+
+    .alert-message {
+      max-height: 100% !important;
+    }
+  }
+
+  .price-field {
+    text-align: left;
+
+  }
+
+  .price-param {
+    text-align: right;
+    padding-right: 1em;
+    font-weight: 600;
+  }
+
+  // .promo-text {
+  //   text-decoration: line-through;
+  //   font-style: italic;
+  // }
+
+  .promo-text {
+    position: relative;
+    font-style: italic;
+    // color: red;
+    // font-weight: bold; 
+    
+    &:before {
+      position: absolute;
+    content: '';
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 2px solid;
+    border-color: black;
+    -webkit-transform: skewY(-10deg);
+    transform: skewY(-10deg);
+    }
+  }
+  
+
+  .promo-price {
+    color: red;
+  }
+
+  .player-action {
+    font-size: 1.2em;
+    padding: 0;
+  }
+
+  .button-add {
+    font-size: 1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 3rem;
+  }
+
+  .button-subtract {
+    // background-color: red;
+    font-size: 1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 3rem;
+  }
+
+  .button-value {
+    // background-color: black;
+    // font-size: 1.5em !important;
+    // font-size: 1.5rem !important;
+    border-color: black;
+    border-radius: 6px;
+    font-size: 3rem !important;
+    height: 3.5rem;
+    padding: 2rem;
+  }
+
+  #expandRow {
+    border-color: green;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 2px;
+    font-size:small;
+    margin-right: 1rem;
+  }
+
+  .booking-book-button {
+    letter-spacing: 2px;
+    font-size: large;
+    margin-bottom: 0 !important;
+  }
+
+  .pairing-number {
+    font-size: large;
+    line-height: 0rem;
+  }
+
+  .booking-option {
+    padding:0;
+    #payment-radio {
+      margin-right: 1rem;
+    }
+  }
+
+  .payment-details-left {
+    max-width:70%
+  }
+  .payment-details-right {
+    max-width: 30%
+  }
+
+  .bill-description {
+    width: 35%;//50%;
+    text-align: left;
+  }
+  .bill-rate {
+    width: 25%;
+    text-align: right;
+  }
+  .bill-quantity {
+    width: 15%;
+    text-align: right;
+  }
+  .bill-price {
+    width: 25%;
+    text-align: right;
+  }
+
+  .bill-header {
+    font-weight: bold;
+    font-size: 2rem !important;
+  }
+
+  .info-item {
+    width: 50%;
+    text-align: left;
+  }
+  .info-requested {
+    width: 25%;
+    text-align: right;
+  }
+  .info-actual {
+    width: 25%;
+    text-align: right;
+  }
+
+  .info-header {
+    font-weight: bold;
+    font-size: 2rem !important;
+  }
+
+//   ion-scroll {
+//     white-space: nowrap;
+//     height: 500px;
+// }
+#myInput {
+  width: calc(100% - 10px);
+  // border: 0;
+  // border-radius: 0;
+  background: transparent;
+  border-radius: 1rem;
+    border-color: #1b6a34;
+    border-width: thin;
+    border-style: solid;
+    margin: 0.7rem;
+    padding: 1rem;
+}
+
+
+}

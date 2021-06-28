@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>Add Location</ion-title>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()" *ngIf="openedModal">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-input type="text" placeholder="State / Province (Optional)" [(ngModel)]="state" maxlength="50"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input type="text" placeholder="City (Optional)" [(ngModel)]="city" maxlength="50"></ion-input>
+        </ion-item>
+        <!-- <ion-item>
+            <ion-input type="text" placeholder="Country (country id)" [(ngModel)]="country" maxlength="50"></ion-input>
+        </ion-item> -->
+        <ion-item>
+                <ion-label style="margin-left: 0.5em">Country</ion-label>
+                <ion-select interface="alert" [(ngModel)]="country">
+                    <ion-option *ngFor="let country of countryList"  [value]="country.id">{{country.name}}</ion-option>
+                        </ion-select >
+              </ion-item>
+
+        <!-- <ion-item>
+            <ion-label>Country List</ion-label>
+            <ion-select value="brown" okText="Okay" cancelText="Dismiss">
+              <ion-select-option value="brown">Brown</ion-select-option>
+              <ion-select-option value="blonde">Blonde</ion-select-option>
+              <ion-select-option value="black">Black</ion-select-option>
+              <ion-select-option value="red">Red</ion-select-option>
+            </ion-select>
+          </ion-item> -->
+
+        <button ion-button color="primary" block (click)="addFavouriteLocation()">Add</button>
+
+
+
+    </ion-list>
+</ion-content>

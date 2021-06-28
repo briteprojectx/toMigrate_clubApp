@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <ion-title center>{{"SelectClub.title" | translate}}</ion-title>
+        <ion-buttons start>
+            <button (click)="close()" *ngIf="openedModal" ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end style="max-width:10em;text-align: -webkit-right;">
+                <!-- <button ion-button icon-left (click)="onMenuFilterClick()">
+                        <ion-icon name="options"></ion-icon>
+                        Options
+                    </button> -->
+                    <!-- <img style="max-height:1.5em" [src]="getFlagUrl(flagUrl)" /> --> 
+                    <!-- {{this.flagUrl}} -->
+                    <ion-select style="max-width:30em; padding: 13px 8px 13px 0;" interface="alert" [(ngModel)]="countryId" 
+                    (ngModelChange)="countrySelected()"> 
+                        <ion-option selected=true value="">All Countries</ion-option>
+                            <ion-option *ngFor="let country of countryList" [value]="country.id">
+                                    {{country.name}}</ion-option>
+                                </ion-select >
+                    <!-- <ion-item>
+                            <ion-label style="margin-left: 0.5em">Country</ion-label>
+                            
+                          </ion-item> -->
+        </ion-buttons>
+    </ion-navbar>
+
+    <ion-toolbar color="light">
+        <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)"
+                       [showCancelButton]="true" dark>
+        </ion-searchbar>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+
+        <button ion-item *ngFor="let club of clubList.clubs;let idx=index" (click)="clubSelected($event, club)">
+            <ion-avatar class="avatar-left custom-avatar">
+                <img src="{{club.clubImage}}" onerror="this.src = 'img/course-default.png'"/>
+            </ion-avatar>
+            <h3 class="course-name">{{club.clubName}}</h3>
+            <p class="course-detail">{{club.address}}</p>
+        </button>
+
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                         threshold="30%">
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

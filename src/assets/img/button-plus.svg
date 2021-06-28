@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18.635" height="16.019" viewBox="0 0 18.635 16.019">
+  <defs>
+    <linearGradient id="linear-gradient" x1="-60.105" y1="53.816" x2="-59.105" y2="53.816" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_2100" data-name="Group 2100" transform="translate(-268.143 -242)">
+    <g id="Group_2074" data-name="Group 2074" transform="translate(268.143 242)">
+      <rect id="Rectangle_662" data-name="Rectangle 662" width="18.635" height="16.019" rx="3.801" fill="url(#linear-gradient)"/>
+      <rect id="Rectangle_663" data-name="Rectangle 663" width="16.867" height="14.498" rx="3.041" transform="translate(0.884 0.76)" fill="#64b884"/>
+      <rect id="Rectangle_664" data-name="Rectangle 664" width="16.867" height="14.498" rx="3.041" transform="translate(0.884 0.76)" fill="#70bd8d"/>
+      <rect id="Rectangle_665" data-name="Rectangle 665" width="15.982" height="13.738" rx="2.661" transform="translate(1.327 1.14)" fill="#fefffe"/>
+    </g>
+    <g id="Group_2078" data-name="Group 2078" transform="translate(272.581 249.257)">
+      <g id="Group_2075" data-name="Group 2075">
+        <path id="Path_6667" data-name="Path 6667" d="M265.9,182.481h-2.529a.991.991,0,1,0,0,1.948h7.408a.991.991,0,1,0,0-1.948H265.9Z" transform="translate(-262.192 -182.481)" fill="#70bd8d"/>
+      </g>
+      <g id="Group_2077" data-name="Group 2077">
+        <g id="Group_2076" data-name="Group 2076" opacity="0.1" style="mix-blend-mode: multiply;isolation: isolate">
+          <path id="Path_6668" data-name="Path 6668" d="M265.9,182.481h-2.529a.991.991,0,1,0,0,1.948h7.408a.991.991,0,1,0,0-1.948H265.9Z" transform="translate(-262.192 -182.481)"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_2082" data-name="Group 2082" transform="translate(276.328 246.082)">
+      <g id="Group_2079" data-name="Group 2079">
+        <path id="Path_6669" data-name="Path 6669" d="M265.413,184.511v2.174a1.141,1.141,0,0,0,2.266,0v-6.368a1.141,1.141,0,0,0-2.266,0v4.194Z" transform="translate(-265.413 -179.306)" fill="#70bd8d"/>
+      </g>
+      <g id="Group_2081" data-name="Group 2081">
+        <g id="Group_2080" data-name="Group 2080" opacity="0.1" style="mix-blend-mode: multiply;isolation: isolate">
+          <path id="Path_6670" data-name="Path 6670" d="M265.413,184.511v2.174a1.141,1.141,0,0,0,2.266,0v-6.368a1.141,1.141,0,0,0-2.266,0v4.194Z" transform="translate(-265.413 -179.306)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

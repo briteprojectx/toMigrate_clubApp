@@ -1,0 +1,176 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>Player Address</ion-title>
+    </ion-navbar>
+
+</ion-header>
+<ion-content class="friend-list">
+    <ion-card class="sign-in-panel">
+                <ion-card-content >
+                    <ion-item style="background:none">
+                        <h1 style="color:#30bb5b"><strong>{{getPlayerDetails('name')}}</strong></h1>
+                    </ion-item>
+                    <button no-padding ion-button color="danger" full clear small style="white-space: normal;">
+                        Fields indicated with * are compulsory.
+                    </button>
+                <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Address 1 *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Address Line 1" [(ngModel)]="_address.address1" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Address 2</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Address Line 1" [(ngModel)]="_address.address2" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >City *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your City" [(ngModel)]="_address.city" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >State *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your State" [(ngModel)]="_address.state" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Postal Code *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Postal Code" [(ngModel)]="_address.postCode" type="text"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box" *ngIf="!newPlayer && countryList && countryList.length > 0">
+                        <ion-label style="max-width:25%" class="player-address-field" >Residing In</ion-label>
+                        <ion-select style="padding-left: 0;max-width: 100%;"interface="alert" class="player-address-param"  [(ngModel)]="_address.countryData.id">
+                            <ion-option *ngFor="let country of countryList"  [value]="country.id">
+                                 {{country.name}} ({{country.id}})</ion-option>
+                                </ion-select >
+                      </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Phone 1 *</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Mobile Number" [(ngModel)]="_address.phone1" type="number"></ion-input>
+                    </ion-item>
+                    <ion-item class="player-address-box">
+                        <ion-label class="player-address-field" >Phone 2</ion-label>
+                        <ion-input class="player-address-param" placeholder="Your Phone Number 2" [(ngModel)]="_address.phone2" type="number"></ion-input>
+                    </ion-item>
+                </ion-card-content>
+                        
+    </ion-card>
+</ion-content>
+
+<ion-content *ngIf="0" class="friend-list">
+        <ion-toolbar color="light">
+                <ion-segment [(ngModel)]="listMode">
+                    <ion-segment-button value="friends">Friends</ion-segment-button>
+                    <ion-segment-button value="others">All Players</ion-segment-button>
+                    <ion-segment-button value="non-mg2u">Non-MG2U Players</ion-segment-button>
+                </ion-segment>
+            </ion-toolbar>
+            <ion-toolbar *ngIf="listMode==='friends'" color="light">
+                <ion-searchbar [(ngModel)]="searchQuery"
+                        debounce="1000"
+                        (ionInput)="onSearchInput()">
+        
+                </ion-searchbar>
+            </ion-toolbar>
+            <ion-toolbar *ngIf="listMode==='others'" color="light">
+                <!--<ion-label color="blue">To search for players type any part of their name</ion-label>-->
+                <ion-searchbar [(ngModel)]="searchPlayers" (ionInput)="onSearchPlayers()"
+                        placeholder="To search for players, type any part of their name"
+                        debounce="1000">
+                </ion-searchbar>
+            </ion-toolbar>
+    <!--<ion-list [virtualScroll]="friends" *ngIf="listMode==='friends'">-->
+    <ion-list *ngIf="listMode==='friends'">
+        <ion-list-header class="list-header">Friend List</ion-list-header>
+        <!--<button  ion-item *virtualItem="let friend" (click)="friendSelected(friend)">-->
+            <!--<ion-avatar style="height: 32px; width: 32px" item-left>-->
+                <!--<ion-img src="{{getImage(friend)}}" ></ion-img>-->
+            <!--</ion-avatar>-->
+            <!--<h2>{{friend.playerName}}</h2>-->
+            <!--<span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"-->
+                                                                                        <!--aria-hidden="true"></i></span>-->
+            <!--<span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>-->
+        <!--</button>-->
+        <button  ion-item *ngFor="let friend of friends" (click)="friendSelected(friend)">
+            <ion-avatar style="height: 32px; width: 32px" item-left>
+                <img src="{{getImage(friend)}}" >
+            </ion-avatar>
+            <h2>{{friend.playerName}}</h2>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i></span>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>
+        </button>
+    </ion-list>
+    <ion-list *ngIf="listMode==='others'">
+        <ion-list-header class="list-header">Players</ion-list-header>
+        <button  ion-item *ngFor="let friend of players" (click)="friendSelected(friend)">
+            <ion-avatar style="height: 32px; width: 32px" item-left>
+                <img src="{{getImage(friend)}}" >
+            </ion-avatar>
+            <h2>{{friend.playerName}}</h2>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i></span>
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'"><i class="fa fa-venus fa-2x" aria-hidden="true"></i></span>
+        </button>
+        <ion-item *ngIf="searchPlayers && !players.length" color="danger">
+            No player with name matching search string
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="listMode==='non-mg2u'">
+            <!-- <ion-list-header class="list-header">Add non-MG2U Player</ion-list-header> -->
+            <form [formGroup]="addPlayerForm"  >
+
+                    <!-- First Name -->
+                    <ion-item  [class.error]="playerName.invalid && playerName.touched" >
+                        <ion-label floating class="small-label">Player Name</ion-label>
+                        <!-- stacked -->
+                        placeholder="Player Name"
+                        <ion-input type="text" value="" formControlName="playerName"
+                                    maxLength="50" ></ion-input >
+                    </ion-item >
+                    <div *ngIf="playerName.errors && playerName.errors['required'] && playerName.touched"
+                         class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+                    </div >
+                    <div *ngIf="playerName.errors && playerName.errors['maxlength'] && playerName.touched"
+                         class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+                    </div >
+                    <ion-item  [class.error]="phone.invalid && phone.touched" >
+                            <ion-label floating class="small-label">Phone Number</ion-label>
+                            <!-- stacked -->
+                            placeholder="Phone Number"
+                            <ion-input type="text" value="" formControlName="phone"
+                                        maxLength="50" ></ion-input >
+                        </ion-item >
+                        <div *ngIf="phone.errors && phone.errors['required'] && phone.touched"
+                             class="error-box" >{{"SignUpPage.firstname-required"|translate}}
+                        </div >
+                        <div *ngIf="phone.errors && phone.errors['maxlength'] && phone.touched"
+                             class="error-box" >{{"SignUpPage.firstname-maxlength"|translate}}
+                        </div >
+                    <ion-item  [class.error]="email.invalid && email.touched" >
+                        <ion-label floating class="small-label">Email Address</ion-label>
+                        <!-- placeholder="{{'SignUpPage.email'|translate}}" -->
+                            <ion-input type="email" value="" formControlName="email" 
+                                       maxLength="50" ></ion-input >
+                        </ion-item >
+                        <div *ngIf="email.errors && email.errors['required'] && email.touched"
+                             class="error-box" >* Email is required
+                        </div >
+                        <!-- <ion-item> -->
+                        <ion-label style="padding-left:1em;" class="small-label">Gender</ion-label>
+                        <ion-segment formControlName="gender" padding >
+                                <ion-segment-button value="M" >Male</ion-segment-button >
+                                <ion-segment-button value="F" >Female</ion-segment-button >
+                            </ion-segment>
+                        <!-- </ion-item> -->
+                    
+                    </form>
+        </ion-list>
+</ion-content>
+<ion-footer style="text-align: center;">
+    <button ion-button round (click)="updateContact()">Save</button>
+        <button ion-button round color="danger" (click)="close()">Cancel</button>
+</ion-footer>
+<!-- <ion-footer>
+    <ion-toolbar position="bottom" color="light" *ngIf="openedModal" style="text-align: center">
+        <button *ngIf="listMode !== 'non-mg2u'" ion-button round color="secondary" (click)="addMeself()">Add Me</button>
+        <button *ngIf="listMode === 'non-mg2u'" ion-button round color="secondary" (click)="addPlayer()">Add Player</button>
+        <button ion-button round color="danger" (click)="close()">Cancel</button>
+    </ion-toolbar>
+</ion-footer> -->

@@ -1,0 +1,67 @@
+group-booking-option-page {
+	.css-calendar {
+		color: #D92929;
+		padding-right: 5px;
+	}
+
+	.custom-avatar-img {
+		min-width: 4rem;
+		min-height: 4rem;
+	}
+
+	[item-left] {
+		background-image: none;
+	}
+
+	.small-label {
+		// color: #30bb5b;
+		margin: 3px 0px;
+		// font-size: 1.2rem;
+		font-size: 1.8rem;
+		font-weight: bold;
+	}
+
+	// ion-segment-button.segment-button,
+	// ion-segment.segment-md .segment-button,
+	// ion-segment.segment-ios .segment-button,
+	// ion-segment.segment-wp .segment-button {
+	// 	height: 3em !important;
+	// 	max-width: 100%;
+	// }
+
+
+
+	// ion-segment.segment-md .segment-button.segment-activated,
+	// ion-segment.segment-ios .segment-button.segment-activated,
+	// ion-segment.segment-wp .segment-button.segment-activated,
+	// ion-segment.segment-button.segment-activated {
+	// 	border-color: transparent;
+	// 	letter-spacing: 2px;
+	// }
+
+	.player-action {
+		font-size: 1.2em;
+		padding: 0;
+	}
+
+	.booking-option {
+		.item-inner {
+			.input-wrapper {
+				display: none;
+			}
+		}
+	}
+	.booking-option.need-wrapper {
+		.item-inner {
+			.input-wrapper {
+				display: block;
+			}
+		}
+	}
+	// ion-segment.segment-md .segment-button, ion-segment.segment-ios .segment-button, ion-segment.segment-wp .segment-button {
+	// 	font-size: 1.5rem
+	// }
+	div.scroll-content {
+		height: 100% !important;
+	}
+}

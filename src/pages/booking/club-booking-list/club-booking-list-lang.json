@@ -1,0 +1,13 @@
+{
+  "en": {
+    "CompetitionFlights": {
+        "title": "Flights",
+        "flightno": "Flight",
+        "starttime": "T-Off",
+        "starthole": "Hole",
+        "playername": "Player",
+        "handicap": "Handicap",
+        "buggyno": "Buggy"
+    }
+  }
+}

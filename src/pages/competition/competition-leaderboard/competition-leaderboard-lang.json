@@ -1,0 +1,19 @@
+{
+  "en":{
+    "LeaderboardPage": {
+      "title": "Leaderboard",
+      "overall":"Overall",
+      "positionL":"Position",
+      "positionP":"Pos",
+      "handicapL":"Handicap",
+      "handicapP":"Hcp",
+      "players":"Player",
+      "toPar":"+/-",
+      "grossL":"Gross",
+      "grossP":"GRS",
+      "netL":"Net",
+      "netP":"NET",
+      "onHole":"On"
+    }
+  }
+}

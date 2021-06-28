@@ -1,0 +1,95 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title >{{"CompetitionFlights.title" | translate}}</ion-title >
+        <ion-buttons end >
+            <button ion-button icon-only (click)="onHomeClick()" >
+                <ion-icon name="home" ></ion-icon >
+            </button >
+            <button ion-button icon-only (click)="onRefreshClick(null)" >
+                <i class="fa fa-lg fa-refresh"></i>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="mygolf-page-background" >
+    <ion-refresher pullMin="200" (ionRefresh)="onRefreshClick($event)">
+        <ion-refresher-content
+            pullingIcon="arrow-down"
+            pullingText="drag down to reload"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing ...">
+        </ion-refresher-content>  </ion-refresher>
+
+    <ion-list >
+        <ion-item class="page-sub-title align-center"  >
+            <h3 style="font-weight:bold" >
+                Saturday, 2 May 2020
+                <!-- {{competition.competitionName}} <span *ngIf="competition.totalRounds > 1" >(R{{gameRound.roundNo}})</span > -->
+            </h3 >
+            <h4>10 flights for today | 8 remains</h4>
+            <!-- <h4 *ngIf="gameRound && gameRound.courseNames">{{gameRound.courseNames[0]}} <span
+                *ngIf="gameRound.courseNames[1]" >& {{gameRound.courseNames[1]}}</span ></h4 > -->
+        </ion-item >
+        <ion-toolbar color="light" >
+            <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+            </ion-searchbar >
+        </ion-toolbar >
+        <ion-card class="mygolf-table">
+            <ion-card-header class="mygolf-table-caption" no-padding>
+                    <ion-row no-padding >
+                            <ion-col width-40 class="mg-txt-left">
+                                07:45 AM
+                            </ion-col >
+                            <ion-col width-35 >
+                                Starts at Second Nine
+                            </ion-col >
+                            <ion-col width-25 class="mg-txt-right" >
+                                Ref. #21521
+                            </ion-col >
+                        </ion-row >
+            </ion-card-header>
+        </ion-card>
+        <ion-card *ngFor="let flight of filteredFlight"  class="mygolf-table">
+            <ion-card-header class="mygolf-table-caption" [class.player-flight]="flight.playerFlight" no-padding >
+                <ion-row no-padding >
+                    <ion-col width-40 class="mg-txt-left">
+                        {{"CompetitionFlights.flightno" | translate}}: {{flight.flightNumber}}
+                    </ion-col >
+                    <ion-col width-35 >
+                        {{"CompetitionFlights.starttime" | translate}}: {{convStartTime(flight.startTime)}}
+                    </ion-col >
+                    <ion-col width-25 class="mg-txt-right" >
+                        {{"CompetitionFlights.starthole" | translate}}: {{flight.startHole}}
+                    </ion-col >
+                </ion-row >
+            </ion-card-header >
+            <ion-card-content >
+                <ion-row class="mygolf-table-row flight-subtitle" >
+                    <ion-col width-10></ion-col>
+                    <ion-col width-50 >{{"CompetitionFlights.playername"|translate}}</ion-col >
+                    <ion-col width-20 class="align-center">{{"CompetitionFlights.handicap"|translate}}</ion-col >
+                    <ion-col width-20 class="align-center">{{"CompetitionFlights.buggyno"|translate}}</ion-col >
+                </ion-row >
+                <ng-container  *ngFor="let member of flight.flightMembers">
+                <ion-row *ngIf="member.status!='Withdrawn'"  class="mygolf-table-row flight-member">
+                  <ion-col width-10>
+                    <ion-avatar class="rounded no-margin">
+                      <img src="{{member.photoUrl}}"  class="rounded"  onerror="this.src='img/default_user.png'">
+                    </ion-avatar >
+                    </ion-col>
+                    <ion-col width-50 class="vertical-align" ><div>{{member.playerName}}</div></ion-col >
+                    <ion-col width-20 class="vertical-align align-center" >
+                        <div>{{member.handicap}}</div>
+                    </ion-col >
+                    <ion-col width-20 class="vertical-align align-center" >
+                        <div>{{member.buggy}}</div>
+                    </ion-col >
+                </ion-row >
+              </ng-container>
+            </ion-card-content >
+        </ion-card >
+
+    </ion-list >
+</ion-content >

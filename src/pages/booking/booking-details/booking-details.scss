@@ -1,0 +1,580 @@
+booking-details-page {
+  $base-font-size: 1rem !global;
+  .scroll-content {
+    height: calc(100% - 3em) !important; // 100% !important;
+  }
+ 
+  // :root {
+  // }
+  // html {
+  //   font-size: 16px;
+  // }
+  
+
+  //.css-calendar {
+  //  color: #D92929;
+  //  padding-right: 5px;
+  //}
+  //.friend-row {
+  //  @extend .custom-item;
+  //}
+  //.custom-avatar-img {
+  //  min-width: 4rem;
+  //  min-height: 4rem;
+  //}
+
+  //[item-left] {
+  //  background-image: none;
+  //}
+  .male {
+    color: $skyblue;
+  }
+
+  .female {
+    color: $eagle-color;
+  }
+
+  ion-item.item.item-block {
+    border-bottom-width: 0;
+  }
+
+  .page-sub-title {
+    background-color: #30bb5b !important;
+    color: white !important;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .time-slot-subheader {
+    // background-color: #30bb5b !important;
+
+    background-color: #cde2c3 !important;
+
+    color: black;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .mygolf-table-caption {
+    text-align: center;
+    font-weight: bold;
+    background-color: #cde2c3 !important;
+    color: black !important;
+  }
+
+  .player-img-flight {
+    border-radius: 50%;
+    max-height: 2em;
+    width: auto;
+    // margin-right: 0.5em;
+    // margin-left: 0.5em;
+  }
+
+  .item-md ion-avatar,
+  .item-ios ion-avatar {
+    width: 2em !important;
+    height: 2em !important;
+    max-height: 2em !important;
+    max-width: 2em !important;
+    min-height: 2rem !important;
+    min-width: 2rem !important;
+  }
+
+  .slot-box {
+    border-style: solid;
+    border-width: thin;
+    border-radius: 1em;
+    border-color: #1b6a34;
+  }
+
+  .slot-subtitle-box {
+    font-size: $base-font-size*2;//2rem;//1.5em;
+    font-weight: bold;
+  }
+
+  .slot-detail-box {
+    border-top-width: thin;
+    border-top-style: solid;
+    border-top-color: #1b6a34;
+    padding-top: 0.7em !important;
+  }
+
+  .booking-alert {
+    .alert-wrapper {
+      height: 80% !important;
+      max-width: 90% !important;
+    }
+
+    
+
+    .alert-message {
+      max-height: 100% !important;
+    }
+  }
+
+  .price-field {
+    text-align: left;
+
+  }
+
+  .price-param {
+    text-align: right;
+    padding-right: 1em;
+    font-weight: 600;
+  }
+
+  // .promo-text {
+  //   text-decoration: line-through;
+  //   font-style: italic;
+  // }
+
+  .promo-text {
+    position: relative;
+    font-style: italic;
+    // color: red;
+    // font-weight: bold; 
+    
+    &:before {
+      position: absolute;
+    content: '';
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 2px solid;
+    border-color: black;
+    -webkit-transform: skewY(-10deg);
+    transform: skewY(-10deg);
+    }
+  }
+  
+
+  .promo-price {
+    color: red;
+  }
+
+  .player-action {
+    font-size: $base-font-size * 2 !important;//1.2em;
+    padding: 0.5em !important;
+  }
+
+  .button-add {
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 3rem;
+  }
+
+  .button-subtract {
+    // background-color: red;
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 3rem;
+  }
+
+  .button-value {
+    // background-color: black;
+    // font-size: 1.5em !important;
+    // font-size: 1.5rem !important;
+    border-color: black;
+    border-radius: 6px;
+    font-size: $base-font-size*3 !important;//3rem !important;
+    height: 3.5rem;
+    padding: 2rem;
+  }
+
+  #expandRow {
+    border-color: green;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 2px;
+    font-size:small;
+    margin-right: 1rem;
+  }
+
+  .booking-book-button {
+    letter-spacing: 2px;
+    font-size: large;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .pairing-number {
+    font-size: large;
+    line-height: 0rem;
+  }
+
+  .booking-option {
+    padding:0;
+    #payment-radio {
+      margin-right: 1rem;
+    }
+  }
+
+  .payment-details-left {
+    max-width:70%
+  }
+  .payment-details-right {
+    max-width: 30%
+  }
+
+  .bill-description {
+    width: 35%;//50%;
+    text-align: left;
+    // white-space: nowrap;
+  }
+  .bill-rate {
+    width: 25%;
+    text-align: right;
+  }
+  .bill-quantity {
+    width: 15%;
+    text-align: right;
+  }
+  .bill-price {
+    width: 25%;
+    text-align: right;
+  }
+  .bill-discount {
+    width: 75%;
+    text-align: left;
+  }
+  .bill-header {
+    font-weight: bold;
+    font-size: $base-font-size*2;//2rem !important;
+  }
+
+  .info-item {
+    width: 50%;
+    text-align: left;
+  }
+  .info-requested {
+    width: 25%;
+    text-align: right;
+  }
+  .info-actual {
+    width: 25%;
+    text-align: right;
+  }
+
+  .info-header {
+    font-weight: bold;
+    font-size: $base-font-size*1.5;// 2rem !important;
+  }
+
+//   ion-scroll {
+//     white-space: nowrap;
+//     height: 500px;
+// }
+#myInput {
+  width: calc(100% - 10px);
+  // border: 0;
+  // border-radius: 0;
+  background: transparent;
+  border-radius: 1rem;
+    border-color: #1b6a34;
+    border-width: thin;
+    border-style: solid;
+    margin: 0.7rem;
+    padding: 1rem;
+}
+
+#commentArea {
+    width: calc(100% - 10px);
+    // border: 0;
+    // border-radius: 0;
+    background: transparent;
+    border-radius: 1rem;
+      border-color: #1b6a34;
+      border-width: thin;
+      border-style: solid;
+      margin: 0.7rem;
+      padding: 1rem;
+}
+@media screen and (max-width: 519px) {
+  .hide-grid {
+    display:none;
+  }
+}
+
+@media screen and (min-width: 520px) {
+  .hide-card {
+    display: none;
+  }
+  // html {
+  //   font-size: calc($base-font-size + 6 * ((100vw - 320px) / 680));
+  // }
+  h1, .item-ios h1, .item-md h1{
+    font-size: $base-font-size*2.5;
+  }
+  h2, .item-ios h2, .item-md h2 {
+    font-size: $base-font-size*1.5;
+  }
+  h3, .item-ios h3, .item-md h3 {
+    font-size: $base-font-size;
+  }
+  h4, .item-ios h4, .item-md h4 {
+    font-size: $base-font-size;
+  }
+  p, .item-ios p, .item-md p {
+    font-size: $base-font-size;
+  }
+
+  .button-inner {
+    b, strong {
+      font-size: small;
+    }
+  }
+  .slot-subtitle-box {
+    font-size: $base-font-size*1.4;//2rem;//1.5em;
+  }
+  .player-img {
+    max-width: 4rem;
+    float:left;
+    object-fit: cover;
+    border-radius:1rem; 
+    height: 4rem;
+  }
+  .button-value {
+    border-color: black;
+    border-radius: 6px;
+    font-size: 3rem;
+    height: 3.5rem;
+    padding: 1rem;
+  }
+}
+.input-club-no {
+  width:7rem;height:2.4rem;margin-right:2px;
+}
+.input-mg2u-no {
+  width:5rem;height:2.4rem;margin-right:2px;
+  
+}
+// @media screen and (min-width: 1000px) {
+//   html {
+//     zoom: 0.5 !important;
+//   }
+//   // html {
+//   //   font-size: $base-font-size*2;
+//   // }
+// }
+
+@media (min-width: map-get($grid-breakpoints, xl)) {
+  ion-content {
+    // transform: scale(0.8) !important;
+    zoom: 0.8 !important;
+  }
+  .input-club-no {
+    height:2.4rem;margin-right:2px;
+    width:9vw;
+  }
+  .input-mg2u-no {
+    height:2.4rem;margin-right:2px;
+    width: 6vw;
+  }
+
+  .button-value {
+    border-color: black;
+    border-radius: 6px;
+    font-size: $base-font-size*3 !important;//3rem !important;
+    height: 0;
+    // padding: 2rem;
+    padding: 0.5em;
+  }
+
+  div.scroll-content {
+    // height: calc(100% - 12rem);
+    height: calc(100% - 3em) !important;
+    margin-top: 4rem !important;
+  }
+  * {
+    font-size: 1rem !important;
+  }
+
+  h1 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 2) !important;
+  }
+  h2 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 1.5) !important;
+  }
+  h3 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 1.17) !important;
+  }
+  h4 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 1) !important;
+  }
+  h5 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 0.83) !important;
+  }
+  h6 {
+    font-size: 1rem !important;
+      // font-size: calc($base-font-size * 0.75) !important;
+  }
+
+  #booking-right {
+    overflow-y: auto; 
+    height: 100%; //75vh;
+  }
+
+
+}
+
+
+@media (min-width: map-get($grid-breakpoints, lg)) {
+  ion-content {
+    // transform: scale(0.75) !important;
+    zoom: 0.75 !important;
+  }
+  .input-club-no {
+    height:2.4rem;margin-right:2px;
+    width:9vw;
+  }
+  .input-mg2u-no {
+    height:2.4rem;margin-right:2px;
+    width: 6vw;
+  }
+
+  .button-value {
+    border-color: black;
+    border-radius: 6px;
+    font-size: $base-font-size*3 !important;//3rem !important;
+    height: 0;
+    // padding: 2rem;
+    padding: 0.5em;
+    span.button-inner {
+      font-size: $base-font-size*2 !important;
+    }
+  }
+
+  $base-font-size_lg: 1em; //0.8rem;
+
+  div.scroll-content {
+    // height: 100% !important;
+    height: calc(100% - 3em) !important;
+    margin-top: 4rem !important;
+  }
+  * {
+    font-size: $base-font-size_lg !important;
+  }
+
+  h1 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 2) !important;
+  }
+  h2 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 1.5) !important;
+  }
+  h3 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 1.17) !important;
+  }
+  h4 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 1) !important;
+  }
+  h5 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 0.83) !important;
+  }
+  h6 {
+    font-size: $base-font-size_lg !important;
+      // font-size: calc($base-font-size * 0.75) !important;
+  }
+
+  #booking-right {
+    overflow-y: auto; 
+    // height: 75vh;
+    height: 100%;//85vh;
+  }
+  .center-box {
+    padding-left: calc(50%/2);
+    padding-right: calc(50%/2);
+  }
+  .initials {
+
+    line-height: 3em;
+  }
+  .button-add {
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 2rem;
+  }
+
+  .button-subtract {
+    // background-color: red;
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 2rem;
+  }
+
+}
+@media (min-width: map-get($grid-breakpoints, xl)) {
+  .center-box {
+    padding-left: calc(50%/2);
+    padding-right: calc(50%/2);
+  }
+  .button-add {
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 2rem;
+  }
+
+  .button-subtract {
+    // background-color: red;
+    font-size: $base-font-size*1.1;//1.1rem !important;
+    // max-width: 3rem;
+    // height: 3rem;
+    width: 2rem;
+  }
+}
+
+// :root {
+//   // --avatar-size: 18rem;
+//   /* change this value anything, e.g., 100px, 10rem, etc. */
+// }
+
+.circle {
+  background-color: #ddf6d6;
+  border-radius: 50%;
+  // height: var(--avatar-size);
+  text-align: center;
+  // width: var(--avatar-size);
+}
+
+.initials {
+  // font-size: calc(var(--avatar-size) / 2); /* 50% of parent */
+  // line-height: 1;
+  // position: relative;
+  // top: calc(var(--avatar-size) / 4); /* 25% of parent */
+  font-size: xx-large;
+  font-weight: bold;
+  color: #3a3a3a;
+}
+
+.voucher-header {
+  letter-spacing: 2px;
+}
+
+ul li {
+  white-space: normal;
+}
+ul {
+  padding-left: 1em;
+  margin-top: 0;
+  margin-bottom: 1.5em;
+}
+
+
+
+}

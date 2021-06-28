@@ -1,0 +1,19 @@
+{
+    "en": {
+        "PlayerChartsPage": {
+            "title": "Performance",
+            "info": "Info",
+            "details": "Details",
+            "statistics": "Statistics",
+            "averageScore": "Average Score",
+            "bestScore": "Best Score",
+            "eagle": "Eagle",
+            "birdie": "Birdie",
+            "par": "Par",
+            "bogey": "Bogey",
+            "2bogey": "Double Bogey",
+            "3bogey": "Triple Bogey or worse",
+            "back": "Back"
+        }
+    }
+}

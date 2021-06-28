@@ -1,0 +1,275 @@
+<ion-header>
+    <ion-navbar>
+        <!-- <ion-buttons end>
+            <button ion-button large icon-only *ngIf = "!hideHomeButton" (click) = "onHomeClick()">
+                <ion-icon name = "home"></ion-icon>
+            </button>
+            <button ion-button large icon-only (click) = "onMenuFilterClick()">
+                <ion-icon name = "menu"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <ion-title center>Details
+            <!-- <span class = "scorecard-net-title"
+                    *ngIf = "scoreDisplay=='Net'"> - NET</span>
+            <span *ngIf = "showRoundNumber()">({{scorecard.competitionRound}})</span> -->
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content class = "mygolf-page-background">
+    <!-- <ion-refresher (ionRefresh) = "reloadScorecard($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = "drag down to reload"
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher> -->
+    <!-- *ngIf = "scorecard" -->
+    <ion-list >
+        <ion-item class = "page-sub-title align-center">
+            <h3 *ngIf = "gameRound.clubName"
+                    class = "competition-name">{{gameRound.clubName}}
+            </h3>
+            <!-- <h3 *ngIf="scorecard.competition">
+              <b style="color:blue">Flight {{scorecard.flightNumber}}</b><b style="color:red">{{buggyNo?" | Buggy "+buggyNo:""}}</b>
+            </h3> -->
+            <h3>
+                {{(gameRound.courseNames[1])?gameRound.courseNames[0]+" & "+gameRound.courseNames[1]:gameRound.courseNames[0]}}
+            </h3>
+            <!-- <h4>{{scorecard.clubName}}</h4> -->
+        </ion-item>
+<ion-row >
+        <!-- *ngIf="scoringBy=='Hole'" -->
+  <!-- <ion-col>
+          <button ion-button full color="blue" (click)="goScorecard()" *ngIf="!editingScorecard"
+                  class="go-scorecard" >
+              <i class="fa fa-pencil-square-o ph-fa" aria-hidden="true" ></i >
+              &nbsp;&nbsp;Edit Scores
+          </button >
+        </ion-col> -->
+        <!-- <ion-col>
+          <button ion-button full color="danger" *ngIf="scorecard.competition && competition && competition.showLeaderBoard"
+                  (click)="goLeaderboard()" class="go-leaderboad" >
+              <ion-icon name="trophy" ></ion-icon >
+              &nbsp;&nbsp;Finish Round
+          </button >
+        </ion-col> -->
+      </ion-row>
+        <ion-item *ngIf = "allScoresIn()" class = "game-scoring" (click) = "onGameFinishClick()">
+            <p class = "first-line">
+                <ion-icon name = "flag"></ion-icon>
+                &nbsp;&nbsp;Finish Round
+            </p>
+            <p class = "second-line">
+                All scores have been entered. Click here to submit
+            </p>
+        </ion-item>
+        <ion-item *ngIf = "needToSave()" class = "game-scoring" (click) = "confirmAndSave()">
+            <p class = "first-line">
+                <i class = "fa fa-floppy-o" aria-hidden = "true"></i>&nbsp;&nbsp;Save Scorecard
+            </p>
+            <p class = "second-line">
+                Some scores are updated. Click here to save
+            </p>
+        </ion-item>
+        <ion-item>
+                <ion-grid>
+                        <ion-row>
+                            <ion-col class="player-field">Course Handicap</ion-col>
+                            <ion-col class="player-param">{{gameRound.courseHandicap}}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col class="player-field">Course Rating</ion-col>
+                            <ion-col class="player-param">{{gameRound.rating.courseRating}}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                                <ion-col class="player-field">Slope Rating</ion-col>
+                                <ion-col class="player-param">{{gameRound.rating.slopeRating}}</ion-col>
+                        </ion-row>
+                        <!-- <ion-row>
+                                <ion-col class="player-field">Average Differential</ion-col>
+                                <ion-col class="player-param">{{gameRound.averageDifferential}}</ion-col>
+                            </ion-row>  -->
+                            
+                        <ion-row>
+                            <ion-col class="player-field">Score Differential</ion-col>
+                            <ion-col class="player-param">{{gameRound.scoreDifferential}}</ion-col>
+                        </ion-row>    
+                        <ion-row>
+                                <ion-col class="player-field">Total Holes Played</ion-col>
+                                <ion-col class="player-param">{{gameRound.totalHolesPlayed}}</ion-col>
+                        </ion-row>  
+                        <ion-row>
+                                <ion-col class="player-field">Cumulative ESR</ion-col>
+                                <ion-col class="player-param">{{gameRound.cumulativeESR}}</ion-col>
+                        </ion-row>  
+                        <ion-row>
+                                <ion-col class="player-field">ESR</ion-col>
+                                <ion-col class="player-param">{{gameRound.esr}}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                                <ion-col class="player-field">PCC Adjustment</ion-col>
+                                <ion-col class="player-param">{{gameRound.pccAdjustment}}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                                <ion-col class="player-field">Used for hcp calculation ?</ion-col>
+                                <ion-col class="player-param">{{(gameRound.used)?"Yes":"No"}}</ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="gameRound.teeBoxName">
+                                <ion-col class="player-field">Teebox</ion-col>
+                                <ion-col class="player-param"><button ion-button 
+                                    [color]="getTeeColor(gameRound.teeBoxName)" small clear item-right>
+                                    <i class="fa fa-flag fa-fw"></i>&nbsp;{{gameRound.teeBoxName?gameRound.teeBoxName:'&nbsp;'}}
+                                    </button></ion-col>
+                            </ion-row>
+                    </ion-grid>
+        </ion-item>
+        <!-- <ion-item>
+            <p>Course Handicap : {{gameRound.courseHandicap}}</p>
+            <p>Course Rating : {{gameRound.rating.courseRating}}</p>
+            <p>Slope Rating : {{gameRound.rating.slopeRating}}</p>
+            <p>Total Holes Played : {{gameRound.totalHolesPlayed}}</p>
+        </ion-item> -->
+        <!-- <ion-slides #scorecardSlider [pager]="false"
+                (ionSlideDidChange) = "onSlideDidChange()"> -->
+            <!-- <ion-slide> -->
+                <ion-grid>
+                    <ion-row align-items-baseline class = "key-legends">
+                        <ion-col col><img src = "img/kpi/eagle.png">&nbsp;&nbsp;Eagle</ion-col>
+                        <ion-col col><img src = "img/kpi/birdie.png">&nbsp;&nbsp;Birdie</ion-col>
+                        <ion-col col><img src = "img/kpi/par.png">&nbsp;&nbsp;Par</ion-col>
+                        <ion-col col-6>
+                            <ion-icon name = "calendar"></ion-icon>
+                            {{gameRound.roundDate | date:"MMMM d, yyyy"}}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <div>
+                    <ion-card class="scorecard">
+                            <ion-grid *ngIf="scoresToDisplay">
+                                <ion-row class="scorecard-header">
+                                    <ion-col col-3>Hole</ion-col>
+                                    <ion-col col>Par</ion-col>
+                                    <ion-col col>Index</ion-col>
+                                    <ion-col col>Score</ion-col>
+                                    <ion-col col>Adj Score</ion-col>
+                                </ion-row>
+                                <ion-row *ngFor = "let s of scoresToDisplay;let j = index" >
+                                    <!-- class="hole-no-col" -->
+                                    <ion-col col-3 >{{s.holeNo}}</ion-col>
+                                    <ion-col col >{{s.holePar}}</ion-col>
+                                    <ion-col col class = "hole-index-row ">{{s.holeIndex}}</ion-col>
+                                    <ion-col col [class] = "deriveClasses(s)">{{s.grossScore}}</ion-col>
+                                    <!-- [class] = "deriveClasses(s)" -->
+                                    <ion-col col [class] = "deriveClasses(s,true)">{{s.adjustedScore}}</ion-col>
+                                </ion-row>
+                                <ion-row class="last-row">
+                                    <ion-col col-3>Total</ion-col>
+                                    <ion-col col>{{getTotalCoursePar(gameround)}}</ion-col>
+                                    <ion-col col>&nbsp;</ion-col>
+                                    <ion-col col>{{gameRound.totalGrossScore}}</ion-col>
+                                    <ion-col col>{{gameRound.totalAdjustedScore}}</ion-col>
+                                </ion-row>
+                                    
+                                </ion-grid>
+
+                    </ion-card>
+                </div>
+                <!-- *ngIf = "display==='scorecard'" -->
+                <div >
+                    <div *ngFor = "let c of coursesToDisplay">
+                        <p class = "scorecard-course">
+                            <ion-icon primary name = "flag"></ion-icon>
+                            &nbsp;&nbsp;{{c.courseName}}
+                        </p>
+                        <ion-card class = "scorecard">
+                            <ion-card-content>
+                                <ion-grid >
+                                    <ion-row class = "scorecard-header">
+                                        <ion-col class = "name-col" col-3>Hole</ion-col>
+                                        <ion-col col>H</ion-col>
+                                        <ion-col col
+                                                *ngFor = "let ch of c.holes;let j = index">{{ch.holeNo}}
+                                        </ion-col>
+                                        <ion-col col>T</ion-col>
+                                    </ion-row>
+                                    <ion-row class = "hole-par-row ">
+                                        <ion-col class = "name-col" col-3>Par</ion-col>
+                                        <ion-col col></ion-col>
+                                        <ion-col col *ngFor = "let ch of c.holes;let j = index">{{ch.holePar}}</ion-col>
+                                        <ion-col col>{{c.coursePar}}</ion-col>
+                                    </ion-row>
+                                    <ion-row class = "hole-index-row ">
+                                        <ion-col class = "name-col" col-3>Index</ion-col>
+                                        <ion-col col></ion-col>
+                                        <ion-col col
+                                                *ngFor = "let ch of c.holes;let j = index">
+                                                <div *ngIf = "!c.indexToUse || c.indexToUse == 1">{{ch.holeIndex}}</div>
+                                                <div *ngIf = "c.indexToUse && c.indexToUse == 2">{{ch.holeIndexIn}}</div>
+                                        </ion-col>
+                                        <ion-col col></ion-col>
+                                    </ion-row>
+                                    <ion-row *ngFor = "let p of c.players" class = " player-row">
+                                        <ion-col [class.logged-in-user] = "loggedInUser==p.playerId"
+                                                class = "name-col player-name " col-3>{{p.playerName}}
+                                        </ion-col>
+                                        <ion-col col style = "color:blue">{{p.handicap}}</ion-col>
+                                        <ion-col col *ngFor = "let s of p.scores" [class] = "deriveClasses(s)">
+                                            {{getScoreToDisplay(s)}}
+                                        </ion-col>
+                                        <ion-col col>
+                                            <div *ngIf = "scoreDisplay=='Gross'">{{getNineTotal(p.playerRound,
+                                                p.whichNine, false)}}
+                                            </div>
+                                            <div *ngIf = "scoreDisplay=='Net'">{{getNineTotal(p.playerRound,
+                                                p.whichNine, true)}}
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                </div>
+                <p *ngIf = "scoreDisplay ==='Net' && display === 'scorecard'" class = "scorecard-net">* Displaying NET
+                    scores</p>
+                <p *ngIf = "nullHandicaps > 0"
+                        class = "handicap-info">* Where no handicap is available, 24 is assumed for men and 36 for
+                    women</p>
+            <!-- </ion-slide> -->
+            <!-- <ion-slide>
+                <p class = "scorecard-course" icon-left>
+                    <ion-icon primary name = "calculator" style="vertical-align: middle"></ion-icon>
+                    <span>Total Scores</span>
+                </p>
+                <div class = "player-totals">
+                    <ion-grid >
+                        <ion-row wrap align-items-baseline class = "header-row">
+                            <ion-col col class = "main-column" width-25>Player</ion-col>
+                            <ion-col col style = "text-align: center">HCP</ion-col>
+                            <ion-col col-6 style = "padding-top: 0px">
+                                <ion-row style = "padding-top:0px">
+                                    <ion-col>Nine</ion-col>
+                                    <ion-col>Gross</ion-col>
+                                    <ion-col>Net</ion-col>
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </ion-slide> -->
+        <!-- </ion-slides> -->
+    </ion-list>
+</ion-content>
+<!-- <ion-footer>
+    <ion-toolbar color = "light">
+        <ion-segment #segment [(ngModel)] = "display" >
+            <ion-segment-button (click) = "gotoSlide(0)" value = "scorecard" style="min-width: 50%">
+                Scorecard
+            </ion-segment-button>
+            <ion-segment-button (click) = "gotoSlide(1)" value = "totals" style="min-width: 50%">
+                Totals
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-footer> -->

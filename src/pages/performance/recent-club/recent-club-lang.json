@@ -1,0 +1,11 @@
+{
+  "en": {
+    "SelectClub": {
+      "title": "Select Club",
+      "RecentClubs": "Recently Played",
+      "NearBy": "Clubs Nearby",
+      "displaying": "Displaying",
+      "get-more": "Get More"
+    }
+  }
+}

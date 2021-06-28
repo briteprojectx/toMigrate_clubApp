@@ -1,0 +1,79 @@
+player-charts-page {
+
+  .custom-competition {
+
+    color: $primary;
+    font-size: small;
+
+    ion-label{
+      margin: 5px 8px 5px 0;
+    }
+    h4{
+      font-size: small;
+      color: $dark;
+    }
+  }
+  .chart-type{
+    .toolbar-background {
+      border-color: #b2b2b2;
+      background: $white;
+    }
+  }
+
+  .custom-scorecard {
+    color: $primary;
+    //margin: 0px 5px;
+    //padding: 5px 0px;
+    width: calc(100%);
+    //border-bottom: solid thin $dark;
+
+    font-size: small;
+
+    ion-label{
+      margin: 8px 8px 8px 0;
+    }
+    h4{
+      font-size: small;
+      color: $dark;
+    }
+    h6 {
+      font-size: smaller;
+    }
+  }
+
+  h2 {
+    color: $black;
+    font-weight: bold;
+  }
+  ion-card{
+    margin: 3px;
+    width: calc(100% - 6px) ;
+    ion-card-content{
+      padding: 0px;
+      height:100%;
+    }
+  }
+  ion-list{
+    .item{
+
+      min-height: 1.2rem;
+    }
+    ion-list-header {
+      background-color: $badge-background;
+    }
+  }
+
+
+  .menu-button {
+    box-shadow: none;
+    //padding:0;
+
+    button .bar-button-default {
+      font-size: 1.0rem !important;
+    }
+  }
+
+    .hole-item ion-label {
+        margin:0;
+    }
+}

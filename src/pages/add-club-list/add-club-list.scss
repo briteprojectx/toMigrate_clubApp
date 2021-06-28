@@ -1,0 +1,21 @@
+add-club-list-page {
+  .list-header {
+    font-size: $font-size-base * 1.2;
+    text-align: center;
+  }
+  .course-name{
+    color:#28BB5B;
+    font-weight:bold !important;
+    white-space:normal;
+    font-size: $font-size-base;
+  }
+  .course-detail{
+    white-space: normal;
+    font-size: $font-size-base*0.8;
+  }
+  .course-distance{
+    padding-right:10px;
+    font-size: $font-size-base*0.7;
+  }
+
+}

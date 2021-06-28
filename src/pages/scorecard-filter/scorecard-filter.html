@@ -1,0 +1,155 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button large icon-only (click)="cancel()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Options</ion-title>
+        <ion-buttons end>
+
+            <button ion-button icon-only large (click)="onApplyClick()">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="scorecard-filter">
+    <ion-list radio-group [(ngModel)]="scorecardType">
+      <ion-item-divider >
+          Show me scorecards for
+      </ion-item-divider >
+        <!-- <ion-list-header class="list-header">Show me scorecards for</ion-list-header> -->
+        <ion-item>
+            <ion-label>All</ion-label>
+            <ion-radio value="ALL"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Competition</ion-label>
+            <ion-radio value="COMPETITION"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Non-competition</ion-label>
+            <ion-radio value="NORMAL"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+    <ion-list radio-group [(ngModel)]="searchCriteria.searchType">
+
+        <ion-item-divider>
+            Show me scorecards for
+        </ion-item-divider>
+
+        <ion-item>
+            <ion-label>Latest 10</ion-label>
+            <ion-radio checked="true" value="latest"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>All</ion-label>
+            <ion-radio value="all"></ion-radio>
+        </ion-item>
+        <ion-item *ngIf="searchCriteria.searchType == 'all'">
+            <ion-label>Period</ion-label>
+            <ion-select [(ngModel)]="searchCriteria.periodType" (ionChange)="onPeriodTypeChange($event)"
+                        interface="action-sheet">
+                <ion-option value="NONE" checked="true">None</ion-option>
+                <ion-option value="DAY">Days</ion-option>
+                <ion-option value="WEEK">Weeks</ion-option>
+                <ion-option value="MONTH">Months</ion-option>
+                <ion-option value="YEAR">Years</ion-option>
+                <ion-option value="CUSTOM">Custom</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item
+                *ngIf="searchCriteria.periodType !== 'NONE' && searchCriteria.periodType !== 'CUSTOM' && searchCriteria.searchType == 'all'">
+            <ion-label *ngIf="searchCriteria.periodType === 'DAY'" class="range-label">Number of days :
+                {{searchCriteria.periodLength}}
+            </ion-label>
+            <ion-label *ngIf="searchCriteria.periodType === 'WEEK'" class="range-label">Number of weeks :
+                {{searchCriteria.periodLength}}
+            </ion-label>
+            <ion-label *ngIf="searchCriteria.periodType === 'MONTH'" class="range-label">Number of months :
+                {{searchCriteria.periodLength}}
+            </ion-label>
+            <ion-label *ngIf="searchCriteria.periodType === 'YEAR'" class="range-label">Number of years :
+                {{searchCriteria.periodLength}}
+            </ion-label>
+            <!--<ion-input type="number" [(ngModel)]="searchCriteria.periodLength" ></ion-input >-->
+
+            <ion-range min="1" [max]="maxPeriodLength()" step="1" pin="true" primary
+                       [(ngModel)]="searchCriteria.periodLength">
+                <ion-label range-left>0</ion-label>
+                <ion-label range-right>{{maxPeriodLength()}}</ion-label>
+            </ion-range>
+
+        </ion-item>
+        <ion-item  *ngIf="searchCriteria.periodType == 'CUSTOM' && searchCriteria.searchType == 'all'">
+            <ion-label danger>* Dates are not stored across sessions</ion-label>
+        </ion-item>
+
+        <button ion-item (click)="onStartDateClick()"
+                *ngIf="searchCriteria.periodType == 'CUSTOM' && searchCriteria.searchType == 'all' && platform.is('cordova')">
+            <span>Start Date:</span>
+            <span style="float:right">{{startDate | date}}</span>
+        </button>
+        <button ion-item (click)="onEndDateClick()"
+                *ngIf="searchCriteria.periodType == 'CUSTOM' && searchCriteria.searchType == 'all' && platform.is('cordova')">
+            <span>Start Date:</span>
+            <span style="float:right">{{endDate | date}}</span>
+        </button>
+        <button ion-item
+                *ngIf="searchCriteria.periodType=='CUSTOM' && searchCriteria.searchType=='all' && !platform.is('cordova')" >
+            <span >Start Date:</span >
+                       <ion-label>Date From :</ion-label>
+                       <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="isoStartDate" min="2008-01-01" max="2016"></ion-datetime>
+        </button >
+        <button ion-item
+                *ngIf="searchCriteria.periodType=='CUSTOM' && searchCriteria.searchType=='all' && !platform.is('cordova')" >
+            <span >End Date:</span >
+                       <ion-label>Date To :</ion-label>
+                       <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="isoEndDate" min="2008" max="2019-12-31"></ion-datetime>
+
+        </button >
+    </ion-list>
+    <ion-list>
+        <ion-item-divider>
+            Limit scorecard list by
+        </ion-item-divider>
+
+        <ion-item>
+            <ion-label>My Favourite Clubs</ion-label>
+            <ion-checkbox [(ngModel)]="searchCriteria.onlyFavorites"></ion-checkbox>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Nearby Clubs (within 10km)</ion-label>
+            <ion-checkbox [(ngModel)]="searchCriteria.searchWithinDistance"></ion-checkbox>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Clubs I'm a member of</ion-label>
+            <ion-checkbox [(ngModel)]="searchCriteria.clubsWithMembership"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+                <ion-label>Country</ion-label>
+                <ion-select interface="alert" [(ngModel)]="searchCriteria.countryId">
+                        <ion-option value="">All Countries</ion-option>
+                    <ion-option *ngFor="let country of countryList"  [value]="country.id">
+                        <!-- <img style="max-height:1.5em" src="getFlagUrl(country.flagUrl)" /> -->
+                         {{country.name}}</ion-option>
+                        </ion-select >
+              </ion-item>
+    </ion-list>
+    <!-- <ion-list>
+        <ion-item-divider *ngIf="searchCriteria.searchType == 'all'">
+            Period filter
+        </ion-item-divider>
+
+
+    </ion-list> -->
+
+
+</ion-content>

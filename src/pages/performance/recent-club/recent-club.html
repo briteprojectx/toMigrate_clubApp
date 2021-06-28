@@ -1,0 +1,97 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>{{"SelectClub.title" | translate}}</ion-title>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-searchbar [(ngModel)]="searchQuery" debounce="1000" (ionInput)="onSearchInput($event)"
+                   [showCancelButton]="true" dark>
+    </ion-searchbar>
+</ion-header>
+
+
+<ion-content class="select-club">
+    <button ion-button clear small (click)="searchClubs()" style="width:100%">
+        Want to see a full list of clubs? Tap here.
+    </button>
+    <div *ngIf="!searchMode">
+        <ion-list>
+            <ion-list-header class="list-header">{{"SelectClub.RecentClubs" | translate}}</ion-list-header>
+            <button ion-item *ngFor="let club of recentClubs" (click)="clubSelected($event, club)">
+                <ion-avatar class="avatar-left custom-avatar">
+                    <img src="{{club.clubImage}}" onerror="this.src = 'img/course-default.png'"/>
+                </ion-avatar>
+                <h3 class="course-name">{{club.clubName}}</h3>
+                <p class="course-detail">{{club.address}}</p>
+                <!--span class="course-distance" item-right><p class="course-distance">{{clubDistance(club)}}</p></span-->
+            </button>
+
+            <!--<button (click)="searchClubs()" ion-item><span item-right padding>Show All Clubs</span></button>-->
+
+            <!-- <ion-list-header class="list-header">{{"SelectClub.NearBy" | translate}}</ion-list-header> -->
+            <ion-item-divider>{{"SelectClub.NearBy" | translate}}</ion-item-divider>
+        <ion-item >
+                <ion-label item-left style="max-width:8em;">Club distance in<br><span>{{searchDistance}} KM</span></ion-label>
+                <!-- <span primary padding>{{searchDistance}}</span> -->
+                  <ion-range min="10" max="250" step="10" pin="true" snaps="true"
+                  debounce="500"
+                 (ionChange)="onRefreshClick(null)"
+                 [(ngModel)]="searchDistance">
+                 <!-- value="searchDistance"  -->
+                    <ion-label range-left>10</ion-label>
+                    <ion-label range-right>250</ion-label>
+                  </ion-range>
+        </ion-item>
+            <button ion-item *ngFor="let club of nearByClubs" (click)="clubSelected($event, club)">
+                <ion-avatar class="avatar-left custom-avatar">
+                    <img src="{{club.clubImage}}" onerror="this.src = 'img/course-default.png'"/>
+                </ion-avatar>
+                <h3 class="course-name">{{club.clubName}}</h3>
+                <p class="course-detail">{{club.address}}</p>
+                <span class="course-distance" item-right><p class="course-distance">{{clubDistance(club)}}</p></span>
+            </button>
+
+        </ion-list>
+    </div>
+    <div *ngIf="searchMode">
+        <ion-list *ngIf="clubList.totalItems == 0">
+            <ion-item>No club(s) found</ion-item>
+        </ion-list>
+        <ion-list *ngIf="clubList.totalItems > 0">
+
+            <button ion-item *ngFor="let club of clubList.clubs;let idx=index" (click)="clubSelected($event, club)">
+                <ion-avatar class="avatar-left custom-avatar">
+                    <img src="{{club.clubImage}}" onerror="this.src = 'img/course-default.png'"/>
+                </ion-avatar>
+                <h3 class="course-name">{{club.clubName}}</h3>
+                <p class="course-detail">{{club.address}}</p>
+            </button>
+
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                             threshold="30%">
+            <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    loadingText="Loading more data..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+</ion-content>
+<ion-footer *ngIf="multiSelect">
+    <ion-item style="background-color:#ddf6d6;" *ngIf="multiSelect && multiClub && multiClub.length > 0">
+        <span item-left><strong>{{getMultiClubText().slice(0,-1)}}</strong></span>
+        <button (click)="clearMultiClub()" item-right ion-button color="danger" outline>
+        <!-- <i class="fas fa-users-slash"></i> -->
+        <i class="fas fa-fw fa-user-times"></i>
+    </button>
+    </ion-item>
+    <button *ngIf="multiSelect && multiClub && multiClub.length > 0" ion-button block color="secondary" 
+        (click)="selectMultiClubs()">Apply to these club(s)</button>
+</ion-footer>
+<!-- <ion-footer>
+    <ion-toolbar position="bottom" light *ngIf="openedModal">
+        <button block danger (click)="close()">Cancel</button>
+    </ion-toolbar>
+</ion-footer> -->

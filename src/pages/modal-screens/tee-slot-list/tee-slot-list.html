@@ -1,0 +1,64 @@
+<ion-header >
+    <ion-navbar class="mg2u-navbar" hideBackButton >
+        <ion-title >Select new slot</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <ion-list *ngIf="changeType==='slot'">
+        <div *ngFor="let course of startCourses;let i = index" >
+            <ion-list-header color="darkyellow">{{course.name}}</ion-list-header >
+                <ng-container *ngFor="let slot of teeSlot">
+            <button ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot,'slot')">
+                <!-- <span *ngIf="!slot.available; else available" style="font-style: italic; color:red">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </span>
+            <ng-template #available style="color:green">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                    <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                    <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </ng-template> -->
+            <span [ngClass]="getSlotClass(slot)">
+                <ion-row col-12>
+                    <ion-col col-4>Slot #{{slot.slot.slotNo}}</ion-col>
+                    <ion-col col-4>{{getSlotDetails(slot,'time')}}</ion-col>
+                    <ion-col col-4>{{slot.available?'Available':'Not Available' }}</ion-col>
+                </ion-row>
+            <!-- <ion-label>Slot #{{slot.slot.slotNo}} | {{getSlotDetails(slot,'time')}} | {{slot.available?'Available':'Not Available' }}</ion-label> -->
+            </span>
+        </button >
+        </ng-container>
+    </div>
+
+    </ion-list >
+    <ion-list *ngIf="changeType==='course'">
+        <div *ngFor="let slot of teeSlot">
+            <!-- *ngFor="let course of startCourses;let i = index" -->
+            <button ion-item (click)="changeSlot(slot,'course')" [ngClass]="getSlotClass(slot)">{{slot.slot.startCourse.name}}</button>
+                <!-- <ng-container *ngFor="let slot of teeSlot">
+            <button clear full ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot)">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+                </button >
+        </ng-container> -->
+    </div>
+
+    </ion-list >
+</ion-content >
+<ion-footer style="background:white">
+    <button full outline ion-button color="primary" style="font-weight: bold">
+        Current Slot Details : 
+        {{getCurrentSlotDetails('courseName')}}
+        {{getCurrentSlotDetails('time')}}
+    </button>
+    
+    <button (click)="close()"  ion-button full color='danger'>Cancel</button>
+</ion-footer>

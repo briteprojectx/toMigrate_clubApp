@@ -1,0 +1,56 @@
+{
+    "en":{
+      "EditProfile": {
+        "title": "Profile",
+        "FirstName": "First Name",
+        "LastName": "Last Name",
+        "Email": "Email",
+        "Whatsapp": "Whatsapp",
+        "ChangePasswordMsg": "You are changing email. Please enter new password to proceed",
+        "NewPassword": "New Password",
+        "CurrentPassword": "Copyright",
+        "Mobile": "Mobile",
+        "CopyrightLine2": "All right reserved",
+        "DevelopedBy": "Developed by",
+        "MinLength": "Min length of 10 digits",
+        "DOB": "Date of Birth",
+        "Nationality": "Nationality",
+        "Residing": "Residing In",
+        "T-Off": "T-Off",
+        "Black": "Black",
+        "Blue": "Blue",
+        "White": "White",
+        "Red": "Red",
+        "Male": "Male",
+        "Female": "Female",
+        "UpdateProfile": "Update Profile"
+      }
+    },
+    "my":{
+      "EditProfile": {
+        "title": "Profile",
+        "FirstName": "First Name",
+        "LastName": "Last Name",
+        "Email": "Email",
+        "Whatsapp": "Whatsapp",
+        "ChangePasswordMsg": "You are changing email. Please enter new password to proceed",
+        "NewPassword": "New Password",
+        "CurrentPassword": "Copyright",
+        "Mobile": "Mobile",
+        "CopyrightLine2": "All right reserved",
+        "DevelopedBy": "Developed by",
+        "MinLength": "Min length of 10 digits",
+        "DOB": "Date of Birth",
+        "Nationality": "Nationality",
+        "Residing": "Residing In",
+        "T-Off": "T-Off",
+        "Black": "Black",
+        "Blue": "Blue",
+        "White": "White",
+        "Red": "Red",
+        "Male": "Male",
+        "Female": "Female",
+        "UpdateProfile": "Update Profile"
+      }
+      }
+  }

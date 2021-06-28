@@ -1,0 +1,16 @@
+
+.hole-goolemap{
+
+  /*
+  * The div containing the google map
+  */
+  .map-container{
+    height: 85%;
+    width:100%;
+    background-color: $skyblue;
+    z-index: 99999;
+  }
+  .details{
+    margin: 10px 0px 0px 0px;
+  }
+}

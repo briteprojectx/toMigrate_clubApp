@@ -1,0 +1,10 @@
+{
+  "en":{
+    "ScorecardDisplay": {
+      "Title": "Scorecard",
+      "ReloadScorecard":"Reload Scorecard",
+      "ReloadTitle": "Reload Scorecard",
+      "ReloadMessage": "This will reload the scorecard from server. Do you want to continue?"
+    }
+  }
+}

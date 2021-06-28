@@ -1,0 +1,246 @@
+scorecard-display-page {
+    .card-ios, card-md{
+        width: calc(100% - 20px);
+    }
+    background-color: $white;
+    .over-par{
+        color: $secondary;
+        margin-left: -4px;
+    }
+    .under-par {
+        color: $danger;
+        margin-left: -4px;
+    }
+    ion-card {
+        background-color: #424242;
+        margin: 5px 10px;
+        width: calc(100% - 20px);
+    }
+    ion-grid.grid{
+        padding: 0px;
+    }
+    ion-row {
+        padding: 0px;
+        margin-top: 0;
+    }
+
+    ion-row:last-child {
+        padding-bottom: 5px;
+    }
+
+    [col] {
+        padding: 2px 0px 2px 0px;
+        text-align: center;
+
+    }
+    ion-item {
+        background: transparent;
+        padding: 0px;
+        ion-label {
+            margin: 0px;
+        }
+    }
+    .swiper-wrapper {
+        margin-bottom: 20px;
+    }
+    .score-par {
+        background-color: $par-color;
+        color: black;
+    }
+    .score-eagle {
+        background-color: $eagle-color;
+        color: white;
+    }
+    .score-birdie {
+        background-color: $birdie-color;
+        color: white;
+    }
+    .score-bogey {
+        //background-color: #FFFFFF;
+        color: black;
+    }
+    .score-albatross {
+
+    }
+    .hole-in-one {
+        color: white;
+        background-color: black;
+    }
+    .title-panel {
+        background-color: $page-sub-title;
+        text-align: center;
+    }
+    .competition-name {
+        font-weight: bold;
+        font-size: small;
+        white-space: normal;
+        margin: 0;
+    }
+    .scoring-format {
+        font-size: small;
+        font-weight: bold;
+    }
+    .club-name {
+        font-size: x-small;
+        margin: 0;
+    }
+    .course-names {
+        font-size: x-small;
+        margin: 0;
+    }
+
+    .flight-details {
+        margin: 0;
+    }
+
+    .key-legends {
+        color: $black;
+        margin: 5px 10px;
+        ion-col {
+            text-align: left;
+            border: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 1.1rem;
+        }
+        img{
+            vertical-align: middle;
+        }
+    }
+
+    .scorecard-course {
+        text-align: left;
+        margin-left: 10px;
+        margin-bottom: 3px;
+        font-size: small;
+    }
+    .scorecard {
+        border-radius: 5px;
+        border: solid thin darkgrey;
+        //box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 10px 11px -3px rgba(166, 163, 166, 1);
+        margin: 5px 10px;
+        width: calc(100% - 20px);
+        ion-card-content {
+            padding: 0px;
+            line-height: 1.2;
+        }
+        ion-col {
+            font-size: small;
+        }
+        .scorecard-header {
+            background-color: $table-title-background-color !important;
+            padding-top: 0px;
+            padding-bottom: 0;
+            color: $table-title-text-color;
+        }
+
+        .name-col {
+            text-align: left !important;
+            font-size: smaller;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-left: 2px;
+            //min-width: 35%;
+        }
+        .header-col {
+            //min-width: 35%;
+        }
+        .hole-par-row {
+            background-color: $par-color !important;
+            color: black !important;
+        }
+        .hole-index-row {
+            color: white !important;
+            background-color: $dark;
+        }
+        .player-row {
+            background-color: white !important;
+            .player-name {
+                font-size: x-small;
+                padding: 2px 0px 2px 0px
+                //padding-top: 5px;
+            }
+        }
+    }
+    .player-totals {
+        border-radius: 5px;
+        margin: 10px 0px 0px 10px;
+        border: solid thin darkgrey;
+        width: calc(100% - 20px);
+        //box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 10px 11px -3px rgba(166, 163, 166, 1);
+        ion-grid {
+            width: 100%;
+            margin: 0px;
+        }
+        ion-col {
+            padding: 5px 0px 0px 0px;
+            margin: 0px;
+            font-size: small;
+            text-align:left;
+            &.handicap{
+                color: $secondary;
+                font-weight: bold;
+                text-align: center;
+            }
+            &.main-column {
+                text-align: left;
+                padding-left: 3px;
+                font-size: x-small;
+                white-space: normal;
+            }
+        }
+
+        .header-row {
+            background-color: $table-title-background-color;
+            color: $table-title-text-color;
+            font-weight: bold;
+            .net, .gross {
+                width: 30%;
+            }
+            .main-column {
+                font-size: small;
+            }
+        }
+        .sub-header {
+            background-color: $dark;
+            color: white;
+            font-weight: normal;
+            .main-column {
+                font-size: small;
+            }
+        }
+
+    }
+
+    img {
+        max-width: 12px;
+        max-height: 12px;
+    }
+
+    .scorecard-net {
+        font-size: small;
+        font-weight: bold;
+    }
+    .handicap-info {
+        font-size: xx-small;
+    }
+}
+
+.delete-scores-confirm {
+    font-size: small;
+    p {
+        padding: 10px 5px;
+    }
+    .game-details {
+        i {
+            color: $danger;
+        }
+        span {
+            margin-top: 5px;
+        }
+    }
+}

@@ -1,0 +1,310 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>Search Tee Times</ion-title>
+    </ion-navbar>
+    <!-- <ion-toolbar color = "light">
+        <ion-segment [(ngModel)] = "bookings" color = "warning" padding>
+            <ion-segment-button (click) = "setBookingType(1)" value = "search">
+                SEARCH TEE TIMES
+            </ion-segment-button>
+            <ion-segment-button (click) = "setBookingType(2)" value = "mybookings">
+                MY BOOKINGS
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar> -->
+</ion-header>
+<ion-content>
+    <ion-refresher pullMin = "100" (ionRefresh) = "onRefresh($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = ""
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-list style="margin-top:1em">
+            <!-- <ion-item class="page-sub-title align-center">
+                    <h3 style="font-weight:bold">
+                        Preferred criteria
+                    </h3>
+                </ion-item> -->
+            <ion-item >
+                    <h4 class="small-label">Club</h4>
+                    <p (click)="onSelectClub()">{{selectedClub}}</p>
+                    <!-- <ion-input type="text" placeholder="Choose a club" readonly clearInput="true" (ionInput)="onSelectClub()" 
+                    [(ngModel)]="selectedDates"></ion-input> -->
+
+                    <!-- block -->
+                    <!-- <ion-input type="text" placeholder="Choose a club"></ion-input> -->
+                  </ion-item>
+                  <ion-item>
+                      <h4 class="small-label">Date</h4>
+                        <!-- <ion-label color="primary" stacked>Date</ion-label> -->
+                        <p (click)="onSelectDates()">{{selectedDates}}</p>
+                        <!-- <ion-input type="text" placeholder="Choose preferred booking date" clearInput="true" (click)="onSelectDates()" [(ngModel)]="selectedDates"></ion-input> -->
+                      </ion-item>
+                      <ion-item>
+                            <!-- <ion-label color="primary" stacked>Tee Off Time</ion-label>
+                            <ion-input type="text" placeholder="Choose preferred booking tee off time"></ion-input> -->
+                            <h4 class="small-label">Tee Off Time</h4>
+                            <!-- <ion-label color="primary" stacked>Date</ion-label> -->
+                            <p (click)="onSelectDates()">{{selectedTimes}}</p>
+    
+                          </ion-item>
+                          <ion-item>
+                                <ion-label>More preference</ion-label>
+                                <ion-toggle [(ngModel)]="togglePreference"></ion-toggle>
+                              </ion-item>
+    </ion-list>
+    <ion-list *ngIf="togglePreference">
+            <ion-item>
+                    <ion-label color="primary" stacked>Golfers / Players&nbsp;
+                        <ion-segment [(ngModel)]="playersNo" color="secondary">
+                            <ion-segment-button value="1">
+                              One
+                            </ion-segment-button>
+                            <ion-segment-button value="2">
+                              Two
+                            </ion-segment-button>
+                            <ion-segment-button value="3">
+                                    Three
+                                  </ion-segment-button>
+                                  <ion-segment-button value="4">
+                                    Four
+                                  </ion-segment-button>
+                          </ion-segment></ion-label>
+                    
+                  </ion-item>
+                  
+                  <ion-item>
+                        <ion-label color="primary" stacked>Price Range per pax (RM)&nbsp;Max : {{priceRange}}</ion-label>
+                        <!-- {{priceRange.lower}} to {{priceRange.upper}} -->
+                        <ion-range [min]="priceMin" [max]="priceMax"
+                        [(ngModel)]="priceRange" (ionChange)="onPriceRange(null)" step="20" snaps="true" pin="true">
+                        <!-- dualKnobs="true"  -->
+                        <!-- min="0" max="500"  -->
+                        <ion-label range-left>{{priceMin}}</ion-label>
+                        <ion-label range-right>{{priceMax}}</ion-label>
+                    </ion-range>
+                        <!-- <ion-range min="10" max="250" step="10" pin="true" snaps="true"
+                  debounce="500"
+                 (ionChange)="onRefreshClick(null)"
+                 [(ngModel)]="searchDistance"> -->
+                 <!-- value="searchDistance"  -->
+                    
+                  <!-- </ion-range> -->
+                      </ion-item>
+                      <ion-item>
+                            <ion-item>
+                                    <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                        <ion-segment-button value="9HOLES">
+                                            9 Holes
+                                        </ion-segment-button>
+                                        <ion-segment-button value="18HOLES">
+                                            18 Holes
+                                        </ion-segment-button>
+                                    </ion-segment>
+                                </ion-item>
+                            
+                          </ion-item>
+                      <ion-item>
+                            <ion-label color="primary" stacked>First Nine</ion-label>
+                            <ion-input type="text" placeholder="Choose preferred first nine"></ion-input>
+                          </ion-item>
+    </ion-list>
+    <ion-list [hidden]="true">
+            <button icon-left class="gradient" ion-item (click)="toggleBookingClick(1)">
+                    <!-- <span class="mg-ph mg-edit"></span> -->
+                    1. Tee Slot Information
+                    <ion-badge item-right class="custom-badge"><i class="fa fa-fw fa-check-circle "></i></ion-badge>
+                    <!-- <ion-badge item-right class="custom-badge"><i class="fa fa-fw fa-exclamation-circle "></i></ion-badge> -->
+
+                </button>
+        <!-- <ion-list-header>
+            Tee Slot Information
+        </ion-list-header> -->
+        <ion-card *ngIf="grpTeeSlotInfo">
+                <ion-card-content>
+                    <ion-item style="text-align:center">
+                            Saturday, 25 April 2020<br>07:45 AM
+                    </ion-item>
+                    <ion-item>
+                        Tasik Puteri Golf & Country Sdn Bhd
+                    </ion-item>
+                            <ion-item>
+                                <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                    <ion-segment-button value="9HOLES">
+                                        9 Holes
+                                    </ion-segment-button>
+                                    <ion-segment-button value="18HOLES">
+                                        18 Holes
+                                    </ion-segment-button>
+                                </ion-segment>
+                            </ion-item>
+                            <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                    <ion-item>
+                        <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                        <ion-badge item-right class="custom-badge">Active</ion-badge>
+                    </ion-item>
+                        
+                </ion-card-content>
+            </ion-card>
+        <ion-list-header (click)="toggleBookingClick(2)">
+                Player Details
+            </ion-list-header>
+            <ion-card *ngIf="grpPlayerDetails">
+                    <ion-card-content>
+                        <ion-item style="text-align:center">
+                                Golfers / Players
+                        </ion-item>
+                        <ion-item>
+                            Tasik Puteri Golf & Country Sdn Bhd
+                        </ion-item>
+                                <ion-item>
+                                    <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                        <ion-segment-button value="9HOLES">
+                                            9 Holes
+                                        </ion-segment-button>
+                                        <ion-segment-button value="18HOLES">
+                                            18 Holes
+                                        </ion-segment-button>
+                                    </ion-segment>
+                                </ion-item>
+                                <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                        <ion-item>
+                            <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                            <ion-badge item-right class="custom-badge">Active</ion-badge>
+                        </ion-item>
+                            
+                    </ion-card-content>
+                </ion-card>
+            <ion-list-header (click)="toggleBookingClick(3)">
+                    Booking Additionals
+                </ion-list-header>
+                <ion-card *ngIf="grpAdditionals">
+                        <ion-card-content>
+                            <ion-item style="text-align:center">
+                                    Saturday, 25 April 2020<br>07:45 AM
+                            </ion-item>
+                            <ion-item>
+                                Tasik Puteri Golf & Country Sdn Bhd
+                            </ion-item>
+                                    <ion-item>
+                                        <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                            <ion-segment-button value="9HOLES">
+                                                9 Holes
+                                            </ion-segment-button>
+                                            <ion-segment-button value="18HOLES">
+                                                18 Holes
+                                            </ion-segment-button>
+                                        </ion-segment>
+                                    </ion-item>
+                                    <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                            <ion-item>
+                                <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                                <ion-badge item-right class="custom-badge">Active</ion-badge>
+                            </ion-item>
+                                
+                        </ion-card-content>
+                    </ion-card>
+                <ion-list-header (click)="toggleBookingClick(4)">
+                        Payment
+                    </ion-list-header>
+                    <ion-card *ngIf="grpPayment">
+                            <ion-card-content>
+                                <ion-item style="text-align:center">
+                                        Saturday, 25 April 2020<br>07:45 AM
+                                </ion-item>
+                                <ion-item>
+                                    Tasik Puteri Golf & Country Sdn Bhd
+                                </ion-item>
+                                        <ion-item>
+                                            <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                                <ion-segment-button value="9HOLES">
+                                                    9 Holes
+                                                </ion-segment-button>
+                                                <ion-segment-button value="18HOLES">
+                                                    18 Holes
+                                                </ion-segment-button>
+                                            </ion-segment>
+                                        </ion-item>
+                                        <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                                <ion-item>
+                                    <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                                    <ion-badge item-right class="custom-badge">Active</ion-badge>
+                                </ion-item>
+                                    
+                            </ion-card-content>
+                        </ion-card>
+                    <ion-list-header (click)="toggleBookingClick(5)">
+                            Check-in
+                        </ion-list-header>
+                        <ion-card *ngIf="grpCheckIn">
+                                <ion-card-content>
+                                    <ion-item style="text-align:center">
+                                            Saturday, 25 April 2020<br>07:45 AM
+                                    </ion-item>
+                                    <ion-item>
+                                        Tasik Puteri Golf & Country Sdn Bhd
+                                    </ion-item>
+                                            <ion-item>
+                                                <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                                    <ion-segment-button value="9HOLES">
+                                                        9 Holes
+                                                    </ion-segment-button>
+                                                    <ion-segment-button value="18HOLES">
+                                                        18 Holes
+                                                    </ion-segment-button>
+                                                </ion-segment>
+                                            </ion-item>
+                                            <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                                    <ion-item>
+                                        <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                                        <ion-badge item-right class="custom-badge">Active</ion-badge>
+                                    </ion-item>
+                                        
+                                </ion-card-content>
+                            </ion-card>
+                        <ion-list-header (click)="toggleBookingClick(6)">
+                                Feedback / Comment
+                            </ion-list-header>
+                            <ion-card *ngIf="grpFeedback">
+                                    <ion-card-content>
+                                        <ion-item style="text-align:center">
+                                                Saturday, 25 April 2020<br>07:45 AM
+                                        </ion-item>
+                                        <ion-item>
+                                            Tasik Puteri Golf & Country Sdn Bhd
+                                        </ion-item>
+                                                <ion-item>
+                                                    <ion-segment no-padding [(ngModel)]="holesPlayed">
+                                                        <ion-segment-button value="9HOLES">
+                                                            9 Holes
+                                                        </ion-segment-button>
+                                                        <ion-segment-button value="18HOLES">
+                                                            18 Holes
+                                                        </ion-segment-button>
+                                                    </ion-segment>
+                                                </ion-item>
+                                                <ion-item>First Nine Course <ion-badge item-right class="custom-badge">Edit</ion-badge></ion-item>
+                                        <ion-item>
+                                            <ion-badge item-left class="custom-badge">RM 85</ion-badge>
+                                            <ion-badge item-right class="custom-badge">Active</ion-badge>
+                                        </ion-item>
+                                            
+                                    </ion-card-content>
+                                </ion-card>
+    </ion-list>
+       
+
+</ion-content>
+<ion-footer>
+    <!-- <ion-item class="button-panel" > -->
+            <!-- <button ion-button icon-left color="primary" (click)="onGetFlightClick()" >
+                <ion-icon name="checkmark-outline"></ion-icon>
+                Select Group
+            </button > -->
+            <button ion-button block (click)="onSearchTeeTime()">Search</button>
+        <!-- </ion-item > -->
+    
+</ion-footer>

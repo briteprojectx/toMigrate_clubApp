@@ -1,0 +1,62 @@
+<ion-header >
+  <ion-toolbar left>
+  <ion-row no-padding center left>
+    <ion-col width-33 >
+    <button class="nav-back-button" (click)="close()" style="box-shadow:none">
+          <ion-icon  style="font-size:3.2rem" name="arrow-back"></ion-icon><div showWhen="ios">Back</div>
+        </button>
+      </ion-col>
+      <ion-col width-67>    <ion-title>{{"LeaderboardFiltersPage.title"|translate}}</ion-title></ion-col>
+  </ion-row>
+        <ion-buttons end >
+          <button ion-button icon-only (click)="close()" >
+              <ion-icon name="close-circle>"></ion-icon>
+          </button>
+          <button  (click)="onApplyClick()" >
+              <ion-icon name="checkmark-circle>"></ion-icon>
+          </button>
+        </ion-buttons >
+    </ion-toolbar >
+</ion-header >
+
+
+<ion-content >
+
+    <ion-list radio-group [(ngModel)]="searchType" >
+
+        <ion-item *ngIf="totalRounds > 1" >
+            <ion-label >{{"LeaderboardFiltersPage.roundNoText"|translate}}</ion-label >
+            <ion-select interface="action-sheet" [(ngModel)]="selectedRoundNo" >
+                <!--ion-option value="0" >{{"LeaderboardFiltersPage.overall"|translate}}</ion-option -->
+                <div *ngFor="let r of roundList" >
+                    <ion-option value="{{r}}" ><span *ngIf="r==0">{{"LeaderboardFiltersPage.overall"|translate}}</span><span *ngIf="r>0">{{r}}</span></ion-option >
+                </div >
+            </ion-select >
+        </ion-item >
+        <ion-item >
+
+            <ion-label >{{"LeaderboardFiltersPage.sortByText"|translate}}</ion-label >
+            <ion-select  [(ngModel)]="selectedOrderBy" interface="action-sheet"> <!---->
+                <ion-option value="2">Gross</ion-option ><!--{{"LeaderboardFiltersPage.gross"|translate}}-->
+                <ion-option *ngIf='scoringFormat != "Stableford" && scoringFormat != "Peoria"' value="3" >
+                    {{"LeaderboardFiltersPage.net"|translate}}
+                </ion-option >
+                <ion-option *ngIf='scoringFormat == "Stableford" || scoringFormat == "Peoria"' value="4" >
+                    {{"LeaderboardFiltersPage.net"|translate}}
+                </ion-option >
+
+            </ion-select >
+        </ion-item >
+
+        <ion-item >
+            <ion-label >Group By</ion-label >
+            <ion-select [(ngModel)]="selectedCategoryId" interface="action-sheet">
+                <ion-option value="" >No category</ion-option >
+                <div *ngFor="let c of categories" >
+                    <ion-option *ngIf="isScoringCategory(c)" value="{{c.categoryId}}" >{{c.categoryName}}</ion-option >
+                </div >
+            </ion-select >
+        </ion-item >
+    </ion-list >
+
+</ion-content >

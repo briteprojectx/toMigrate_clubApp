@@ -1,0 +1,809 @@
+//calendar css
+booking-calendar {
+  @import "../../../app/fontawesome-free/scss/fontawesome.scss";
+  @import "../../../app/fontawesome-free/scss/solid.scss";
+  @import "../../../app/fontawesome-free/scss/brands.scss";
+  @import "../../../app/_mygolf_mixins";
+  @import "ionicons";
+  // @import "../../../app/calendar-app";
+  // @use "./calendar-app";
+  
+  $base-font-size: 1rem !global;
+
+  .searchbar-ios,.searchbar-md {
+    padding: 0 8px;
+    min-height: 54px;
+    border-top: 0.55px solid transparent;
+    border-bottom: 0.55px solid rgba(0, 0, 0, 0.05);
+    // background: rgba(0, 0, 0, 0.2);
+  }
+
+  .scroll-content {
+    padding-bottom: 4rem !important;
+    padding-top: 1rem !important;
+    // height: 100% !important;
+    height: calc(100% - 7rem) !important;
+    // margin-top: 0 !important;
+  }
+
+  .scroller {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; // IE 10+
+    scrollbar-width: none; // Firefox
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      display: none; // Safari and Chrome
+    }
+  }
+
+  .cal-content {
+    ion-row {
+      margin: 0;
+      padding: 0;
+
+      ion-col {
+        margin: 0;
+        padding: 0;
+
+        ion-chip {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  ion-scroll {
+    height: 60px;
+
+    // overflow: hidden !important;
+    .chip {
+      transition: all .5s linear;
+      border-radius: 16px;
+      height: 32px;
+      font-size: 13px;
+      line-height: 32px;
+      background: none !important;
+      margin: auto !important;
+      border-bottom: rgb(0, 0, 0) !important;
+
+      ion-label {
+        padding: 0px 20px !important;
+      }
+    }
+
+    // .dayChip1{
+    //   background: linear-gradient(45deg, rgba(146,41,221,1), rgba(114,210,241,1) ) !important;
+    // }
+    // .dayChip2{
+    //   background: linear-gradient(45deg, rgb(41, 221, 110) , rgb(241, 144, 114) ) !important;
+    // }
+    // .dayChip3{
+    //   background: linear-gradient(45deg, rgb(221, 218, 41) , rgb(139, 241, 114) ) !important;
+    // }
+    // .dayChip4{
+    //   background: linear-gradient(45deg, rgb(44, 41, 221) , rgb(241, 207, 114) ) !important;
+    // }
+    // .dayChip5{
+    //   background: linear-gradient(45deg, rgb(221, 92, 41) , rgb(241, 233, 114) ) !important;
+    // }
+    .day-course {
+      height: 40px !important;
+      // width: max-content !important;
+    }
+
+    .daytime {
+      transition: all 2s;
+    }
+
+    .headerChip::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .cal_header {
+      border-bottom: 1px solid #ebe8e8;
+      background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fdepositphotos.com%2Fstock-photos%2Fgolf.html&psig=AOvVaw1MRQtS_JCtBO4DK7BJq9NK&ust=1594301594877000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOi957PiveoCFQAAAAAdAAAAABAD') !important;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .headerChip {
+      -ms-overflow-style: none !important;
+      /* IE and Edge */
+      scrollbar-width: none !important;
+      /* Firefox */
+    }
+
+    .chip:hover,
+    .active {
+      transform: scale(1.05);
+      background: rgba(9, 81, 236, 0.8) !important;
+
+      ion-label {
+        color: white !important;
+      }
+    }
+  }
+
+  .slotSearchbar {
+    transition: all .5s linear;
+    margin: 5px auto;
+    border-radius: 20px;
+    width: 200px;
+  }
+
+  .slotSearchbar:hover {
+    width: 100% !important;
+  }
+
+  :host ::ng-deep {
+    .monthview-container {
+      height: auto !important;
+    }
+
+    .event-detail-container {
+      display: none;
+    }
+
+    .monthview-primary-with-event {
+      background-color: white !important;
+    }
+
+    .monthview-selected {
+      background-color: var(--ion-color-success) !important;
+    }
+
+    .indicator-container {
+      font-size: 10px;
+      padding-left: 0.5rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .event-indicator {
+      // background: #579af1 !important;
+      width: 5px;
+      height: 5px;
+      border-radius: 5px;
+      display: table-cell;
+    }
+
+    .with-event {
+      // background-color: #d3efca !important;
+      border-radius: 15px;
+    }
+  }
+
+  .logo {
+    height: 50px;
+
+    img {
+      position: relative;
+      border-radius: 50%;
+      top: 10px;
+      left: -48px;
+    }
+
+    ion-title {
+      position: relative;
+      top: -38px;
+      left: 28px;
+      font-size: 24px;
+    }
+
+    ion-note {
+      font-size: 24px !important;
+    }
+  }
+
+  .toolbar-title-ios,
+  .toolbar-title-md {
+    font-size: 2.4rem;
+  }
+
+  .today {
+    button {
+      border-radius: 8px;
+      margin: auto;
+    }
+  }
+
+  .content_select {
+    width: 100% !important;
+
+    ion-select {
+      width: 100% !important;
+      margin: auto;
+    }
+
+    border-radius: 6px;
+    // border: 1px solid #dedede;
+  }
+
+  .prop_heading {
+    color: #579af1;
+    padding: 0;
+    margin-top: 2.7rem;
+    ;
+  }
+
+  .swiper-container {
+    height: 100%;
+  }
+
+  .event-detail-container[_ngcontent-c0] {
+    border: none !important;
+  }
+
+  .weekview-allday-content-wrapper {
+    height: 65px;
+  }
+
+  .monthview-primary-with-event[_ngcontent-c1] {
+    background-color: #f2f5f8 !important;
+    color: black !important;
+  }
+
+  .calendar-event-inner[_ngcontent-c0] {
+    background-color: #DDF6D6 !important; //#c6d2c248 !important;
+    color: black !important;
+    padding: 0.5rem;
+    text-align: center;
+
+    &.available {
+      background-color: #DDF6D6 !important; //#c6d2c248 !important;
+    }
+
+    &.booked {
+      background-color: #ff4343 !important; //#c6d2c248 !important;
+      color: white !important;
+      font-style: italic;
+    }
+  }
+
+  .calendar-event-inner {
+    background-color: #DDF6D6 !important; //#c6d2c248 !important;
+    color: black !important;
+    padding: 0.5rem;
+    text-align: center;
+
+    &.available {
+      background-color: #DDF6D6 !important; //#c6d2c248 !important;
+    }
+
+    &.booked {
+      background-color: #ff4343 !important; //#c6d2c248 !important;
+      color: white !important;
+      font-style: italic;
+    }
+  }
+
+  // .calendar-event {
+  //   background-color: #DDF6D6 !important;//#c6d2c248 !important;
+  //   color: black !important;
+  //   // padding:0.5rem;
+  //   text-align: center;
+  //   &.available {
+  //     background-color: #DDF6D6 !important;//#c6d2c248 !important;
+  //   }
+  //   &.booked {
+  //   background-color: red !important;//#c6d2c248 !important;
+  //   color: white !important;
+  //   }
+  // }
+
+
+  // .available {
+  //   background-color: #DDF6D6 !important;//#c6d2c248 !important;
+  // }
+  // .booked {
+  // background-color: red !important;//#c6d2c248 !important;
+  // color: white !important;
+  // }
+
+  .dayview-normal-event-container {
+    margin-top: 1rem;
+
+    .calendar-hour-column {
+      display: none;
+    }
+
+    tr {
+      // height: 5rem !important;
+    }
+  }
+
+  .dayview-primary-with-event[_ngcontent-c1] {
+    background-color: #ecf7f4;
+    color: rgb(0, 0, 0);
+  }
+
+  .sold_out {
+    color: rgba(247, 16, 16, 0.8) !important;
+    font-size: 9px;
+    font-weight: bold;
+  }
+
+  .slot_in {
+    color: rgba(6, 179, 29, 0.5) !important;
+    font-size: 9px;
+    font-weight: bold;
+  }
+
+  .hidetable {
+    display: none !important;
+  }
+
+  @media screen and (min-width:768px) {
+    .input-calendar {
+      width: 70px !important;
+      height: 42px !important;
+    }
+
+    .content_select {
+      width: 100% !important;
+    }
+
+    .sold_out {
+      color: rgba(247, 16, 16, 0.8) !important;
+      font-size: 13px !important;
+      font-weight: bold;
+    }
+
+    .slot_in {
+      color: rgba(6, 179, 29, 0.5) !important;
+      font-size: 14px !important;
+      font-weight: bold;
+    }
+  }
+
+  @media screen and (max-width:580px) {
+    //   .prop_heading{ 
+    //     margin: auto !important;
+    //   h1{
+    //    margin: auto !important;
+    //    font-size: 16px;
+    //  }
+    // }
+  }
+
+  // http://ionicframework.com/docs/theming/
+
+
+  // App Global Sass
+  // --------------------------------------------------
+  // Put style rules here that you want to apply globally. These
+  // styles are for the entire app and not just one component.
+  // Additionally, this file can be also used as an entry point
+  // to import other Sass files to be included in the output CSS.
+  //
+  // Shared Sass variables, which can be used to adjust Ionic's
+  // default Sass variables, belong in "theme/variables.scss".
+  //
+  // To declare rules for a specific mode, create a child rule
+  // for the .md, .ios, or .wp mode classes. The mode class is
+  // automatically applied to the <body> element in the app.
+
+  // *:not(ion-icon) {
+  //   // font-family: 'Ubuntu', sans-serif !important;
+  //     font-family: 'Varta', sans-serif !important;
+  // }
+
+  .ion-activatable {
+    position: relative;
+    overflow: hidden;
+  }
+
+  // ion-button,ion-item,ion-icon,ion-card{
+  //   cursor: pointer;
+  // }
+  // ion-content {
+  //   height: 100%;
+  //   background-image: url("../assets/wave.svg");
+  //   background-size: 100% 100%;
+  //   -o-background-size: 100% 100%;
+  //   -webkit-background-size: 100% 100%;
+  //   background-size: cover;
+  // }
+  .bg-white {
+    background: white !important;
+  }
+
+  /*shadow css*/
+
+  .shadow-1 {
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .shadow-2 {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .shadow-3 {
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .shadow-4 {
+    box-shadow: 0px 15px 50px 0px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .shadow-5 {
+    box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .bg-1 {
+    --background: linear-gradient(to bottom left, #495ec8, #37a8c6);
+  }
+
+  .popover-content {
+    width: 30vw;
+    padding: 10px;
+  }
+
+  /*shadow css  end*/
+
+  /* footer tabs css */
+  .menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    place-content: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // ion-footer{
+  //   height: 55px;
+  //   background: #E3F7DC;
+  //   border: none !important; 
+  //   ion-icon{
+  //     font-size: 2.2em !important;
+  //     margin: 5px;
+  //     color: #70ac77;
+  //   }
+  // }
+
+  // ion-fab{
+  //   opacity: 1;
+  //   background: rgb(220, 238, 212) !important;
+  //   border-radius: 30px;
+  //   z-index: 999;
+  //   outline: none;
+
+  // ion-fab-button{
+  //   position: absolute;
+  //   bottom: 0px;
+  //   background: rgb(220, 238, 212) !important;
+  //   box-shadow: 0px 10px 20px 0px rgba(137, 231, 96, 0.3) !important;
+  //   border-radius: 30px;
+
+  //   img {
+  //       position: relative;
+  //       top: 0;
+  //       left: 0;
+  //       border-radius: 50%;
+  //   }
+  //   }
+  // }
+
+  @media screen and (max-width:368px) {
+    .menu {
+      bottom: 10px !important;
+    }
+  }
+
+  /* footer tabs css  end*/
+
+  /* Header css */
+  // ion-header {
+  //   border-bottom-left-radius: 30px !important;
+  //   border-bottom-right-radius: 30px !important;
+  //   box-shadow: none !important;
+  //   background: #E3F7DC ;
+  //   ion-toolbar {
+  //     border-bottom-left-radius: 30px !important;
+  //     border-bottom-right-radius: 30px !important;
+  //     box-shadow: none !important;
+  //     background: #E3F7DC;
+  //     .toolbar-background {
+  //       background: transparent;
+  //       border: none !important;
+  //       }
+  //   }
+  // }
+
+  /* Header css  end*/
+
+  /* calendar table css */
+  thead {
+    tr {
+
+      // height: 50px !important;
+      th {
+        small {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+
+  .monthview-primary-with-event,
+  .text-muted,
+  td {
+    font-size: 9px;
+  }
+
+  .table-bordered {
+    border: 1px solid #ddd !important;
+  }
+
+  .monthview-selected {
+    background-color: #8AC143 !important;
+  }
+
+  .calendar-event-inner {
+    font-size: 9px;
+  }
+
+  table>tbody>tr>td.calendar-hour-column {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    vertical-align: middle;
+  }
+
+  .calendar-hour-column {
+    font-size: 10px !important;
+    width: 50px !important;
+  }
+
+  .weekview-allday-table {
+    display: none;
+  }
+
+  .monthview-allday-table {
+    display: none;
+  }
+
+  .dayview-allday-table {
+    display: none;
+  }
+
+  .weekview-normal-event-container {
+    margin: 53px 0 0 0px !important;
+  }
+
+  @media screen and(min-width:768px) {
+    tr {
+
+      // height: 15px !important;
+      td {
+        text-align: left !important;
+      }
+
+      th {
+        small {
+          font-size: 16px !important;
+        }
+      }
+    }
+
+    .calendar-event-inner {
+      font-size: 13px !important;
+    }
+
+    .monthview-primary-with-event,
+    .text-muted,
+    td {
+      font-size: 16px;
+    }
+
+    .dayview-normal-event-container {
+      tr {
+        // height: 5rem !important;
+      }
+    }
+
+    .calendar-hour-column {
+      font-size: 13px !important;
+      width: 80px !important;
+    }
+  }
+
+  /* calendar table css end*/
+
+  // .modal-wrapper {
+  //   position: relative !important;
+  //   bottom: 0 !important;
+  //   top: 40% !important;
+  //   border-radius: 22px !important;
+  //   z-index: 999 !important;
+  //   height: 60% !important;
+  //   contain: none;
+  //   background: none !important;
+  // }
+
+  // .my-book-modal {
+  //   --height: 80% ;
+  //   --border-radius: 18px !important;
+  //   padding: 30px;
+  // }
+  .btn-back {
+    background: url(../assets/img/prev.png) no-repeat;
+    background-size: 1.5em;
+    // transform: translate(10px, 10px);
+    transform: translate(12px, 15px);
+  }
+
+  .btn-next {
+    background: url(../assets/img/prev.png) no-repeat;
+    background-size: 1.5em;
+    transform: scale(-1, 1) translate(12px, 15px);
+  }
+
+  .slot-available {
+    background-color: #cde2c3;
+    border-bottom-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+  }
+
+  .slot-not-available {
+    background-color: #E3ADAC;//red;
+    font-style: italic;
+    color: white;
+    border-bottom-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+  }
+
+  .slot-members-only {
+    background-color: #829EE6;
+    font-style: italic;
+    color: white;
+    border-bottom-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+
+  }
+
+  .slot-not-available-online {
+    background-color: grey;
+    font-style: italic;
+    color: white;
+    border-bottom-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+
+  }
+
+  .slot-not-opened {
+    background-color: grey;
+    font-style: italic;
+    color: white;
+    border-bottom-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+
+  }
+
+  .booking-stats  {
+    font-size: $base-font-size*0.9;
+    // font-size: calc(0.5rem + 1vw) !important;
+  }
+
+  .booking-stats-field {
+    text-align: left;
+  }
+
+  .booking-stats-value {
+    font-weight: bold;
+    text-align: right;
+  }
+  .searchbar-ios, .searchbar-md {
+    background-color: #5DBC81;
+  }
+
+  .searchbar-ios .searchbar-ios-cancel,
+  .searchbar-md .searchbar-md-cancel {
+    color: white;
+  }
+
+  .slot-price {
+    color: #5DBC81;
+    font-weight: bold;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    #navDates {
+      display: none;
+    }
+
+    #slot-right {
+      padding-top: 1rem;
+    }
+    #slot-left {
+      padding-top: 1rem;
+    }
+  }
+  
+
+
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    .mygolf-table-caption.row {
+      line-height: 4vh !important;
+      padding-top: 0 !important;
+      
+// padding-top:1rem;
+// line-height: 4vmax;
+    }
+
+    .btn-back {
+      transform: scale(0.75, 0.75) translate(12px, 12px);
+    }
+  
+    .btn-next {
+      transform: scale(-0.75, 0.75) translate(12px, 12px);
+    }
+
+    #slot-left {
+      padding: 0;
+    }
+    #slot-right {
+      padding: 0;
+    }
+
+    .booking-stats-field {
+      font-size: 0.8rem !important;
+    }
+
+    ion-datetime .datetime-md,
+    ion-datetime .datetime-ios {
+      margin-bottom: -0.5em !important;
+      margin-top: -0.5em !important;
+    }
+
+    
+  }
+
+  ion-datetime .datetime-md,
+  ion-datetime .datetime-ios {
+    padding-top: 0.5rem;
+  }
+
+  ion-action-sheet {
+    .ion-ios-exchange-solid,
+    .ion-md-exchange-solid {
+      content: url(../assets/img/exchange-alt-solid.svg);
+    }
+  
+    .ion-ios-money-refund,
+    .ion-md-money-refund {
+      content: url(../assets/img/hand-holding-usd-solid.svg);
+    }
+    
+  // .action-sheet-ios.action-sheet-button {
+  //   font-size: 1rem !important;
+  //   min-height: 2.6rem !important;
+  // }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    .mygolf-table-caption.row {
+      // line-height: 4vh;
+padding-top:1rem;
+line-height: 3vmax !important;
+    }
+
+    
+    .btn-back {
+      transform: scale(1,1) translate(12px, 20px);
+    }
+  
+    .btn-next {
+      transform: scale(-1,1) translate(12px, 20px);
+    }
+  }
+
+
+}

@@ -1,0 +1,30 @@
+player-option-modal{
+ion-content{
+  overflow: hidden !important;
+    .select_caddies{
+        width: 100% !important;
+        margin: 0 15px 0 20px !important;
+        padding: 0;
+      }
+      .select-icon {
+        position: relative;
+        width: 20px !important;
+        height: 18px;
+      }
+       .animate{
+        animation: blob 1s ease-in-out infinite;
+       } 
+      @keyframes blob {
+        0%{
+          transform: scale(1);
+        }
+        50%{
+          transform: scale(1.03);
+        }
+        100%{
+          transform: scale(1);
+        }
+      }
+}
+
+}

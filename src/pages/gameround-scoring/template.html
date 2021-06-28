@@ -1,0 +1,54 @@
+<ion-header >
+    <ion-navbar hideBackButton >
+        <ion-title >Modals</ion-title >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+
+    <ion-list >
+        <ion-list-header >
+            Player's Score
+        </ion-list-header >
+        <ion-item >
+            <!--ion-row>
+            <ion-col offset-50-->
+            <button ion-button large fab-center round color="favourite" >
+                5
+            </button >
+            <!--/ion-col>
+            </ion-row-->
+        </ion-item >
+        <ion-row >
+            <ion-col width-25 >
+                <button ion-button color="danger" block >
+                    Birdie
+                </button >
+            </ion-col >
+            <ion-col width-25 >
+                <button ion-button color="secondary" block >
+                    Par
+                </button >
+            </ion-col >
+            <ion-col width-25 >
+                <button ion-button block >
+                    Bogey
+                </button >
+            </ion-col >
+            <ion-col width-12 >
+                <button ion-button block icon-only>
+                    <ion-icon name="remove" ></ion-icon >
+                </button >
+            </ion-col >
+            <ion-col width-12 >
+                <button ion-button block color="dark" icon-only>
+                    <ion-icon name="add" ></ion-icon >
+                </button >
+            </ion-col >
+        </ion-row >
+        <button ion-button block (click)="close()" >
+            Close
+        </button >
+    </ion-list >
+
+</ion-content >

@@ -1,0 +1,279 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <!-- <ion-title>Buggy List</ion-title> -->
+        <img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+        <ion-buttons end>
+                <!-- <button ion-button icon-only (click)="searchBar = !searchBar">
+                        <ion-icon name="search" color="invert-text"></ion-icon>
+                    </button> -->
+                <button ion-button icon-only (click)="onRefreshClick()">
+                     <i class="fa fa-lg fa-refresh"></i>
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar color="light">
+            <!--ion-searchbar *ngIf="searchBar" placeholder="Search buggy by buggy name or starts with number" focuser #searchBar [(ngModel)]="searchBuggies"
+            debounce="1500"
+            (ionInput)="onSearchInput()" [showCancelButton]="true">
+        </ion-searchbar> -->
+            <!-- <ion-row col-12>
+                <ion-col col-8>
+                        
+ 
+         
+                </ion-col>
+                <ion-col col-4>
+                    <ion-item style="text-align:right;" >
+                        <ion-label>All</ion-label>
+                        <ion-toggle [(ngModel)]="showAll" (ionChange)="toggleClick()"></ion-toggle>
+                    </ion-item>
+                </ion-col>
+            </ion-row> -->
+            <ion-row>
+                <ion-col>
+                    <!-- #searchBar -->
+                    <ion-searchbar *ngIf="searchBar" placeholder="Search buggy by buggy name or starts with number" focuser #searchBar [(ngModel)]="searchBuggies"
+                    debounce="1500"
+                    (ionInput)="onSearchInput()" [showCancelButton]="true">
+                </ion-searchbar>
+            </ion-col>
+            </ion-row>
+            <ion-row col-12> 
+                
+                    <ion-col col-6 style="text-align:left">
+                            <span *ngIf="!switchView" (click)="switchView = true"><i class="fas fa-fw fa-grip-vertical"></i>Grid View</span>
+                            <span *ngIf="switchView" (click)="switchView = false"><i class="fas fa-fw fa-list"></i>List View</span>
+                    </ion-col>
+                    <ion-col *ngIf="!changeBuggy" col-6 style="text-align:right">
+                            <span *ngIf="!showAll" (click)="toggleAll(true)">Showing Available<i class="far fa-fw fa-check-square"></i></span>
+                            <span *ngIf="showAll" (click)="toggleAll(false)">Showing All<i class="fas fa-fw fa-calendar-week"></i></span>
+                        </ion-col>
+                </ion-row>
+                <ion-row *ngIf="!changeBuggy" class="page-sub-title align-center">
+                        <ion-col *ngIf="prevPage()" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                        <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                            <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                                    <ion-datetime (ionChange)="confirmDate()"
+                                    displayFormat="DDD, DD MMM YYYY" 
+                                    pickerFormat="DD-MM-YYYY" [(ngModel)]="currentDate" [min]="today"></ion-datetime>
+                               
+                                <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                            <!-- </h3> -->
+                        </ion-col>
+                        <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="changeBuggy" class="page-sub-title align-center">
+                        <ion-col col-12 style="text-align:center;font-weight: bold;font-size: 1.5em;">{{currentDate | date: 'EEEE, d MMM yyyy'}}</ion-col>
+                    </ion-row>
+                    <!-- <ion-item *ngIf="showAll" class="page-sub-title align-center" style="text-align:center;font-weight: bold;font-size: 1.5em;">
+                        Displaying all buggies
+                    </ion-item> -->
+    
+        </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <!-- <ion-list >
+        <ion-item *ngFor="let p of playerList.players" class="teebox">
+                <button ion-button  full solid (click)="onSelectPlayer(p)">
+                        {{p.playerId}} - {{p.playerName}}
+                     </button>
+        </ion-item>
+        
+    </ion-list> -->
+    <!-- <ion-item style="text-align:center;" >
+            <ion-label>Switch View</ion-label>
+            <ion-toggle [(ngModel)]="switchView"></ion-toggle>
+        </ion-item>
+    <ion-item *ngIf="!showAll" class="page-sub-title align-center">
+            <ion-row>
+                <ion-col *ngIf="prevPage()" col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                <ion-col>
+                    <h3 style="font-weight:bold; font-size: 1.5em; ">
+                        {{currentDate | date:"EEEE, d MMM yyyy"}}
+                            </h3>
+                </ion-col>
+                <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+            </ion-row>
+        </ion-item> -->
+
+    <ion-list *ngIf="filteredBuggyList">
+                    <!-- <ion-list-header class = "list-header">
+                        Request Sent
+                    </ion-list-header> -->
+                    <div *ngIf="!switchView && !showAll">
+                    <ion-item *ngFor = "let b of filteredBuggyList"
+                            class = "friend-row"
+                            >
+                        <ion-avatar item-left (click) = "onBuggyDetails(b)">
+                            <img src = "{{b.buggyImage?b.buggyImage:b.buggyImage}}"
+
+                                    onerror = "this.src='assets/img/cart-short.svg'">
+                        </ion-avatar>
+                        <h2 (click) = "onBuggyDetails(b)">{{b.name}} (#{{b.buggyNo}})</h2>
+                        <p (click) = "onBuggyDetails(b)">
+                            <i style="color: green" *ngIf="b.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                            <ng-template #notWorking>
+                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                            </ng-template>
+                            {{getFullStatus(b.status)}}
+                            <!-- {{p.dateJoined|date:"MMM d, yyyy"}} -->
+                        </p>
+                                <!-- <span (click) = "onBuggyDetails(b)" item-right>
+                                    <button ion-button padding outline>View</button>
+                                    </span> -->
+                        <span item-right *ngIf="this.getUserRoles('assignments') "  (click)="onBuggySettings(b)">
+                            <i class="fas fa-fw fa-ellipsis-v"></i>
+                        </span>
+                    </ion-item>
+                </div>
+                <div *ngIf="!switchView && showAll">
+                    <ion-item *ngFor = "let b of filteredBuggyList"
+                            class = "friend-row"
+                            >
+                        <ion-avatar item-left (click) = "onBuggyDetails(b.buggy)">
+                            <img src = "{{b.buggy.buggyImage?b.buggy.buggyImage:b.buggy.buggyImage}}"
+
+                                    onerror = "this.src='assets/img/cart-short.svg'">
+                        </ion-avatar>
+                        <h2 (click) = "onBuggyDetails(b.buggy)">{{b.buggy.name}} (#{{b.buggy.buggyNo}})</h2>
+                        <p (click) = "onBuggyDetails(b.buggy)">
+                            <i style="color: green" *ngIf="b.active; else notWorking" class="far fa-fw fa-check-circle"></i>
+                            <ng-template #notWorking>
+                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                            </ng-template>
+                            <!-- {{getFullStatus(b.status)}} -->
+                            {{b.active?'Available':'Not Available'}}
+                            <!-- {{p.dateJoined|date:"MMM d, yyyy"}} -->
+                        </p>
+                                <!-- <span (click) = "onBuggyDetails(b)" item-right>
+                                    <button ion-button padding outline>View</button>
+                                    </span> -->
+                        <span item-right *ngIf="this.getUserRoles('assignments') "  (click)="onBuggySettings(b)">
+                            <i class="fas fa-fw fa-ellipsis-v"></i>
+                        </span>
+                    </ion-item>
+                </div>
+            <div *ngIf = "refreshAttempted && requestFriends.totalItems==0" padding>
+                <span danger>No data found!</span>
+            </div>
+            <div *ngIf="switchView && !showAll">
+                    <ion-row col-12>
+                        <ion-col col-6 col-md-4 *ngFor="let b of filteredBuggyList" >
+                                <ion-card class="friend-row"style="text-align:-webkit-center">
+                                        <ion-avatar item-left (click)="onBuggyDetails(b)" >
+                                                <img src = "{{b.buggyImage?b.buggyImage:b.buggyImage}}"
+                    
+                                                        onerror = "this.src='assets/img/cart-short.svg'"
+                                                        style="display: block;max-height: 4em;width: 4em;">
+                                            </ion-avatar>
+                                            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div (click)="onBuggyDetails(b)"  class="column" style="align-self:center; text-transform: capitalize; text-align: left; min-width: 90%; max-width: 90%;">
+                                                                {{b.name}}</div>
+                                                    <div *ngIf="this.getUserRoles('assignments') "  class="column" (click)="onBuggySettings(b)">
+                                                        <button ion-button clear item-end 
+                                                        no-padding no-margin small>
+                                                            <i class="fas fa-fw fa-ellipsis-v"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div (click)="onBuggyDetails(b)"  style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div style="width:50%" class="column mg-txt-left">#{{b.buggyNo}}</div>
+                                                    <div style="width:50%" class="column mg-txt-right">
+                                                            <i style="color: green" *ngIf="b.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                        <!-- {{getFullStatus(b.status)}} -->
+                                                    </div>
+                                                </div>
+                                            <!-- <h2>{{b.name}} </h2>
+                                            <h3>(#{{b.buggyNo}})</h3>
+                                            <p><i class = "fa fa-calendar css-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Status:
+                                                {{getFullStatus(b.status)}}
+                                            </p> -->
+                                            
+                                            <!--  -->
+                                    </ion-card>
+                        </ion-col>
+                            
+                    </ion-row>
+                </div>
+                <div *ngIf="switchView && showAll">
+                    <ion-row col-12>
+                        <ion-col col-6 col-md-4 *ngFor="let b of filteredBuggyList" >
+                                <ion-card class="friend-row" style="text-align:-webkit-center">
+                                        <ion-avatar item-left (click)="onBuggyDetails(b.buggy)" >
+                                                <img src = "{{b.buggy.buggyImage?b.buggy.buggyImage:b.buggy.buggyImage}}"
+                    
+                                                        onerror = "this.src='assets/img/cart-short.svg'"
+                                                        style="display: block;max-height: 4em;width: 4em;">
+                                            </ion-avatar>
+                                            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div (click)="onBuggyDetails(b.buggy)"  class="column" style="align-self:center; text-transform: capitalize; text-align: left; min-width: 90%; max-width: 90%;">
+                                                                {{b.buggy.name}}</div>
+                                                    <div *ngIf="this.getUserRoles('assignments') "  class="column" (click)="onBuggySettings(b)">
+                                                        <button ion-button clear item-end 
+                                                        no-padding no-margin small>
+                                                            <i class="fas fa-fw fa-ellipsis-v"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div (click)="onBuggyDetails(b.buggy)"  style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                                                    <div style="width:50%" class="column mg-txt-left">#{{b.buggy.buggyNo}}</div>
+                                                    <div style="width:50%" class="column mg-txt-right">
+                                                            <i style="color: green" *ngIf="b.active; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                        <!-- {{getFullStatus(b.status)}} -->
+                                                    </div>
+                                                </div>
+                                            <!-- <h2>{{b.name}} </h2>
+                                            <h3>(#{{b.buggyNo}})</h3>
+                                            <p><i class = "fa fa-calendar css-calendar" color = "danger" aria-hidden = "true"></i>&nbsp;Status:
+                                                {{getFullStatus(b.status)}}
+                                            </p> -->
+                                            
+                                            <!--  -->
+                                    </ion-card>
+                        </ion-col>
+                            
+                    </ion-row>
+                </div>
+        </ion-list>
+        
+</ion-content>
+<!-- <ion-item *ngIf="changeBuggy">
+    <button ion-button full color="danger" (click)="close()">Cancel</button>
+</ion-item> -->
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-item *ngIf="changeBuggy">
+        <button ion-button full color="danger" (click)="close()">Cancel</button>
+    </ion-item>
+    <ion-row *ngIf="!changeBuggy" style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+        <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+    </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+            <!-- <i style="font-size: 3rem;color:#1b6a34;margin:1rem;opacity: 40%;" class="fa fa-fw fa-2x fa-question"></i> -->
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+    
+</ion-footer>

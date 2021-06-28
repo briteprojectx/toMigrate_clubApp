@@ -1,0 +1,325 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <ion-buttons start *ngIf="fromBooking">
+                <button ion-button icon-only (click)="close()"><i style="color:red" class="fa fa-2x fa-fw fa-times-circle "></i></button>
+                <!-- Remove preferred -->
+        </ion-buttons>
+        <img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+        <ion-buttons end>
+                <!-- <button ion-button icon-only (click)="searchBar = !searchBar">
+                        <ion-icon name="search" color="invert-text"></ion-icon>
+                    </button> -->
+                    <button ion-button icon-only (click)="showMoreOptions = !showMoreOptions">
+                        <i class="fa fa-lg fa-cog"></i>
+                    </button>
+                <button ion-button icon-only (click)="onRefreshClick()">
+                    <i class="fa fa-lg fa-refresh"></i>
+                </button>
+            </ion-buttons>
+        <!-- <ion-title>Caddy List</ion-title> -->
+
+    </ion-navbar>
+    <ion-toolbar color="light" *ngIf="0">
+        <ion-row>
+            <ion-col>&nbsp;</ion-col>
+            <ion-col col-3>
+                <ion-item item-end *ngIf="showInterval">
+                    <ion-label>Auto refresh by (in seconds)</ion-label>
+                    <ion-input type="number" [(ngModel)]="autoRefresh" (input)="updateAutoRefresh()"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+            <!-- *ngIf="searchBar" -->
+        <ion-row col-12 >
+            <ion-col>
+                    <!-- #searchBar -->
+                <!-- <ion-searchbar placeholder="Search caddy by name, nickname or starts with staff ID" focuser 
+                    [(ngModel)]="searchCaddies" debounce="1500" (ionInput)="onSearchInput()" [showCancelButton]="true">
+
+                </ion-searchbar> -->
+            </ion-col>
+            
+            <!-- <ion-col col-4>
+                <ion-item style="text-align:right;" >
+                    <ion-label>All</ion-label>
+                    <ion-toggle [(ngModel)]="showAll" (ionChange)="toggleClick()"></ion-toggle>
+                </ion-item>
+            </ion-col> -->
+        </ion-row>
+        <!-- <ion-row col-12>
+                <ion-col col-6 style="text-align:left">
+                        <span *ngIf="!switchView" (click)="switchView = true"><i class="fas fa-fw fa-list"></i>List View</span>
+                        <span *ngIf="switchView" (click)="switchView = false"><i class="fas fa-fw fa-grip-vertical"></i>Grid View</span>
+                        
+                </ion-col>
+                <ion-col *ngIf="!changeCaddie" col-6 style="text-align:right">
+                        <span *ngIf="!showAll" (click)="toggleAll(true)">Showing Available<i class="far fa-fw fa-check-square"></i></span>
+                        <span *ngIf="showAll" (click)="toggleAll(false)">Showing All<i class="fas fa-fw fa-calendar-week"></i></span>
+                    </ion-col>
+            </ion-row> -->
+            <ion-item *ngIf="fromBooking && bookingClub" style="text-align:center" no-padding>
+                Showing Caddies for {{bookingClub.name}}
+            </ion-item>
+            <!-- !showAll &&  -->
+            
+                <ion-row *ngIf="changeCaddie" class="page-sub-title align-center">
+                    <ion-col col-12 style="text-align:center;font-weight: bold;font-size: 1.5em;">{{currentDate | date: 'EEEE, d MMM yyyy'}}</ion-col>
+                </ion-row>
+                <!-- <ion-item *ngIf="showAll" class="page-sub-title align-center" style="text-align:center;font-weight: bold;font-size: 1.5em;">
+                    Displaying all caddies
+                </ion-item> -->
+                <!-- <ion-row col-12 *ngIf="showAll" class="page-sub-title align-center" no-padding>
+                    <ion-col col-12 style="text-align:center;">
+                        <p>Displaying all caddies</p>
+                    </ion-col>
+                </ion-row> -->
+                
+    </ion-toolbar>
+    <ion-row class="page-sub-title align-center">
+        <!-- *ngIf="prevPage()" -->
+            <ion-col  col-1 class="btn-back" (click)="prevDate()"></ion-col>
+            <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                        <ion-datetime (ionChange)="confirmDate()"
+                        displayFormat="DDD, DD MMM YYYY" 
+                        pickerFormat="DD-MM-YYYY" [(ngModel)]="currentDate" [max]="maxDate" ></ion-datetime>
+                        <!-- [min]="today" -->
+                   
+                    <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                <!-- </h3> -->
+            </ion-col>
+            <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+        </ion-row>
+</ion-header>
+
+
+<ion-content>
+    <ion-row no-margin *ngIf="showMoreOptions">
+        <ion-col no-padding>
+            <ion-item >
+                <ion-label> 
+                    Show Non-Dispatched only
+                </ion-label>
+                <ion-checkbox [(ngModel)]="showNonDispatched" (ionChange)="_searchCaddy()"></ion-checkbox>
+                <!-- [checked]="checkFilterBookingStatus(status)" -->
+            </ion-item>
+        </ion-col>
+        <ion-col col-4 no-padding>
+            <ion-item item-end >
+                <ion-label style="max-width: 20vw; width: 20vw;">Auto refresh by (in seconds)</ion-label>
+                <ion-input max="3600" style="max-width: 10vw;" type="number" [(ngModel)]="autoRefresh" (input)="updateAutoRefresh()"></ion-input>
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-list *ngIf="filteredCaddyList && !caddySelectionCriteriaMode">
+            <div *ngIf="0 && switchView && !showAll">
+        <button ion-item *ngFor="let c of filteredCaddyList" class="friend-row" (click)="onCaddyDetails(c,c)">
+            <ion-avatar item-left>
+                <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.png'">
+            </ion-avatar>
+            <h2>{{c.firstName}} {{c.lastName}} (#{{c.staffId}})</h2>
+            <p>
+                <i style="color: green" *ngIf="c.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                            <ng-template #notWorking>
+                                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                            </ng-template>
+                                                            {{getFullStatus(c.status)}}
+                                                            <span item-right style="color:yellowgreen">{{c.averageRating | number: '1.1-1'}}<i class="fas fa-fw fa-star"></i></span>
+                <!-- {{p.dateJoined|date:"MMM d, yyyy"}} -->
+            </p>
+            <span item-right style="padding-right:10px;" *ngIf = "c.gender==='M'" class="male"><i class="fa fa-mars fa-2x"
+                    aria-hidden="true"></i>
+            </span>
+            <span item-right style = "padding-right:10px;" *ngIf = "c.gender==='F'"
+                    class = "female"><i
+                    class = "fa fa-venus fa-2x" aria-hidden = "true"></i></span>
+        </button>
+    </div>
+    <ion-card *ngIf="switchView && innerWidth > 600" class="mygolf-table flat-table">  <!-- this one -->
+        <!-- && showAll -->
+        <ion-row class="mygolf-table-header" padding-left padding-right style="font-weight: bold;">
+            <ion-col text-center>Flight Time</ion-col>
+            <ion-col text-center>Booking Ref.</ion-col>
+            <ion-col text-center>Caddie No.</ion-col>
+            <ion-col style="max-width:5vw; text-align: -webkit-center;">&nbsp;</ion-col>
+            
+            <ion-col>Caddie Name</ion-col>
+            <ion-col text-center>Buggy No.</ion-col>
+            <ion-col col-1 text-center>Status</ion-col>
+            <ion-col >Remarks</ion-col>
+        </ion-row>
+        <ng-container *ngIf="caddyScheduleList.length === 0">
+            <button ion-button text-wrap clear full>
+                No caddie schedule found
+            </button>
+        </ng-container>
+            <ng-container *ngFor="let caddy of caddyScheduleList; let i = index; let e = even; let o = odd">
+                <ion-row padding-left padding-right [ngClass]="{'mygolf-table-row':e, 'mygolf-table-row-alt': o}"
+                >
+                <!-- style="max-height: 1.5em; line-height: 1.5em;" -->
+                    <!-- style="border-bottom-width: 1px;
+                border-bottom-color: lightgray;
+                border-bottom-style: solid;" -->
+                <ion-col class="vertical-align" style="justify-content: center">{{getCaddyFlightDetails(caddy,i,'flightTime')}}
+                </ion-col>
+                <ion-col class="vertical-align"  style="justify-content: center" no-padding>{{getCaddyFlightDetails(caddy,i,'bookingRef')}}</ion-col>
+                <ion-col class="vertical-align" style="text-align: -webkit-center; justify-content: center;" no-padding>{{caddy.staffId}}</ion-col> 
+                <ion-col class="vertical-align align-center" style="max-width:5vw; justify-content: center;">
+                    <ion-avatar class="rounded no-margin">
+                        <!-- style="min-height: 4em;min-width: 4em; max-height: 4em; max-width: 4em;
+                        object-fit: cover;" -->
+                        <img class="caddie-image"
+                         [src]="caddy.caddieImage" onerror="this.src='assets/img/caddie-image.png'">
+                    </ion-avatar>
+                </ion-col>
+                <ion-col class="vertical-align" no-padding>{{caddy.caddieName}}</ion-col>
+                <ion-col class="vertical-align"  style="justify-content: center" no-padding>{{caddy.buggyNo}}</ion-col>
+                <ion-col class="vertical-align" style="font-weight:bold; justify-content: center;" col-1 [ngClass]="scheduleStatusRow(caddy)" no-padding>{{caddy.status}}</ion-col>
+                <ion-col class="vertical-align" no-padding>{{getCaddyFlightDetails(caddy,i,'remarks')}}</ion-col>
+            </ion-row>
+            </ng-container>
+        
+    </ion-card>
+    <ion-card *ngIf="switchView && innerWidth <= 600" class="mygolf-table flat-table">  <!-- this one -->
+        <!-- && showAll -->
+        <ion-row class="mygolf-table-header" style="font-weight: bold;">
+            <!-- <ion-col text-center>Flight Time</ion-col>
+            <ion-col text-center>Booking Ref.</ion-col> -->
+            <ion-col text-center>Flight Details</ion-col>
+            <ion-col style="max-width:10vw; text-align: -webkit-center;">&nbsp;</ion-col>
+            <ion-col text-center>Caddie Info</ion-col>
+            <!-- <ion-col>Caddie Name</ion-col> -->
+            <ion-col text-center>Buggy No.</ion-col>
+            <!-- <ion-col text-center>Status</ion-col> -->
+            <ion-col col-3>Status</ion-col>
+        </ion-row>
+        <ng-container *ngIf="caddyScheduleList.length === 0">
+            <button ion-button text-wrap clear full>
+                No caddie schedule found
+            </button>
+        </ng-container>
+            <ng-container *ngFor="let caddy of caddyScheduleList; let i = index; let e = even; let o = odd">
+                <ion-row [ngClass]="{'mygolf-table-row':e, 'mygolf-table-row-alt': o}"
+                >
+                <!-- style="max-height: 1.5em; line-height: 1.5em;" -->
+                    <!-- style="border-bottom-width: 1px;
+                border-bottom-color: lightgray;
+                border-bottom-style: solid;" -->
+                <ion-col class="vertical-align" style="justify-content: center">
+                    {{getCaddyFlightDetails(caddy,i,'flightTime')}}<br>
+                    {{getCaddyFlightDetails(caddy,i,'bookingRef')}}
+                </ion-col>
+                <!-- <ion-col class="vertical-align"  style="justify-content: center" no-padding>{{getCaddyFlightDetails(caddy,i,'bookingRef')}}</ion-col> -->
+                <ion-col class="vertical-align align-center" style="max-width:10vw; justify-content: center;">
+                    <ion-avatar class="rounded no-margin">
+                        <!-- style="min-height: 4em;min-width: 4em; max-height: 4em; max-width: 4em;
+                        object-fit: cover;"  -->
+                        <img class="caddie-image" 
+                        
+                        [src]="caddy.caddieImage" onerror="this.src='assets/img/caddie-image.png'">
+                    </ion-avatar>
+                </ion-col>
+                <ion-col class="vertical-align" style="text-align: -webkit-center; justify-content: center;" no-padding>
+                    {{caddy.staffId}}<br>
+                    {{caddy.caddieName}}
+                </ion-col> 
+                <!-- <ion-col class="vertical-align" no-padding>{{caddy.caddieName}}</ion-col> -->
+                <ion-col class="vertical-align"  style="justify-content: center" no-padding>{{caddy.buggyNo}}</ion-col>
+                <!-- <ion-col class="vertical-align" style="font-weight:bold; justify-content: center;" [ngClass]="scheduleStatusRow(caddy)" no-padding>{{caddy.status}}</ion-col> -->
+                <ion-col col-3 class="vertical-align" [ngClass]="scheduleStatusRow(caddy)" no-padding>{{caddy.status}} - {{getCaddyFlightDetails(caddy,i,'remarks')}}</ion-col>
+            </ion-row>
+            </ng-container>
+        
+    </ion-card>
+        <div *ngIf="refreshAttempted && requestFriends.totalItems==0" padding>
+            <span danger>No data found!</span>
+        </div>
+        
+    </ion-list>
+
+</ion-content>
+<ion-footer *ngIf="0" style="background-color: #DDF6D6 !important;">
+    <ion-item *ngIf="changeCaddie">
+        <button ion-button full color="danger" (click)="close()">Cancel</button>
+    </ion-item>
+    <ion-row *ngIf="!changeCaddie" style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+        <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+    </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+            <!-- <i style="font-size: 3rem;color:#1b6a34;margin:1rem;opacity: 40%;" class="fa fa-fw fa-2x fa-question"></i> -->
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+    
+</ion-footer>
+
+<!-- <ion-card *ngIf="viewType === 1" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+    <ion-avatar item-left>
+            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+            
+        </ion-avatar>
+        <h2 style="text-transform: capitalize;">
+                <span item-left
+                class = "female"><i
+                class = "fa fa-fw fa-venus" aria-hidden = "true"></i></span>
+                {{c.firstName}} {{c.lastName}}</h2>
+        <h3>
+            <span item-left *ngIf = "c.gender==='M'" class="male"><i class="fa fa-fw fa-mars"
+            aria-hidden="true"></i>
+            <span item-left *ngIf = "c.gender==='F'"
+                class = "female"><i
+                class = "fa fa-venus fa-fw" aria-hidden = "true"></i></span>
+    </span>
+    (#{{c.staffId}})</h3>
+        <p><i class="fa fa-calendar css-calendar" color="danger" aria-hidden="true"></i>&nbsp;Status:
+            {{getFullStatus(c.status)}}&nbsp;
+        </p>
+</ion-card>
+<ion-card *ngIf="viewType === 2" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+    <ion-avatar item-left>
+            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+            
+        </ion-avatar>
+        <div style="text-transform: capitalize;width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+            <div class="column">{{c.firstName}} {{c.lastName}}</div>
+        </div>
+        <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+            <div style="width:50%" class="column mg-txt-left"># {{c.staffId}}</div>
+            <div style="width:50%" class="column mg-txt-right">{{getFullStatus(c.status)}}</div>
+        </div>
+</ion-card>
+
+    <ion-card *ngIf="viewType === 3" class="friend-row" (click)="onCaddyDetails(c)" style="text-align:-webkit-center">
+            <div style="width:100%;" class="row">
+                    <div class="column" style="width:60%"><ion-avatar item-left>
+                            <img src="{{c.caddyImage?c.caddyImage:c.caddyImage}}" onerror="this.src='assets/img/caddie-image.svg'">
+                        </ion-avatar>
+                    </div>
+                    <div class="column" style="width:40%">
+                            # {{c.staffId}}<br>
+                            {{getFullStatus(c.status)}}
+                    </div>
+                </div>
+            <div style="width:100%;padding-left: 0.5em;padding-right: 0.5em;" class="row">
+                    <div class="column" style="text-transform: capitalize;">
+                        <span item-left
+                        class = "female"><i
+                        class = "fa fa-fw fa-venus" aria-hidden = "true"></i></span>
+                        {{c.firstName}} {{c.lastName}}</div>
+                </div>
+        </ion-card> -->

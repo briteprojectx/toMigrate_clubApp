@@ -1,0 +1,96 @@
+<ion-header style="border:none;">
+    <ion-navbar >
+        <ion-title >Notifications</ion-title >
+            <ion-buttons end>
+                <button ion-button  (click)="clickNotf()">
+                    <!-- (click)="onRefresh(true)" -->
+                    <i class="fa fa-fw fa-refresh"></i>
+                </button>
+            </ion-buttons>
+    </ion-navbar >
+        <!-- <ion-toolbar color="light" padding> 
+    <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                        (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+                    </ion-searchbar>
+                </ion-toolbar> -->
+
+</ion-header >
+<ion-content padding primary style="text-align:center;margin-top:1rem" >
+    <ion-list >
+        <!-- <ion-list-header>Notifications</ion-list-header> -->
+        <ion-list-divider (click)="onClearAllNotf()">
+            <ion-label style="padding:1rem;text-align:left; color:red;white-space: normal; overflow: wrap; word-wrap:break-word;">
+                All notifications will be dismissed when the app is uninstalled or the data is cleared. Tap here to clear all now.
+            </ion-label>
+            </ion-list-divider>
+        <!-- <ion-item>Message 1</ion-item>
+        <ion-item>Message 2</ion-item>
+        <ion-item>Message 3</ion-item>
+        <ion-item>Message 4</ion-item> -->
+        <div *ngIf="notfItems && notfItems.length > 0">
+        <ng-container  *ngFor="let item of notfItems">
+        <!-- <ion-item>{{item.additionalData.type}}</ion-item> -->
+        <ion-row (click)="toggleMoreNotf(item)" style="align-items: center">
+            <ion-col col-1>
+                <img *ngIf="getNotfTypeIcon(item) && item.additionalData && item.additionalData.type" style="width: 3rem;" [src]="getNotfTypeIcon(item)" />
+                <i style="color:#589D6C" *ngIf="!getNotfTypeIcon(item) || (item.additionalData && !item.additionalData.type)" class="fas fa-fw fa-bullhorn"></i>
+            </ion-col>
+            <ion-col  col-8 text-left>
+                <!-- style="white-space: normal; overflow: wrap; word-wrap:break-word" -->
+                <h6 style="color:gray; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{item.title}}</h6>
+                <h6 *ngIf='!item.seeMore' style="color:dimgray; margin:0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+                    {{item.body}}
+                </h6>
+            </ion-col>
+            <!-- <h3>{{item.additionalData.type}}</h3> -->
+            <ion-col col-3>
+                <button ion-button small clear > 
+                    <i *ngIf="!item.seeMore" class="fas fa-fw fa-caret-right"></i>
+                    <i *ngIf="item.seeMore" class="fas fa-fw fa-caret-down"></i>
+                </button>
+                <button (click)="onClearNotf(item)" ion-button color="danger" small clear >
+                    <i class="fa fa-fw fa-times"></i>
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)='toggleMoreNotf(item)' *ngIf="item.seeMore"> 
+            <ion-col text-left>
+                <i style="opacity:0.2" class="fas fa-fw fa-quote-left"></i>
+                {{item.body}}
+                <i style="opacity:0.2"  class="fas fa-fw fa-quote-right"></i>
+            </ion-col>
+        </ion-row>
+        </ng-container>
+          </div>
+        <!-- <ion-list-divider><strong>Past</strong></ion-list-divider>
+        <ion-item>Message 1</ion-item>
+        <ion-item>Message 2</ion-item>
+        <ion-item>Message 3</ion-item>
+        <ion-item>Message 4</ion-item> -->
+    </ion-list>
+    <!-- <img src="assets/img/mg2u-logo-circle1.svg" style="margin-top:3px"/> -->
+    <!-- Searchning Mode : {{searchingMode}} -->
+
+
+	<!-- <a href="http://www.mygolf2u.com" style="text-decoration:none;">www.mygolf2u.com</a> -->
+</ion-content>
+<!-- <ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2  (click)="onMyBookingsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+            <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+        </ion-col>
+            <ion-col col-2 (click)="onFAQClick()">
+                <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+            </ion-col>
+            <ion-col col-2 (click)="openProfile()">
+                <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+            </ion-col>
+    </ion-row>
+    
+</ion-footer> -->

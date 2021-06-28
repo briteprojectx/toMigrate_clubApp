@@ -1,0 +1,89 @@
+<!-- <ion-header>
+    <ion-toolbar>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{headerName}}</ion-title>
+    </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+        <ion-toolbar>
+                <ion-buttons end>
+                    <button ion-button icon-only (click)="close()">
+                        <i class="fa fa-fw fa-2x fa-times"></i>
+                        <!-- <ion-icon name="close-circle"></ion-icon> -->
+                    </button>
+                </ion-buttons>
+                <ion-title ><span style="font-size: larger;color: black;font-weight: bold;">{{headerName}}</span></ion-title>
+            </ion-toolbar>
+            <!-- <h2>{{headerName}}</h2> -->
+            <div *ngIf="type==='buggy'">
+            <ion-item *ngIf="buggies && buggies.length === 1">Please add a buggy above</ion-item>
+            <div *ngIf="buggies && buggies.length > 0">
+                    <ion-list *ngFor="let buggy of buggies; let i = index">
+                        <!-- <span *ngIf="buggy.pairingNo === x.pairingNo; else buggyNotPaired" style="color:#1b6a34">
+                            <i *ngIf="idx===0" class="fas fa-fw fa-walking"></i>{{getBuggySlot(buggy,idx)}}
+                          </span>
+                          <ng-template #buggyNotPaired >
+                            <i *ngIf="idx===0" class="fas fa-fw fa-walking"></i>{{getBuggySlot(buggy,idx)}}
+                        </ng-template> -->
+                        <ion-item (click)="selectBuggy(buggy)">
+                            <i *ngIf="i===0 && (slot && slot.slotAssigned.allowWalking)" class="fas fa-fw fa-walking"></i>
+                            <!-- (bookingOptions && !bookingOptions.buggyMandatory) -->
+                            {{getBuggySlot(buggy,i)}} 
+                            <!-- <span *ngIf="i!==0">({{getBuggySlot(buggy,i,'currentplayers')}}/{{getBuggySlot(buggy,i,'maxallowed')}})</span> -->
+                        </ion-item>
+                            <!-- <ion-item *ngIf="i===0;else buggyPaired" (click)="selectBuggy(buggy)"><i class="fas fa-fw fa-walking"></i>Walking</ion-item>
+                            <ng-template>
+                                <ion-item #buggyPaired (click)="selectBuggy(buggy)">Buggy {{buggy.buggySlot}}</ion-item>
+                        </ng-template> -->
+                        </ion-list>
+            </div>
+        </div>
+        <div *ngIf="type==='caddy'">
+            <ion-item *ngIf="(caddies && caddies.length === 0) || !caddies">Please add a caddy above</ion-item>
+            <div *ngIf="caddies && caddies.length > 0">
+                    <ion-list *ngFor="let caddy of caddies; let i = index"> 
+                        
+                        <ion-item *ngIf="i === 0;else hasCaddy;" (click)="selectCaddy(caddy)">No Caddy</ion-item>
+                            <!-- <ion-item *ngIf="i > 0" (click)="selectCaddy(caddy)">Caddy {{caddy.caddyPairing}} - {{getCaddyPreferred(caddy,i)}}</ion-item> -->
+                            <ng-template #hasCaddy>
+                            <ion-item (click)="selectCaddy(caddy)" >
+                                <span >Caddy {{caddy.caddyPairing}} - {{getCaddyPreferred(caddy,i)}}</span>
+                                <!-- <button ion-button (click)="clearCaddy(caddy)">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button> -->
+                            </ion-item>
+                        </ng-template>
+                        </ion-list>
+            </div>
+        </div>
+    
+</ion-content>
+<ion-content *ngIf="0" class="competition-details player-performance">
+        <!-- <h2><b>{{title}}</b></h2> -->
+        <ion-list>
+                <ion-item class = "header-panel" style = 'background-color:#fadb4e;text-align:center;'>
+                        <h3 class = "scorecard-name" style = "font-weight:bold">{{competition.competitionName}}</h3>
+                        <h4>{{competition.clubName}}</h4>
+                    </ion-item>
+                </ion-list>
+
+    <ion-card class="custom-card " *ngFor="let round of gameRound">
+        <ion-card-header>
+            <h2><b>{{competition.totalRounds>1?"Round "+round.roundNo+" - ":""}}{{round.roundDate | date:"EEE, d MMM yyyy"}}</b></h2>
+        </ion-card-header>
+        <ion-card-content >
+                <!-- [innerHTML]="descriptionText | safe: 'html'" -->
+                <h5 *ngFor="let course of round.courseNames; let idx = index">
+                    {{idx==0?"First Nine":"Second Nine"}} : {{course}}
+                </h5>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+<!--<ion-footer>-->
+    <!--<button ion-button block color="dark" (click)="close()">Close</button>-->
+<!--</ion-footer>-->

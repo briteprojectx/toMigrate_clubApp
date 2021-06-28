@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title *ngIf="type === 'dates'">Select Dates</ion-title>
+        <ion-title *ngIf="type === 'times'">Select Tee Off Time</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="type === 'dates'">
+            <ion-item>
+                    <ion-label>Start Date</ion-label>
+                    <!-- displayFormat="DDD, DD MMM YYYY"  -->
+                    <!-- pickerFormat="YYYY-MMM-DD" -->
+                    <ion-datetime 
+                    [min]="today"
+                    
+                    
+                    displayFormat="DDD, DD MMM YYYY"
+                    pickerFormat="YYYY-MMM-DD"
+                    [(ngModel)]="startDate"></ion-datetime>
+                  </ion-item>
+                  <ion-item *ngIf="range">
+                        <ion-label>End Date</ion-label>
+                        <!-- displayFormat="DDD, DD MMM YYYY" -->
+                        <ion-datetime 
+                        [min]="today"
+                        
+                        displayFormat="DDD, DD MMM YYYY"
+                        pickerFormat="YYYY-MMM-DD"
+                        [(ngModel)]="endDate"></ion-datetime>
+                      </ion-item>
+
+    </ion-list>
+    <ion-list *ngIf="type === 'times'">
+                    <ion-item>
+                            <ion-label>From Time</ion-label>
+                            <!-- (ionFocus)="setPrevTime()" 
+                            (ionBlur)="cancel()" (ionChange)="validTime()"  -->
+                            <ion-datetime (ionChange)="validTime()"
+                            [minuteValues]="minuteRange"
+                            displayFormat="HH:mm" [(ngModel)]="fromTime"></ion-datetime>
+                            <button ion-button clear>[ X ]</button>
+                          </ion-item>
+                          <ion-item  *ngIf="range">
+                                <ion-label>To Time</ion-label>
+                                <!-- (ionFocus)="setPrevTime()" 
+                                (ionBlur)="cancel()" (ionChange)="validTime()"  -->
+                                <ion-datetime (ionChange)="validTime()"
+                                [minuteValues]="minuteRange"
+                                displayFormat="HH:mm" [(ngModel)]="toTime"></ion-datetime>
+                                <button ion-button clear>[ X ]</button>
+                              </ion-item>
+                      
+                     
+
+    </ion-list>
+    <ion-item class="button-panel" >
+            <button ion-button color="danger" (click)="close()">Cancel</button>
+            <button ion-button color="primary" (click)="onApplyClick()">Apply</button>
+        </ion-item >
+</ion-content>

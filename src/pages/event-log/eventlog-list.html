@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons end>
+            <button ion-button icon-left (click) = "onDeleteAllClick()">Delete All</button>
+        </ion-buttons>
+        <ion-title center>Event Logs</ion-title>
+    </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <ion-refresher pullMin = "200" (ionRefresh) = "refreshEvents($event)">
+        <ion-refresher-content
+                pullingIcon = "arrow-down"
+                pullingText = "drag down to reload"
+                refreshingSpinner = "circles"
+                refreshingText = "Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-list>
+        <ion-item *ngFor="let event of events;let i=index"
+            class="event-item" [class.info]="event.type ==='info'"
+            [class.warning]="event.type==='warning'"
+            [class.error]="event.type==='error'">
+            <p>
+                <span class="event-time">{{displayEventTime(event.time)}}</span>
+                <button ion-button color="danger" clear icon-only  (click)="delete(i)" class="event-delete">
+                    <ion-icon  name="trash"></ion-icon>
+                </button>
+
+            </p>
+            <!--<p class="event-category">{{event.category}}</p>-->
+            <p class="event-title" >
+                <span style="text-decoration: underline" (click)="toggleExpand(i)">{{event.title}}</span>
+                <button ion-button icon-only clear *ngIf="!expandStatus[i]" (click)="expand(i)">
+                    <i class="mdi mdi-chevron-double-down"></i>
+                </button>
+                <button ion-button icon-only clear *ngIf="expandStatus[i]" (click)="collapse(i)">
+                    <i class="mdi mdi-chevron-double-up"></i>
+                </button>
+            </p>
+            <p class="event-message" *ngIf="expandStatus[i]">
+                {{event.message}}
+            </p>
+            <p class="extra-message" *ngIf="expandStatus[i] && event.extra">
+                {{event.extra}}
+            </p>
+        </ion-item>
+    </ion-list>
+</ion-content>

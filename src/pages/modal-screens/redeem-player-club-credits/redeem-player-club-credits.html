@@ -1,0 +1,172 @@
+<ion-header >
+    <ion-navbar class="mg2u-navbar" hideBackButton >
+        <ion-title >Redeem Player Credits</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <ion-grid fixed>
+    <button text-wrap block outline ion-button color="primary" style="font-weight: bold">
+        <!-- Amount Paid {{currency.symbol}}: {{currentSlot.amountPaid | number: '1.2-2'}} -->
+        #{{currentSlot.bookingReference}} | 
+        <!-- Current Slot Details :  -->
+        {{getCurrentSlotDetails('courseName')}}<br>
+        {{getCurrentSlotDetails('date')}} | 
+        {{getCurrentSlotDetails('time')}}
+    </button>
+    <button block [outline]="fromClub" ion-button color="primary" style="font-weight: bold" (click)="onSetAmountPay()">
+        Amount To Pay: {{currency.symbol}} {{itemizedBill?itemizedBill.balance.toFixed(2):currentSlot.amountPayable.toFixed(2)}}
+        <i *ngIf="!fromClub" class="fa fa-fw fa-caret-right"></i>
+        <!-- {{(5.28999999).toFixed(2)}} , {{5.28999999}} -->
+        
+        <!-- {{currentSlot.amountPayable | number: '1.2-2'}} -->
+    </button>
+    <!-- <button *ngIf="currentSlot && currentSlot.totalRefund > 0" block outline ion-button color="danger" style="font-weight: bold">
+        Total Refund Amount : {{currency.symbol}} {{currentSlot.totalRefund | number: '1.2-2'}}
+    </button> -->
+
+    <!-- <ion-item>
+        <ion-label>Select Refund Method</ion-label>
+        <ion-select style="max-width:100%" [(ngModel)]="clubPaymentMethod">
+          <ion-option value="cash">Cash</ion-option>
+          <ion-option value="clbc">Club - Credit</ion-option>
+          <ion-option value="btrf">Bank Transfer</ion-option>
+          <ion-option [disabled]="true" value="m2uc"><i>MyGolf2u Credit</i></ion-option>
+        </ion-select>
+      </ion-item> -->
+    <ng-container *ngFor="let x of currentSlot.bookingPlayers; let i = index">
+        <div *ngIf="(!fromClub && currentPlayerId && currentPlayerId === x.player.id) || fromClub && creditBalancePlayers[i] > 0">
+    <ion-item  style="padding-left:0.5em">
+        <ion-checkbox item-left style="margin-right: 1rem;" 
+        (ionChange)="onRefundToPlayer($event,x, i)" [(ngModel)]="redeemPlayers[i]" ></ion-checkbox>
+        <ion-label style="display: block;">
+            <img item-left style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em;"
+                    [src]="getPlayerSlotDetails(i+1,'image')" onerror="this.src='img/default-user.jpg'">
+            <h2 item-right style="font-size: medium;font-weight: bold;color: green;white-space: normal;">{{getPlayerSlotDetails(i+1,'name')}} {{getPlayerSlotDetails(i+1,'id')}}</h2>
+            <h3 item-right>Credit Balance : {{currency.symbol}} {{creditBalancePlayers[i] | number: '1.2-2'}}</h3>
+            <h3 item-right>Redeem Amount : {{currency.symbol}} {{redeemAmountPlayers[i]}} <span *ngIf="getCreditBalance(i)">| Remaining Credits : {{currency.symbol}} {{getCreditBalance(i)}}</span> </h3>
+            <!-- {{getRedeemPlayerAmount(i)}}  -->
+            
+            <!-- | number: '1.2-2' -->
+        </ion-label>
+    </ion-item>
+    <ion-item *ngIf="redeemPlayers[i]" item-left>
+        <ion-label item-start>Redeem amount ({{currency.symbol}})</ion-label>
+        <ion-input item-end style="text-align-last: right;" (ionChange)="onKeyPlayerRedeemAmount(i)" debounce="1500" type="number" value="" [(ngModel)]="redeemAmountPlayers[i]"
+                           maxLength="50" ></ion-input >
+    </ion-item>
+</div>
+</ng-container>
+<!-- <ion-item *ngIf="redeemPlayers[i]" no-padding>
+    <h4 style="color:red">* Reason for refund</h4>
+    <textarea #commentArea id="commentArea"  rows="2" maxLength="250" 
+    placeholder="You need to add reason here" [(ngModel)]="redeemPlayersReason[i]"></textarea>
+</ion-item> -->
+    <!-- <ion-list>
+        <ng-container *ngFor="let player of currentSlot.bookingPlayers">
+            <ion-item >{{player.playerName}}</ion-item>
+        </ng-container>
+    </ion-list> -->
+    <ion-list *ngIf="changeType==='slot' && 0">
+        <div *ngFor="let course of startCourses;let i = index" >
+            <ion-list-header color="darkyellow">{{course.name}}</ion-list-header >
+                <ng-container *ngFor="let slot of teeSlot">
+            <button ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot,'slot')">
+                <!-- <span *ngIf="!slot.available; else available" style="font-style: italic; color:red">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </span>
+            <ng-template #available style="color:green">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                    <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                    <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+            </ng-template> -->
+            <span [ngClass]="getSlotClass(slot)">
+                <ion-row col-12>
+                    <ion-col col-4>Slot #{{slot.slot.slotNo}}</ion-col>
+                    <ion-col col-4>{{getSlotDetails(slot,'time')}}</ion-col>
+                    <ion-col col-4>{{slot.available?'Available':'Not Available' }}</ion-col>
+                </ion-row>
+            <!-- <ion-label>Slot #{{slot.slot.slotNo}} | {{getSlotDetails(slot,'time')}} | {{slot.available?'Available':'Not Available' }}</ion-label> -->
+            </span>
+        </button >
+        </ng-container>
+    </div>
+
+    </ion-list >
+    <ion-list *ngIf="changeType==='course' && 0">
+        <div *ngFor="let slot of teeSlot">
+            <!-- *ngFor="let course of startCourses;let i = index" -->
+            <button ion-item (click)="changeSlot(slot,'course')" [ngClass]="getSlotClass(slot)">{{slot.slot.startCourse.name}}</button>
+                <!-- <ng-container *ngFor="let slot of teeSlot">
+            <button clear full ion-item *ngIf="slot.slot.startCourse.id === course.id" (click)="changeSlot(slot)">
+                <ion-label>Slot #{{slot.slot.slotNo}}</ion-label >
+                <ion-label>{{getSlotDetails(slot,'time')}}</ion-label >
+                <ion-label>{{slot.available?'Available':'Not Available' }}</ion-label>
+                </button >
+        </ng-container> -->
+    </div>
+
+    </ion-list >
+
+</ion-grid>
+</ion-content >
+<ion-footer style="background:white">
+    <ion-grid fixed>
+        <ng-container *ngIf="isClub && currentSlot.refunds && currentSlot.refunds.length > 0 && currentSlot.totalRefund > 0">
+        <ion-item *ngIf="(currentSlot.bookingStatus=== 'PaymentPartial' || currentSlot.bookingStatus === 'PaymentFull') && currentSlot.totalRefund > 0 && currentSlot.refunds">
+            <button color="danger"
+     ion-button full clear (click)="toggleRefundHistory()">
+        <span *ngIf="!displayRefundHistory">See refund history</span>
+        <span *ngIf="displayRefundHistory">Close</span>
+    </button>
+        </ion-item>
+        <div style="max-height: 8em; overflow: auto;" 
+        *ngIf="displayRefundHistory && (currentSlot.bookingStatus=== 'PaymentPartial' || currentSlot.bookingStatus === 'PaymentFull') && currentSlot.totalRefund > 0 && currentSlot.refunds">
+            <div class="row">
+                <!-- <div class="column" style="font-size:1.5rem;font-weight:bold;width:25%">Type</div> -->
+                <div class="column" style="font-size:1.5rem;font-weight:bold;width:20%">When</div>
+                <div class="column" style="font-size:1.5rem;font-weight:bold;width:20%">Refund To</div>
+                <div class="column" style="font-size:1.5rem;font-weight:bold;width:20%">Issue By</div>
+                <div class="column" style="font-size:1.5rem;font-weight:bold;width:10%">Mode</div>
+                <div class="column" style="font-size:1.5rem;font-weight:bold;width:30%; text-align: right">Amount</div>
+            </div>
+            <div class="row"  *ngFor="let refund of currentSlot.refunds">
+                <!-- <div class="column" style="width:25%">{{payment.whatIsPaid}}</div> -->
+                <div class="column" style="width:20%">{{refund.createdOn | date:"EEE, d MMM 'yy"}}
+                    {{refund.createdOn | date:"h:mm a"}}</div>
+                <div class="column" style="width:20%">{{refund.playerRefunded.playerName}}</div>
+                <div class="column" style="width:20%">{{refund.refundIssuedBy.name}}</div>
+                <div class="column" style="width:10%">{{refund.refundMode}}</div>
+                <div class="column" style="width:30%;text-align: right">{{currentSlot.slotAssigned.currency.symbol}} {{refund.refundAmount | number: '1.2-2'}}</div>
+
+            </div>
+        </div>
+    </ng-container>
+    <ion-row>
+        <button block outline ion-button color="primary" style="font-weight: bold">
+            Total Redeem Amount: {{currency.symbol}} {{getTotalRedeemAmount() | number: '1.2-2'}}
+        </button>
+    </ion-row>
+    <ion-row col-12>
+        <ion-col col-12 col-lg-6 col-xl-6>
+            <button (click)="onRedeemNow()"  ion-button block >Redeem Now</button>
+        </ion-col>
+        <ion-col col-12 col-lg-6 col-xl-6>
+            <button (click)="close()"  ion-button block color='danger'>Cancel</button>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+    <!-- <button full outline ion-button color="primary" style="font-weight: bold">
+        Amount Paid {{currency.symbol}}: {{currentSlot.amountPaid | number: '1.2-2'}}
+    </button> -->
+    
+    
+    
+</ion-footer>

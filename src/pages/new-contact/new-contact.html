@@ -1,0 +1,75 @@
+<ion-header>
+    <ion-navbar>
+            <ion-buttons start *ngIf="openedAsDialog || openedModal">
+                    <button ion-button icon-only block *ngIf = "openedAsDialog || openedModal" color = "dark" (click) = "close()">
+                        <ion-icon name = "close-circle" color = "invert-text"></ion-icon>
+                    </button>
+                </ion-buttons>
+        <ion-title>New Contact</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content class = "new-contact">
+    <div padding>
+        <ion-list>
+            <div showWhen = "cordova">
+                <button ion-button color="blue" block (click) = "pickAContact()">Pick from Phonebook</button>
+            </div>
+            <ion-item>
+                <ion-label inline>First Name*</ion-label>
+                <ion-input type = "text" [(ngModel)] = "firstName" maxlength = "50"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Last Name*</ion-label>
+                <ion-input type = "text" [(ngModel)] = "lastName" maxlength = "50"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Email*</ion-label>
+                <ion-input type = "email" [(ngModel)] = "email" maxlength = "50"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Mobile</ion-label>
+                <ion-input type = "tel" [(ngModel)] = "phone" maxlength = "50" placeholder="(e.g., 60123456789)"></ion-input>
+            </ion-item>
+            <ion-item>
+                    <ion-label>Nationality</ion-label>
+                    <ion-select interface="alert" [(ngModel)]="nationalityId">
+                        <ion-option *ngFor="let nationality of nationalityList"  [value]="nationality.id">{{nationality.name}}</ion-option>
+                            </ion-select >
+                  </ion-item>
+            <ion-item>
+                    <ion-label>Residing In</ion-label>
+                    <ion-select interface="alert" [(ngModel)]="countryId">
+                        <ion-option *ngFor="let country of countryList"  [value]="country.id">{{country.name}}</ion-option>
+                            </ion-select >
+                  </ion-item>
+            <ion-item>
+                <ion-label left style = "padding:0px;">Handicap<span primary padding>{{handicap}}</span></ion-label>
+                <ion-range min = "1" max = "36" pin = "true" [(ngModel)] = "handicap">
+                    <ion-label range-left>1</ion-label>
+                    <ion-label range-right>36</ion-label>
+                </ion-range>
+            </ion-item>
+            <ion-segment padding [(ngModel)] = "teeOffFrom">
+                <ion-label>T-Off</ion-label>
+                <ion-segment-button value = "Black">Black</ion-segment-button>
+                <ion-segment-button value = "Blue">Blue</ion-segment-button>
+                <ion-segment-button value = "White">White</ion-segment-button>
+                <ion-segment-button value = "Red">Red</ion-segment-button>
+            </ion-segment>
+            <ion-segment padding [(ngModel)] = "gender">
+                <ion-segment-button value = "M">
+                    Male
+                </ion-segment-button>
+                <ion-segment-button value = "F">
+                    Female
+                </ion-segment-button>
+            </ion-segment>
+        </ion-list>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-toolbar position = "bottom" color="light" class="button-panel">
+        <button ion-button (click) = "createContact()">Register</button>
+        <button ion-button color="danger" (click) = "close()" *ngIf = "openedAsDialog || openedModal">Cancel</button>
+    </ion-toolbar>
+</ion-footer>

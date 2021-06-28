@@ -1,0 +1,64 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Test Payment</ion-title>
+        <ion-buttons end>
+                <button ion-button icon-only large (click)="onApplyClick()">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="competition-details mygolf-page-background">
+    <!-- <ion-card class="custom-card "> -->
+        <!-- <ion-card-header>
+            <h2><b>Test Payment</b></h2>
+        </ion-card-header>
+        <ion-card-content> -->
+            <ion-item>Sub Type : {{getSubsType(idxSubs.subscriptionType)}}</ion-item>
+            <ion-item>Status : {{idxSubs.active?'Active':'Inactive'}}</ion-item>
+            <ion-item>Subscription Period : {{idxSubs.startDate}} - {{idxSubs.endDate}}</ion-item>
+            <!--  | date:"MMMM d, yyyy" -->
+                <ion-item (click)="testCall()">
+                        <!-- <button ></button> -->
+                        Test Call
+                      </ion-item>
+                <ion-item (click)="createCollection()">
+                       <!-- <button ></button> -->
+                       Create Collection
+                    </ion-item>
+                       <ion-item >
+                           <button ion-button (click)="getCollections()">Get Collections</button>
+                       </ion-item>
+                       <ion-item >
+                        <button ion-button (click)="getRemoteCollections()">Get Remote Collections</button>
+                    </ion-item>
+                    <ion-item>
+                        <button ion-button (click)="getLocalCollections()">Get Local Collections for </button><br><input type="text" [(ngModel)]="collectionId" />
+                    </ion-item>
+                    <ion-item >
+                        <button ion-button (click)="createBill()">Create Bill for Collection ID </button><br><input type="text" [(ngModel)]="collectionId" />
+                    </ion-item>
+                    <ion-item >
+                        <button ion-button (click)="createRemoteBill()">Create Remote Bill for Collection ID </button><br><input type="text" [(ngModel)]="collectionId" />
+                    </ion-item>
+                    <ion-item >
+                        <button ion-button (click)="getBill()">Get Remote Bill for Bill ID </button><br><input type="text" [(ngModel)]="billId" />
+                    </ion-item>
+                    <button ion-button (click)="openWithSystemBrowser('http://m.mygolf2u.com/test/payment_redirect.html')">Open with System browser</button>
+    <button ion-button (click)="openWithInAppBrowser('http://m.mygolf2u.com/test/payment_redirect.html')">Open with In App browser</button>
+    <button ion-button (click)="openWithCordovaBrowser('http://m.mygolf2u.com/test/payment_redirect.html')">Open with Cordova browser</button>
+    <!-- <iframe *ngIf="paying" style="width:100%"  height="420" [src]="billUrl | safe: 'resourceUrl'">
+    </iframe> -->
+    
+        <!-- </ion-card-content>
+    </ion-card> -->
+</ion-content>
+<!--<ion-footer>-->
+    <!--<button ion-button block color="dark" (click)="close()">Close</button>-->
+<!--</ion-footer>-->

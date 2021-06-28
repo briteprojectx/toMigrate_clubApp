@@ -1,0 +1,47 @@
+refund-booking-players-page {
+    .slot-available {
+        color: green;
+    }
+    .slot-not-available {
+        color: red;
+        font-style: italic;
+    }
+
+    .alert-wrapper {
+        min-width: 50vw !important;
+        max-width: 70vw !important;
+    }
+
+    .alert-md .alert-wrapper,
+    .alert-ios .alert-wrapper {
+        min-width: 50vw !important;
+        max-width: 70vw !important;
+    }
+
+    div.alert-wrapper {
+        min-width: 50vw !important;
+        max-width: 70vw !important;
+    }
+    
+#commentArea {
+    width: calc(100% - 10px);
+    // border: 0;
+    // border-radius: 0;
+    background: transparent;
+    border-radius: 1rem;
+      border-color: #1b6a34;
+      border-width: thin;
+      border-style: solid;
+      margin: 0.5rem;
+      padding: 1rem;
+}
+
+div.scroll-content {
+    height: calc(100% - 10rem) !important;
+}
+
+// div.scroll-content {
+//     max-height: 68vh;
+// }
+
+}

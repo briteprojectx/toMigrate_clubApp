@@ -1,0 +1,101 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            myGolf2u Scorer
+        </ion-title>
+        <ion-buttons start>
+            <ion-buttons start>
+                <button ion-button icon-only (click)="openMenu()">
+                    <ion-icon name="menu"></ion-icon>
+                </button>
+            </ion-buttons>
+            <!--<button ion-button icon-only (click)="showVersion()">-->
+                <!--<ion-icon name="information-circle"></ion-icon>-->
+            <!--</button>-->
+        </ion-buttons>
+        <!--<ion-buttons *ngIf="loggedIn" end>-->
+            <!--<button ion-button icon-only (click)="refreshComps()">-->
+                <!--<ion-icon name="refresh"></ion-icon>-->
+            <!--</button>-->
+            <!--<button ion-button icon-only (click)="signOut()">-->
+                <!--<ion-icon name="exit"></ion-icon>-->
+            <!--</button>-->
+        <!--</ion-buttons>-->
+    </ion-navbar>
+</ion-header>
+<ion-content padding class="sign-page-backround">
+    <form *ngIf = "!loggedIn" [formGroup] = "credential" (ngSubmit) = "signIn()">
+        <ion-list class="custom-list list-sign-in">
+            <div class="main-logo">
+            </div>
+        <ion-item class="signin-textfield shorter-height">
+            <ion-label><i class="fa fa-lg fa-user fa-fw"></i></ion-label>
+            <ion-input type = "email" formControlName = "email" placeholer="Organizer/Club Email"></ion-input>
+        </ion-item>
+        <ion-item class="signin-textfield shorter-height">
+            <ion-label><i class="fa fa-lg fa-key fa-fw"></i></ion-label>
+            <ion-input [type]="!showPassword?'password':'text'"
+                    formControlName = "password" placeholder="Password"></ion-input>
+            <div icon-only ion-button large color="dark" clear item-right
+                    (click)="toggleShowPassword($event)"
+                    style="margin:0px">
+                <ion-icon *ngIf="showPassword" name="eye" ></ion-icon>
+                <ion-icon *ngIf="!showPassword" name="eye-off" ></ion-icon>
+            </div>
+        </ion-item>
+        </ion-list>
+        <button ion-button block type = "submit" [disabled] = "!credential.valid">Sign In</button>
+    </form>
+    <ion-list *ngIf="loggedIn && compList && compList.length > 1">
+        <button ion-item *ngFor="let competition of compList" (click)="selectScorer(competition)" style="padding-left: 0px" >
+            <ion-card class="competition-card">
+                <!--<ion-card class="competition-card" *virtualItem="let competition" (click)="onCompetitionClick($event, competition)">-->
+                <ion-row class="info-row">
+                    <ion-col width-25 class="image-column">
+                        <ion-avatar item-left *ngIf="competition.thumbnail">
+                            <img [src]="competition.thumbnail">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="competition.imageUrl && !competition.thumbnail">
+                            <img [src]="competition.imageUrl">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="!competition.imageUrl && !competition.thumbnail">
+                            <img src="img/default_competition.png">
+                        </ion-avatar>
+
+                    </ion-col>
+                    <ion-col class="info-column">
+                        <div class="competition-info">
+                            <p class="competition-name">{{competition.competitionName}}</p>
+                            <p class="competition-date">
+                                <i class="fa fa-calendar"></i>
+                                {{competition.startDate | date:"EEE, d MMM yyyy"}}
+                                <span *ngIf="competition.status=='Upcoming'" class="competition-details"
+                                        style="color:#FF4343 !important">({{startDaysText(competition)}})</span>
+                            </p>
+                            <p class="competition-details">
+                            <span color="primary"><i color="danger" class="fa fa-map-marker"></i>
+                                {{competition.clubTag}}
+                            </span>
+                                <span color="blue" *ngIf="competition.scoringFormat">|
+                                <i class="fa fa-wpforms"></i>
+                                {{competition.scoringFormat}}
+                            </span>
+                                <span color="darkpurple" *ngIf="competition.teamEvent">|
+                              <i class="fa fa-fw fa-users"></i>
+                                Team Event
+                              </span>
+                            </p>
+
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </button>
+    </ion-list>
+    <ion-label *ngIf="loggedIn && refreshTried && (!compList || !compList.length)">
+        There are no active tournaments for today
+    </ion-label>
+    <div class="filler">
+        <img src="assets/img/mygolf2u-scorer-title.png">
+    </div>
+</ion-content>

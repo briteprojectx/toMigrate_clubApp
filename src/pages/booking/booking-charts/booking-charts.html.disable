@@ -1,0 +1,215 @@
+<ion-header>
+    <ion-navbar class="player-charts">
+
+        <button ion-button icon-only menuToggle (click)="onMenuClick()">
+            <ion-icon name='menu'></ion-icon>
+        </button>
+
+        <ion-title>{{"PlayerChartsPage.title"|translate}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-left (click)="onRefreshClick(null, false)">
+                <i class="fa fa-fw fa-lg fa-refresh"></i>Reload
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<!--(window:resize)="onWindowResize($event)"-->
+<ion-content>
+    
+</ion-content>
+<ion-content *ngIf="0" class="player-charts " >
+    <ion-refresher (ionRefresh)="onRefreshClick($event, false)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-card class="mg-custom-card">
+        <ion-item style="padding-left:1rem" (click)="onPerformanceFilterClick()">
+            <p>Now displaying : </p>
+            <button ion-button clear item-right >Change</button>
+            <p>
+                <span *ngIf="courseType=='course' && courseInfo && courseInfo.courseName!=''">
+                  <i class="fa fa-pencil-square-o ph-pencil" aria-hidden="true"></i> {{courseInfo.courseName}}
+                </span>
+                  <span *ngIf="courseType=='club' && clubInfo && clubInfo.clubName!=''">
+                    <i class="fa fa-pencil-square-o ph-pencil" aria-hidden="true"></i> {{clubInfo.clubName}}
+                  </span>
+
+
+            </p>
+
+            <p><span><b>{{searchCriteria.performanceHolesPlayed}} Holes</b> over</span>
+                <span *ngIf="searchCriteria.useNGames"><b>Last {{searchCriteria.lastNGames}} game(s)</b></span>
+                <span *ngIf="!searchCriteria.useNGames">
+                 <!--|| (searchCriteria.periodType=='CUSTOM' && (!checkStartDate() && !checkEndDate()))-->
+              <span
+                  *ngIf="searchCriteria.periodType=='DAY'"><b>Last {{searchCriteria.periodLength}} day(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='WEEK'"><b>Last {{searchCriteria.periodLength}} week(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='MONTH'"><b>Last {{searchCriteria.periodLength}} month(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='YEAR'"><b>Last {{searchCriteria.periodLength}} year(s)</b> ago</span>
+                <span *ngIf="searchCriteria.periodType=='CUSTOM' && (checkStartDate() || checkEndDate())">Games from <b>{{startDate}} to {{endDate}}</b></span>
+                </span>
+            </p>
+        </ion-item>
+        <!--<div (click)="goToHoleAnalysis()">-->
+        <!--<button clear item-left style="font-size:1rem" >-->
+        <!--<img style="height:2rem;" src="img/golf-hole.svg">Tap here for hole by hole performance</button>        </div>-->
+        <ion-item no-padding class="hole-item">
+            <p>
+                <button ion-button clear item-left style="font-size:1.25rem;color:red !important" (click)="goToHoleAnalysis()">
+                    <img style="height:2rem;" src="img/golf-hole.svg">Tap here for hole by hole performance
+                </button>
+            </p>
+
+        </ion-item>
+
+
+        <!--<ion-item><button clear item-right><img style="height:2rem" src="img/golf-hole.svg">Switch to hole analysis</button>-->
+        <!--</ion-item>-->
+    </ion-card>
+    <ion-card  class="mg-custom-card" style="height:250px">
+        <ion-card-content>
+            <mygolf-chart *ngIf="slideNo === 0 || slideNo === 1" chartType="bar" class="chart"
+                          style="display: block; width: 100%;height: 100%"
+                          [labels]="playerPerformance.labels"
+                          [options]="playerPerformance.options"
+                          [data]="playerPerformance.data"></mygolf-chart>
+            <mygolf-chart *ngIf="slideNo === 2" chartType="pie" class="chart"
+                          style="display: block; width: 100%;height: 100%"
+                          [labels]="playerPieChartData.labels"
+                          [options]="playerPieChartData.options"
+                          [data]="playerPieChartData.data"></mygolf-chart>
+
+        </ion-card-content>
+
+
+    </ion-card>
+
+
+    <ion-toolbar class="chart-type">
+        <ion-segment [(ngModel)]="tabs" warning>
+
+            <ion-segment-button (click)="goToSlide(0)" value="info">
+                {{"PlayerChartsPage.info"|translate}}
+            </ion-segment-button>
+            <ion-segment-button (click)="goToSlide(1)" value="details">
+                {{"PlayerChartsPage.details"|translate}}
+            </ion-segment-button>
+            <ion-segment-button (click)="goToSlide(2)" value="statistics">
+                {{"PlayerChartsPage.statistics"|translate}}
+            </ion-segment-button>
+
+        </ion-segment>
+    </ion-toolbar>
+    <!--<ion-toolbar light *ngIf="listType==='search'">-->
+    <!--<ion-searchbar [(ngModel)]="searchQuery"-->
+    <!--debounce="1000"-->
+    <!--(input)="onSearchInput($event)">-->
+
+    <!--</ion-searchbar>-->
+    <!--</ion-toolbar>-->
+    <ion-list>
+        <div [ngSwitch]="tabs">
+            <ion-list *ngSwitchCase="'info'">
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.averageScore"|translate}}</h4>
+                    <ion-badge *ngIf="performanceBase.success" item-right class="custom-badge">
+                        {{performanceBase.averageScore}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceBase.success" item-right class="custom-badge">-</ion-badge>
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.bestScore"|translate}}</h4>
+                    <ion-badge *ngIf="performanceBase.success" item-right class="custom-badge">
+                        {{performanceBase.bestScore}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceBase.success" item-right class="custom-badge">-</ion-badge>
+                </ion-item>
+            </ion-list>
+            <ion-list *ngSwitchCase="'details'">
+                <div *ngIf="!performanceDetail.success" danger>
+                    <ion-item padding style="text-align:center">
+                        There is no data found
+                    </ion-item>
+                </div>
+                <span *ngIf="performanceDetail.success">
+                <div *ngFor="let ps of performanceDetail.playerPerformanceDetails; let i = index">
+                    <button (click)="onScorecardClick($event, ps)" ion-item class="custom-scorecard">
+                        <h4><i class="fa fa-calendar" aria-hidden="true"></i> {{ps.roundDate | date:"MMMM d, yyyy"}}
+                            <span *ngIf="ps.competitionId"><i color="danger" class="fa fa-trophy"
+                                                              aria-hidden="true"></i></span>
+                        </h4>
+                        <h6 ion-text color="primary"><i class="fa fa-map-marker fa-location" aria-hidden="true"></i>
+                            {{ps.firstNineCourseName}}<span *ngIf="ps.secondNineCourseName"> & {{ps.secondNineCourseName}}</span>
+                        </h6>
+
+                        <!--ion-badge item-right class="custom-badge" ></ion-badge -->
+                        <span item-right>
+                        <h2 style="text-align:center;">{{ps.totalGross}}</h2>
+                        <p style="text-align:center;"><span *ngIf="ps.secondNineCourseName">{{ps.outTotalGross}} | {{ps.inTotalGross}}</span></p>
+                    </span>
+                    </button>
+                </div>
+              </span>
+            </ion-list>
+            <ion-list *ngSwitchCase="'statistics'">
+                <ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.eagle"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.eagle}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.eagle==null"
+                               item-right class="custom-badge">-
+                    </ion-badge>
+
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.birdie"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.birdie}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.birdie==null"
+                               item-right class="custom-badge">-
+                    </ion-badge>
+
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.par"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.par}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.par==null" item-right
+                               class="custom-badge">-
+                    </ion-badge>
+
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.bogey"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.bogey}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.bogey==null"
+                               item-right class="custom-badge">-
+                    </ion-badge>
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.2bogey"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.bogey2}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.bogey2==null"
+                               item-right class="custom-badge">-
+                    </ion-badge>
+                </ion-item>
+                <ion-item ion-item class="custom-competition">
+                    <h4>{{"PlayerChartsPage.3bogey"|translate}}</h4>
+                    <ion-badge *ngIf="performanceChart.success" item-right class="custom-badge">
+                        {{performanceChart.scoreStatistic.bogey3}}
+                    </ion-badge>
+                    <ion-badge *ngIf="!performanceChart.success || performanceChart.scoreStatistic.bogey3==null"
+                               item-right class="custom-badge">-
+                    </ion-badge>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-list>
+
+</ion-content>

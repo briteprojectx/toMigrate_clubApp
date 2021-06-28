@@ -1,0 +1,22 @@
+<ion-nav [root]="rootPage"></ion-nav>
+<ion-footer *ngIf="loggedIn && showFooterPage()" style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2 (click)="goBookingPage()">
+            <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-calendar.svg" />
+        </ion-col>
+        <ion-col col-2 (click)="goNotificationPage()">
+            <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-notification.svg" />
+        </ion-col>
+        <ion-col col-4 (click)="goHomePage()">
+            <img style="height: 5rem;" src="assets/img/mg2u-logo-circle.svg" />
+        </ion-col>
+        <ion-col col-2 (click)="getHelpPage()">
+            <img style="height: 5rem; padding:1rem;" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2 (click)="goProfilePage()">
+            <!-- <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-player.svg" /> -->
+            <i style="font-size: 2em !important;color: #a2cd5f; padding: 1rem !important;" class="fas fa-fw fa-large fa-users-cog"></i>
+        </ion-col>
+    </ion-row>
+
+</ion-footer>

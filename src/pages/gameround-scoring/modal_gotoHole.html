@@ -1,0 +1,24 @@
+<ion-header >
+    <ion-navbar hideBackButton >
+        <ion-title >Go to Hole</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only color="invert-text">
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <ion-list radio-group >
+        <p *ngFor="let course of courses;let i = index" >
+            <ion-list-header color="darkyellow">{{course.courseName}}</ion-list-header >
+            <ion-item *ngFor="let hole of course.holes" >
+                <ion-label *ngIf="i==0" >Hole {{hole.holeNo}}</ion-label >
+                <ion-label *ngIf="i==1" >Hole {{hole.holeNo}}</ion-label >
+                <ion-radio [value]="hole" (click)="selectHole(hole, course.whichNine)" ></ion-radio >
+            </ion-item >
+        </p >
+
+    </ion-list >
+</ion-content >

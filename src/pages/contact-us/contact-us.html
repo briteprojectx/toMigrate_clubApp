@@ -1,0 +1,128 @@
+<ion-header style="border:none;">
+    <ion-navbar >
+        <ion-title >myGolf2u Contact Us</ion-title >
+            <!-- <ion-buttons end>
+                <button ion-button (click)="onRefresh(true)">
+                    <i class="fa fa-fw fa-refresh"></i>
+                </button>
+            </ion-buttons> -->
+    </ion-navbar >
+        <!-- <ion-toolbar color="light" padding> 
+    <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                        (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+                    </ion-searchbar>
+                </ion-toolbar> -->
+
+</ion-header >
+<ion-content padding primary style="text-align:center;margin-top:1rem" >
+    <!-- class="mygolf-special-page-background" -->
+	<!-- <div *ngIf="isCordova()">
+        {{appInfo.appName}}
+        <span>Version {{appInfo.versionNumber}}.{{appInfo.versionCode}}</span>
+        <div style="font-size: smaller"><b>Device Information</b>
+            <div>Device ID: {{deviceInfo.deviceId}}</div>
+            <div>Virtual: {{deviceInfo.virtual}}</div>
+            <div>Platform: {{deviceInfo.platform}}</div>
+            <div>Manufacturer: {{deviceInfo.manufacturer}}</div>
+            <div>Model: {{deviceInfo.model}}</div>
+            <div>Serial: {{deviceInfo.serial}}</div>
+        </div>
+    </div>
+
+    <div *ngIf="!isCordova()">
+		{{appInfo.appName}}
+        <div style="font-size: smaller"><b>Device Information</b>
+		<div >Device ID: {{deviceInfo.deviceId}}</div>
+        <div>Platform: {{deviceInfo.platform}}</div>
+        </div>
+	</div> -->
+  	<!--{{appName?appName: 'myGolf2u'}}<br>-->
+    <!--<span >Version {{versionNumber}}.{{buildNumber}}<br></span>-->
+    <img src="assets/img/mg2u-logo-circle1.svg" style="margin-top:3px"/>
+    <!-- Searchning Mode : {{searchingMode}} -->
+    <h5>Please contact us on any of the following : </h5>
+    <h3 *ngIf="contactUsItem && contactUsItem.companyName">
+        <strong>{{contactUsItem.companyName}} ({{contactUsItem.companyRegNo}})</strong>
+    </h3>
+    <h3 *ngIf="contactUsItem && contactUsItem.companyAddress" [innerHTML]="contactUsItem.companyAddress"></h3>
+    <h3 *ngIf="contactUsItem && contactUsItem.companyEmail">{{contactUsItem.companyEmail}}</h3>
+    <h3 *ngIf="contactUsItem && contactUsItem.phone1">Phone : {{contactUsItem.phone1}}</h3>
+    <h3 *ngIf="contactUsItem && contactUsItem.fax">Fax : {{contactUsItem.fax}}</h3>
+    <h3 *ngIf="contactUsItem && contactUsItem.phone2">Whatsapp : {{contactUsItem.phone2}}</h3>
+    <ion-list *ngIf="!searchingMode">
+        <div *ngFor="let grpItem of groupItems">
+            <ion-list-header>
+                {{grpItem.groupTitle}}
+            </ion-list-header>
+            <ion-card (click)="expandPanel(item)" no-padding class="slot-box" *ngFor="let item of grpItem.groupContent" style="    margin-left: 2rem;
+            max-width: calc(100% - 4rem) !important;"> <!-- booking information-->
+                <ion-card-header no-padding class="slot-subtitle-box">
+                    <ion-row>
+                        <!-- <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;"  (click)="toggleBookingClick(1)">
+                            <img style="max-height:1.5em;width:webkit-fill-available"
+                                src="assets/img/booking-item-time.svg" />
+                        </ion-col> -->
+                        <ion-col style="letter-spacing: 2px;    overflow-wrap: break-word;
+                        white-space: normal;"  (click)="toggleBookingClick(1)">
+                            <b>{{item.title}}</b>
+                        </ion-col>
+                    </ion-row>
+                </ion-card-header>
+                <ion-card-content padding *ngIf="item.expand" style="text-align:left">
+                    <span [innerHTML]="item.content"></span>
+                </ion-card-content> 
+                </ion-card>
+        </div>
+        
+            </ion-list>
+            <ion-list *ngIf="searchingMode && faqItems">
+                    <ion-card (click)="expandPanel(item)" no-padding class="slot-box" *ngFor="let item of faqItems" style="    margin-left: 2rem;
+                    max-width: calc(100% - 4rem) !important;"> <!-- booking information-->
+                        <ion-card-header no-padding class="slot-subtitle-box">
+                            <ion-row>
+                                <!-- <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;"  (click)="toggleBookingClick(1)">
+                                    <img style="max-height:1.5em;width:webkit-fill-available"
+                                        src="assets/img/booking-item-time.svg" />
+                                </ion-col> -->
+                                <ion-col style="letter-spacing: 2px;    overflow-wrap: break-word;
+                                white-space: normal;"  (click)="toggleBookingClick(1)">
+                                    <b>{{item.title}}</b>
+                                </ion-col>
+                            </ion-row>
+                        </ion-card-header>
+                        <ion-card-content padding *ngIf="item.expand" style="text-align:left">
+                            <span [innerHTML]="item.content"></span>
+                        </ion-card-content> 
+                        </ion-card>
+                
+                    </ion-list>
+	<!-- <div class="main-logo" >
+    </div > -->
+    <br>
+	Copyright &copy; 2020 BriteSoft Solutions.<br>
+	All right reserved.<br><br>
+	Developed by BriteSoft Solutions<br>
+	<div class="britesoft-logo"></div>
+
+	<!-- <a href="http://www.mygolf2u.com" style="text-decoration:none;">www.mygolf2u.com</a> -->
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+            <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+        </ion-col>
+            <ion-col col-2>
+                <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+            </ion-col>
+            <ion-col col-2>
+                <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+            </ion-col>
+    </ion-row>
+    
+</ion-footer>

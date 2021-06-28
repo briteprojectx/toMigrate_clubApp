@@ -1,0 +1,237 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+        <!-- <ion-title>Caddy Details</ion-title> -->
+        <!-- <ion-buttons end *ngIf="switchView">
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+    </ion-navbar>
+</ion-header>
+<ion-content class = "competition-details player-performance">
+    <ion-grid fixed>
+    <ion-list style="padding-top:1em">
+        <!-- <ion-item class = "header-panel" style = 'background-color:#fadb4e;text-align:center;'>
+            <h3 class = "scorecard-name" style = "font-weight:bold">{{buggyDetails.name}} ({{buggyDetails.buggyNo}}</h3>
+            <h4>{{buggyDetails.description}}</h4>
+        </ion-item> -->
+        <div *ngIf="!switchView">
+        <ion-thumbnail (click)="zoomImage(caddyDetails)" style="text-align: -webkit-center;">
+            <img [src] = "(caddyDetails && caddyDetails.caddyImage)?caddyDetails.caddyImage:''"  
+            onerror = "this.src='assets/img/caddie-image.svg'" style="height:8em">
+        </ion-thumbnail>
+        <!-- <ion-item style="text-align:right;">
+                        <ion-label>Switch View</ion-label>
+                        <ion-toggle [(ngModel)]="switchView"></ion-toggle>
+                      </ion-item> -->
+                      <ion-item style="text-align: center; color: yellowgreen">
+                          <!-- <i class="fas fa-fw fa-star"></i>
+                          <i class="fas fa-fw fa-star"></i>
+                          <i class="fas fa-fw fa-star"></i>
+                          <span class="fa-stack">
+                                <i class="fas fa-star-half fa-stack-1x "></i>
+                                <i class="far fa-star-half fa-stack-1x fa-flip-horizontal"></i>
+                          </span>
+                          <i class="far fa-fw fa-star"></i> -->
+                          <span style="font-size:1.5rem" [innerHTML]="parseStarRating(caddyDetails)"></span>
+                      </ion-item>
+                      <ion-item style="text-align: center;" *ngIf="fromBooking">
+                      <button ion-button (click)="selectPreferredCaddy()" >
+                          Select this preferred caddy
+                      </button>
+                    </ion-item>
+                </div>
+        <div *ngIf="!switchView">
+            <!-- <ion-item *ngIf="getUserRoles('ratings')" (click)="openCaddieRatings()" class="gradient">
+                <span><i class="far fa-fw fa-comment-dots"></i>View Ratings / Reviews</span>
+            </ion-item>
+            <ion-item *ngIf="getUserRoles('assignments')" (click)="openCaddieAssignments()" class="gradient">
+                <span><i class="fas fa-fw fa-tasks"></i>View Assignments</span>
+            </ion-item> -->
+            <button ion-button outline block (click)="openCaddieRatings()">
+                <span><i class="fas fa-fw fa-tasks"></i>View Ratings / Reviews</span>
+            </button>
+            <button ion-button outline block (click)="openCaddieAssignments()">
+                <span><i class="fas fa-fw fa-tasks"></i>View Assignments</span>
+            </button>
+            <button [disabled]="true" ion-button outline block>
+                <span style="font-style: italic;"><i class="fas fa-fw fa-tasks"></i>View Unavailability (coming soon)</span>
+            </button>
+            <ion-grid>
+                <ion-row>
+                        <ion-col col-6 class="detail-param">Caddy Name</ion-col>
+                        <ion-col col-6 class="detail-field">{{caddyDetails.firstName?caddyDetails.firstName:''}} {{caddyDetails.lastName?caddyDetails.lastName:''}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="detail-param">Staff ID #</ion-col>
+                        <ion-col col-6 class="detail-field">#{{caddyDetails.staffId}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="detail-param">IC / ID #</ion-col>
+                        <ion-col col-6 class="detail-field">{{caddyDetails.identificationNo}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col col-6 class="detail-param">Grade</ion-col>
+                            <ion-col col-6 class="detail-field">-</ion-col>
+                        </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="detail-param">Date of Birth</ion-col>
+                        <ion-col col-6 class="detail-field">{{caddyDetails.dateOfBirth | date:"EEE, d MMM yyyy"}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="detail-param">Date Joined</ion-col>
+                        <ion-col col-6 class="detail-field">{{caddyDetails.dateJoined | date:"EEE, d MMM yyyy"}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col col-6 class="detail-param">Nationality</ion-col>
+                            <ion-col col-6 class="detail-field" style="display: flex;flex-wrap: nowrap;justify-content: flex-end;">
+                                <img *ngIf="caddyDetails.nationality && caddyDetails.nationality.name" style="max-height: 2em;" 
+                    [src]="getFlagUrl(caddyDetails.nationality.flagUrl)" />
+                    <!-- onerror="this.src='img/flag/default_worldwide.png'"  -->
+                    <div>{{caddyDetails.nationality?caddyDetails.nationality.name:''}} {{caddyDetails.nationality?'('+caddyDetails.nationality.id+')':'-'}}</div>
+
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                                <ion-col col-6 class="detail-param">Grade</ion-col>
+                                <ion-col col-6 class="detail-field">{{caddyDetails.grade?caddyDetails.grade:'-'}}</ion-col>
+                            </ion-row>
+                    <ion-row>
+                        <ion-col col-6 class="detail-param">Last Assigned</ion-col>
+                        <ion-col col-6 class="detail-field">{{caddyDetails.lastAssigned | date:"EEE, d MMM yyyy"}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col col-6 class="detail-param">Last Completed</ion-col>
+                            <ion-col col-6 class="detail-field">{{caddyDetails.lastCompleted | date:"EEE, d MMM yyyy"}}</ion-col>
+                        </ion-row>
+                        <ion-row>
+                                <ion-col col-6 class="detail-param">Current Status</ion-col>
+                                <ion-col col-6 class="detail-field">
+                                        <i style="color: green" *ngIf="caddyDetails.status === 'A'; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                        <ng-template #notWorking>
+                                                <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                        </ng-template>
+                                    {{getFullStatus(caddyDetails.status)}}
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                    <ion-col class="detail-param">Description</ion-col>
+                                    <ion-col class="detail-field">{{caddyDetails.description}}</ion-col>
+                                    
+                            </ion-row>
+                            <ion-row>
+                                    <ion-col col-4 class="detail-param">Working Days</ion-col>
+                                    <ion-col col-8 class="detail-field">{{displayAvailableDays(caddyDetails.availabilityDays)}}</ion-col>
+                                    
+                            </ion-row>
+                            <ion-row>
+                                    <ion-col col-6 class="detail-param" (click)="getCaddySchedule()">Working Schedule<br><i>(next 30 days)</i></ion-col>
+                                    <ion-col col-6 class="detail-field">{{getEndDate(1,true)}} to {{getEndDate(30)}}</ion-col>
+                                    <i>*Tap on date for more details</i>
+                                    <div class="row"  style="width:100%; border-width:1px; border-style: solid;background-color: #b8edc9;">
+                                           <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(1)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(2)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(3)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(4)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(5)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(6)}}</div>
+                                            <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(7)}}</div>
+                                    </div>
+                                    <div class="row"  style="width:100%; border-width:1px; border-style: solid;">
+                                            <ng-container *ngFor="let x of caddyAvl; let i of index">
+                                                    
+                                                    <div (click)="getDateDetail(x)" class="column date-data" style='width: 14.2%;text-align:center;' >
+                                                        {{x.availableOn | date:"dd"}}
+                                                            <!-- {{getDate(x)}} -->
+                                                    <i style="color: green" *ngIf="x.available; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                    <ng-template #notWorking>
+                                                            <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </div>
+                                            <!-- <ng-container *ngFor="let x of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]; let i of index;">
+                                                    <div (click)="getDateDetail(x)" 
+                                                    class="column date-data" style='width: 14.2%;text-align:center;'>
+                                                    <i style="color: green" *ngIf="x % 3 === 1; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                                    <ng-template #notWorking>
+                                                            <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                                    </ng-template>
+                                                </div>
+                                            </ng-container> -->
+                                        <!-- </div> -->
+                            </ion-row>
+                        </ion-grid>
+        </div>
+        <ion-grid *ngIf="switchView" fixed>
+            <ion-row class="page-sub-title align-center" 
+            style="font-size: 1.2rem;border-color: yellowgreen;
+        border-width: thin;
+        border-style: solid;
+        border-radius: 1em;
+        margin: 2px;">
+                <ion-col col-1 class="btn-back" (click)="prevDate()"></ion-col>
+                
+                <ion-col style="text-align:center;font-weight: bold;font-size: 1.5em;"> 
+                    <!-- <h3 style="font-weight:bold; font-size: 1.5em; "> -->
+                            <ion-datetime (ionChange)="confirmDate()"
+                            displayFormat="MMMM YYYY" 
+                            pickerFormat="MMMM-YYYY" [(ngModel)]="currentDate"></ion-datetime>
+                       
+                        <!-- {{currentDate | date:"EEE, d MMM yyyy"}} -->
+                    <!-- </h3> -->
+                </ion-col>
+                <ion-col col-1 class="btn-next" (click)="nextDate()"></ion-col>
+            </ion-row>
+    
+            <ion-row>
+                <ion-col col-6 class="detail-param" (click)="getCaddySchedule()">Working Schedule<br></ion-col>
+                <ion-col col-6 class="detail-field">{{getEndDate(1,true)}} to {{getEndDate(30)}}</ion-col>
+                <i>*Tap on date for more details</i>
+                <div class="row"  style="width:100%; border-width:1px; border-style: solid;background-color: #b8edc9;">
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(1)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(2)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(3)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(4)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(5)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(6)}}</div>
+                        <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(7)}}</div>
+                </div>
+                <div class="row" style="width:100%; border-width:1px; border-style: solid;">
+                        <ng-container *ngFor="let x of caddyAvl; let i of index">
+                                
+                                <div (click)="getDateDetail(x)" class="column date-data" style='width: 14.2%;text-align:center;' >
+                                    {{x.availableOn | date:"dd"}}
+                                        <!-- {{getDate(x)}} -->
+                                <i style="color: green" *ngIf="x.available; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                <ng-template #notWorking>
+                                        <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                </ng-template>
+                            </div>
+                        </ng-container>
+                        
+                    </div>
+                        <!-- <ng-container *ngFor="let x of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]; let i of index;">
+                                <div (click)="getDateDetail(x)" 
+                                class="column date-data" style='width: 14.2%;text-align:center;'>
+                                <i style="color: green" *ngIf="x % 3 === 1; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                <ng-template #notWorking>
+                                        <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                </ng-template>
+                            </div>
+                        </ng-container> -->
+                    <!-- </div> -->
+        </ion-row>
+        </ion-grid>
+        
+
+    </ion-list>
+</ion-grid>
+</ion-content>
+<ion-footer *ngIf="switchView">
+    <ion-item text-center>
+        <button ion-button color="danger" style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" (click)="close()">Close</button>
+            </ion-item>
+    </ion-footer>

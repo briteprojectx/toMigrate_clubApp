@@ -1,0 +1,82 @@
+<ion-header >
+    <ion-navbar >
+      <ion-buttons start>
+        <button ion-button icon-only large color="invert-text" (click)="close()">
+            <ion-icon  name="close-circle"></ion-icon>
+        </button>
+      </ion-buttons>
+        <ion-title center >Search</ion-title >
+        <ion-buttons end >
+          <button ion-button icon-only large (click)="select()">
+              <ion-icon name="checkmark-circle"></ion-icon>
+          </button>        </ion-buttons >
+    </ion-navbar >
+
+    <ion-segment [(ngModel)]="tabs" warning > <!--[(ngModel)]="tabs"-->
+        <ion-segment-button value="available" >Available
+        </ion-segment-button >
+        <ion-segment-button value="selected" >
+            Selected
+        </ion-segment-button >
+    </ion-segment >
+    <ion-toolbar color="light" *ngIf="tabs === 'available'" >
+        <ion-searchbar [(ngModel)]="searchQuery"
+                       debounce="1000"
+                       (ionInput)="onSearchInput($event)" >
+
+        </ion-searchbar >
+    </ion-toolbar >
+
+</ion-header >
+<ion-content class="search-player-list flight-setup" >
+        <div *ngIf="tabs==='available'" >
+            <ion-list >
+                <ion-item *ngFor="let friend of playerList.players;let idx=index" >
+                    <ion-avatar item-left (click)="playerSelected($event, friend)" >
+                        <img src="{{friend.thumbnail ? friend.thumbnail : friend.photoUrl}}" class="custom-avatar-img" >
+                    </ion-avatar >
+                    <h2 (click)="playerSelected($event, friend)" >{{friend.playerName}} </h2 >
+                    <button ion-button item-right large outline class="fs-remove-btn" (click)="addPlayer($event,friend, idx)" >
+                        <ion-icon name="person-add" ></ion-icon >
+                    </button >
+
+                </ion-item >
+            </ion-list >
+        </div >
+
+        <div *ngIf="tabs==='selected'" >
+            <ion-list >
+                <ion-item *ngFor="let f of selectedPlayerList.players; let idx=index" >
+                    <ion-avatar item-left (click)="playerSelected($event, f)" >
+                        <img src="{{f.thumbnail ? f.thumbnail : f.photoUrl}}" class="custom-avatar-img" >
+                    </ion-avatar >
+                    <h2 (click)="playerSelected($event, f)" >{{f.playerName}} </h2 >
+                    <button ion-button item-right large outline class="fs-remove-btn" (click)="removePlayer($event, f, idx)">
+                        <ion-icon name="trash" ></ion-icon >
+                    </button >
+
+                </ion-item >
+            </ion-list >
+        </div >
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                             threshold="30%" >
+            <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    loadingText="Loading more data..." ></ion-infinite-scroll-content >
+        </ion-infinite-scroll >
+
+</ion-content >
+<!--ion-item *ngFor="let slot of slots" ion-item class="fs-main-item custom-item" >
+    <ion-avatar class="avatar-left" >
+        <img src="{{imageUrl(slot)}}" />
+    </ion-avatar >
+    <h2 primary class="fs-main-lbl" >{{playerInSlot(slot)}}</h2 >
+    <button *ngIf="slotFilled(slot)" item-right large outline class="fs-remove-btn"
+            (click)="onPlayerDelete(slot)" >
+        <ion-icon danger name="trash" ></ion-icon >
+    </button >
+    <button *ngIf="!slotFilled(slot)" item-right large outline class="fs-remove-btn"
+            (click)="onPlayerSelect(slot)" >
+        <ion-icon name="person-add" ></ion-icon >
+    </button >
+</ion-item -->

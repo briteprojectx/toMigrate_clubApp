@@ -1,0 +1,198 @@
+<ion-header >
+    <ion-navbar [hideBackButton]="allowLogout">
+        <ion-buttons start>
+            <button *ngIf="allowLogout" ion-button icon-only (click)="openScorerMenu()">
+                <ion-icon name="menu"></ion-icon>
+            </button>
+            <button ion-button icon-only large>
+
+                <i class="mdi" [class.mdi-server-network]="connectionOn()"
+                        [class.mdi-server-network-off]="!connectionOn()"
+                        [class.connection-off]="!connectionOn()"></i>
+            </button>
+        </ion-buttons>
+        <ion-title *ngIf="!editingScorecard" >{{"ScoringPage.title"|translate}}</ion-title >
+        <ion-title *ngIf="editingScorecard" >{{"ScoringPage.editTitle"|translate}}</ion-title >
+        <ion-buttons end >
+            <button  ion-button icon-only  (click)="onHomeClick()" *ngIf="!editingScorecard && !allowLogout" style="box-shadow: none">
+                <ion-icon name='home' ></ion-icon >
+            </button >
+            <button ion-button icon-only class="button-menu" small (click)="onReloadScorecardClick()"
+                    *ngIf="scorecard.competition && !currentPlayerScoring" style="box-shadow: none">
+                <ion-icon name='refresh' ></ion-icon >
+            </button >
+            <button ion-button icon-only (click)="showEventLog()">
+                <ion-icon name="alert"></ion-icon>
+            </button>
+
+            <button ion-button icon-only class="button-menu" small (click)="onMenuClick()"
+                    *ngIf="!scorecard.competition" style="box-shadow: none">
+                <ion-icon name="menu" ></ion-icon >
+            </button >
+            <!--<button ion-button icon-only *ngIf="allowLogout" (click)="exit()">-->
+                <!--<ion-icon name="exit"></ion-icon>-->
+            <!--</button>-->
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+<ion-content class="mygolf-page-background" >
+    <ion-item class="page-sub-title" >
+        <ion-thumbnail item-left >
+            <div class="mainHoleImage mid" (click)="onHoleImageClick()">
+                <h2>{{currentHole}}</h2>
+            </div>
+        </ion-thumbnail >
+        <ng-container *ngIf="scorecard.competition">
+        <h3 class="competition-name" >{{scorecard.competitionName}} - R{{scorecard.roundNumber}}</h3 >
+        <h3 class="club-name" >
+            <b style="color:blue">Flight {{scorecard.flightNumber}}<b style="color:red">{{buggyNo?" | Buggy "+buggyNo:""}}</b>
+            </b></h3 >
+            <h4 class="course-name"><b>{{scorecard.clubName}}</b>
+                ,            {{currentCourse.courseName}}
+            </h4 >
+        </ng-container>
+        <ng-container *ngIf="!scorecard.competition">
+            <h4 class="course-name"><b>{{scorecard.clubName}}</b></h4 >
+                <h4 class="course-name">{{currentCourse.courseName}}</h4>
+            </ng-container>
+        
+        <p class="course-details" >{{currentHoleDetails()}}</p >
+    </ion-item >
+
+    <ion-list >
+        <ion-item *ngIf="!currentPlayerScoring && !editingScorecard" class="game-scoring">
+            <p class="second-line">
+                To see updated scores, click on Reload or Scorecard
+            </p>
+        </ion-item>
+        <ion-item *ngIf="flightChanged" class="game-scoring" (click)="onNotifyFlightChange()">
+            <p class="second-line">You have changed flight info. Click here to notify others.</p>
+        </ion-item>
+        <ion-item *ngIf="canFinalizeGame && currentPlayerScoring" class="game-scoring" (click)="goScorecard()" >
+            <p class="first-line" >
+                <ion-icon name="flag" ></ion-icon >
+                &nbsp;&nbsp;Scoring Complete
+            </p >
+            <p class="second-line" >
+                All scores have been entered. Click here to review.
+            </p >
+        </ion-item >
+        <ion-item *ngIf="needToSave()" class="game-scoring" (click)="_confirmAndSave()" >
+            <p class="first-line" >
+                <i class="fa fa-floppy-o" aria-hidden="true" ></i >&nbsp;&nbsp;Save Scorecard
+            </p >
+            <p class="second-line" >
+                Some scores are updated. Click here to save
+            </p >
+        </ion-item >
+        <ion-item-sliding *ngFor="let pr of scorecard.playerRoundScores; let idx = index">
+            <ion-item class="player-scores" >
+                <ion-avatar class="avatar-left custom-avatar">
+                    <img src="{{pr.thumbnail?pr.thumbnail : pr.photoUrl}}" class="thumbnail-rounded" onerror="this.src='img/default_user.png'">
+                    <span *ngIf="pr.playerHandicap" class="scorer-info"
+                          style="padding-left:0;color: blue;font-weight: bold">H/C: {{pr.playerHandicap}}</span>
+                </ion-avatar >
+                <h6 class="player-name"
+                    [class.scoring-player]="pr.playerId === currentPlayer.playerId">{{pr.playerName}}</h6 >
+                <h6 *ngIf="pr.teamName" class="scorer-info" style="font-weight: bold">Team: <u style="color:blue"> {{pr.teamName}}</u></h6>
+
+                <ion-badge item-right class="scoring-badge" >
+                    <h2 class="score" >&nbsp;&nbsp;{{getScore(idx)}}&nbsp;&nbsp;</h2 >
+                    <p class="score-type" >{{getScoreType(idx)}}</p >
+                </ion-badge >
+
+                <div *ngIf="canScore(pr) && (scorecard.editable || !scorecard.competition)" class="scoring-buttons" >
+                    <button ion-button small color="danger" (click)="onMinusClick(idx)" >
+                        &nbsp;<i class="fa fa-minus" ></i >&nbsp;
+                    </button >
+
+                    <button ion-button small color="par" (click)="onParClick(idx)" >
+                        {{"ScoringPage.ScorePar"|translate}}
+                    </button >
+                    <button ion-button small color="dark" (click)="onPlusClick(idx)" >&nbsp;<i class="fa fa-plus" ></i >&nbsp;</button >
+                </div >
+                <div *ngIf="canScore(pr) && (scorecard.competition && !scorecard.editable)" >
+                    <div class="device-locked">Scorecard is locked in another device</div>
+                    <button ion-button color="danger" clear (click)="onBreaklockClick()">
+                        Click here to start scoring in this device</button>
+                </div>
+                <div *ngIf="!canScore(pr) && pr.status !== 'C'" class="scorer-info" >
+                    {{"ScoringPage.ScorerIs"|translate}} {{pr.scorerName}}
+                </div >
+                <div *ngIf="!canScore(pr) && pr.status === 'C'" class="score-submitted" >
+                    Scores already submitted.
+                </div >
+            </ion-item >
+            <ion-item-options side="right" *ngIf="competition" icon-left>
+                <button  ion-button *ngIf="competition && competition.allowChangeScorer" (click)="onChangeScorer(pr)" >
+                    <ion-icon name="create"></ion-icon>Change<br>Scorer
+                </button>
+                <button  ion-button color="birdie" (click)="onViewProfile(pr)"><ion-icon name="person"></ion-icon>View<br>Profile</button>
+            </ion-item-options>
+            <!--<ion-item-options *ngIf="competition && pr.status === 'I'" side="left" icon-left>-->
+                <!--<button ion-button color="danger" (click)="onWithdraw(pr)"><ion-icon name="log-out"></ion-icon>Withdraw/<br>No Show</button>-->
+            <!--</ion-item-options>-->
+        </ion-item-sliding>
+    </ion-list >
+
+    <ion-toolbar class="scoring-navigator" transparent >
+      <button *ngIf="scoringBy=='Hole'"  ion-button round small color="blue" (click)="onGotoHoleClick()" >
+          <i class="fa fa-flag" aria-hidden="true" ></i >&nbsp;&nbsp;
+          Select Flight
+      </button >
+      <button  *ngIf="scoringBy=='Hole'" ion-button small color="orange" (click)="onGotoHoleClick()" style="width:15em">
+          <i class="fa fa-lg fa-save" aria-hidden="true" ></i >&nbsp;&nbsp;
+          Update
+      </button >
+        <button ion-button small (click)="onPrevHoleClick()" class="button-prev" style="width:5em;">
+            <i class="fa fa-lg fa-fw fa-chevron-left" ></i >
+            <div class="smallHoleImage small">
+                <span *ngIf="scoringBy=='Flight'">{{prevHole()}}</span>
+                <span *ngIf="scoringBy=='Hole'">02-A</span>
+            </div>
+
+        </button >
+        <ng-container *ngIf="scoringBy=='Flight'">
+        <button  ion-button round small (click)="onGotoHoleClick()" class="goto-hole" >
+            <i class="fa fa-flag" aria-hidden="true" ></i >&nbsp;&nbsp;
+            {{"ScoringPage.GotoHole"|translate}}
+        </button >
+        <button ion-button round small class="gps-button" [attr.disabled]="disableGPS()?true:null"
+                (click)="onGPSClick()">
+            <i class="fa fa-map-marker" aria-hidden="true" ></i >
+            &nbsp; &nbsp;{{"ScoringPage.GPS"|translate}}
+        </button >
+    </ng-container>
+        <button ion-button small (click)="onNextHoleClick()" class="button-next" style="width:5em;">
+            <div class="smallHoleImage small">
+                <span *ngIf="scoringBy=='Flight'">{{nextHole()}}</span>
+                <span *ngIf="scoringBy=='Hole'">03-A</span>
+            </div>
+
+            <i class="fa fa-lg fa-fw fa-chevron-right" ></i >
+        </button >
+    </ion-toolbar >
+    <ion-item *ngIf="!editingScorecard || scorecard.competition" class="scorecard-links" >
+        <button ion-button round small color="blue" (click)="goScorecard()" *ngIf="!editingScorecard"
+                class="go-scorecard" >
+            <i class="fa fa-pencil-square-o ph-fa" aria-hidden="true" ></i >
+            &nbsp;&nbsp;Scorecard
+        </button >
+        <ng-container *ngIf="scoringBy=='Flight'" >
+        <button ion-button round small color="danger" *ngIf="scorecard.competition && competition && competition.showLeaderBoard"
+                (click)="goLeaderboard()" class="go-leaderboad" >
+            <ion-icon name="trophy" ></ion-icon >
+            &nbsp;&nbsp;Leaderboard
+        </button >
+    </ng-container>
+    </ion-item >
+    <!--<ion-item *ngIf="adUrls">-->
+
+    <!--</ion-item>-->
+</ion-content >
+<ion-footer>
+    <!-- <ng-container *ngIf="!competition">
+    <ad-handler #adhandler [competitionId]="competition?.competitionId"
+        [zoom]="true" [transitionDelay]="3000"></ad-handler>
+    </ng-container> -->
+</ion-footer>

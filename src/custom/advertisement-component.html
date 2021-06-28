@@ -1,0 +1,17 @@
+<ion-slides #slider [zoom]="zoom"
+        [pager]="false"
+        [loop]="true"
+        [autoplay]="transitionDelay">
+    <ng-container *ngIf="advertisements && advertisements.length">
+        <ion-slide *ngFor="let ad of advertisements">
+            <a *ngIf="ad.externalUrl" [href]="ad.externalUrl" target="_blank">
+                <img [src]="ad.imageUrl">
+            </a>
+            <img *ngIf="!ad.externalUrl" [src]="ad.imageUrl">
+        </ion-slide>
+    </ng-container>
+    <ng-container *ngIf="!advertisements || !advertisements.length">
+        <ion-slide>
+        </ion-slide>
+    </ng-container>
+</ion-slides>

@@ -1,0 +1,148 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons start>
+            <button ion-button icon-only large>
+                <i class="mdi" [class.mdi-server-network]="connectionOn()"
+                    [class.mdi-server-network-off]="!connectionOn()" [class.connection-off]="!connectionOn()"></i>
+            </button>
+            <button ion-button icon-only (click)="openMenu()">
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Select Scorer</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="exit()">
+                <ion-icon name="exit"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="mygolf-page-background">
+    <ion-refresher pullMin="200" (ionRefresh)="onRefreshClick($event)">
+        <ion-refresher-content pullingIcon="arrow-down" pullingText="drag down to reload" refreshingSpinner="circles"
+            refreshingText="Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list>
+        <ion-item class="page-sub-title align-center">
+            <h3 style="font-weight:bold">
+                {{competition.competitionName}} <span
+                    *ngIf="competition.totalRounds > 1 && details">(R{{details.roundInProgress}})</span>
+            </h3>
+        </ion-item>
+        <ion-toolbar color="light">
+            <ion-searchbar [(ngModel)]="searchQuery" debounce="1500" (ionInput)="onSearchInput($event)" dark
+                (ionCancel)="onSearchCancel()" [showCancelButton]="true">
+            </ion-searchbar>
+            <ion-input type="text" [(ngModel)]="startingHole" debounce="1500" dark>
+            </ion-input>
+        </ion-toolbar>
+        <ng-container *ngIf="scoringBy==='Flight'">
+
+            <ion-card *ngFor="let flight of filteredFlights" class="mygolf-table">
+                <ion-card-header class="mygolf-table-caption" [class.player-flight]="flight.playerFlight" no-padding>
+                    <ion-row no-padding>
+                        <ion-col width-40 class="mg-txt-left">
+                            {{"CompetitionFlights.flightno" | translate}}: {{flight.flightNumber}}
+                        </ion-col>
+                        <ion-col width-35>
+                            {{"CompetitionFlights.starttime" | translate}}: {{flight.startTime}}
+                            <!-- {{convStartTime(flight.startTime)}} -->
+                        </ion-col>
+                        <ion-col width-25 class="mg-txt-right">
+                            {{"CompetitionFlights.starthole" | translate}}: {{flight.startHole}}
+                        </ion-col>
+                    </ion-row>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-row class="mygolf-table-row flight-subtitle">
+                        <ion-col width-10></ion-col>
+                        <ion-col width-50>Scorer</ion-col>
+                        <ion-col width-20 class="align-center">{{"CompetitionFlights.handicap"|translate}}</ion-col>
+                        <ion-col width-20 class="align-center">{{"CompetitionFlights.buggyno"|translate}}</ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let member of flight.flightMembers" class="mygolf-table-row flight-member"
+                        [class.scoring-finished]="member.playerCount === 0"
+                        (click)="selectFlightMember(member.playerId)">
+                        <ion-col width-10>
+                            <ion-avatar class="rounded no-margin">
+                                <img src="{{member.photoUrl}}" class="rounded"
+                                    onerror="this.src='img/default_user.png'">
+                            </ion-avatar>
+                        </ion-col>
+                        <ion-col width-50 class="vertical-align">
+                            <div class="player-name">{{member.playerName}}</div>
+                        </ion-col>
+                        <ion-col width-20 class="vertical-align align-center">
+                            <div>{{member.handicap}}</div>
+                        </ion-col>
+                        <ion-col width-20 class="vertical-align align-center">
+                            <div>{{member.buggy}}</div>
+                        </ion-col>
+                    </ion-row>
+
+
+                </ion-card-content>
+            </ion-card>
+        </ng-container>
+        <ion-card *ngIf="scoringBy==='Hole'">
+            <ion-card-content>
+                <ion-list radio-group>
+                    <!-- <p *ngFor="let course of courses;let i = index" > -->
+                    <p>
+                        <ion-list-header color="darkyellow">Course 1</ion-list-header>
+                        <ion-item>
+                            <!-- *ngFor="let hole of course.holes"  -->
+                            <ion-label>Hole 1</ion-label>
+                            <ion-radio [value]="hole" (click)="selectFlightMember(243)"></ion-radio>
+
+
+
+                            <!-- <ion-label *ngIf="i==0" >Hole {{hole.holeNo}}</ion-label >
+                                  <ion-label *ngIf="i==1" >Hole {{hole.holeNo}}</ion-label > -->
+                            <!-- <ion-radio [value]="hole" (click)="selectHole(hole, course.whichNine)" ></ion-radio > -->
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 2</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 3</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 4</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 5</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 6</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 7</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 8</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Hole 9</ion-label>
+                            <ion-radio [value]="hole"></ion-radio>
+                        </ion-item>
+
+                    </p>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+
+
+    </ion-list>
+</ion-content>

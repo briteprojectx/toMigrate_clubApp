@@ -1,0 +1,31 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title >Delete Scorecard</ion-title >
+    </ion-navbar >
+</ion-header >
+<ion-content class="delete-scores-confirm">
+    <p class="game-details">
+        <i class="fa fa-trash fa-lg" ></i >
+        Deleting scores of game played on
+        <b>{{scorecard.playedOn|date:"MMMM d, yyyy"}}</b> in
+        <b>{{scorecard.clubName}}</b>.<br/>
+        <span *ngIf="totalScored > 0">You have scored for <b>{{totalScored}}</b> players.</span>
+        <span *ngIf="totalScored === 0">You haven't scored for any player. You can delete only your scores.</span>
+    </p >
+    <p class="instructions" *ngIf="totalScored > 0">
+        To delete all scores you have scored, click <b>Delete All"</b><br/>
+        To delete only your scores, click <b>Delete My Scores</b>
+    </p >
+    <p class="instructions" *ngIf="totalScored === 0">
+        To delete your scores, click <b>Delete My Scores</b>
+    </p >
+    <button ion-button color="danger"  *ngIf="totalScored > 0" outline block (click)="deleteAll()" >
+        <i class="fa fa-trash fa-fw" ></i >Delete All
+    </button >
+    <button ion-button color="danger" outline block (click)="deleteMyScores()" >
+        <i class="fa fa-eraser fa-fw" ></i >Delete My Scores
+    </button >
+    <button ion-button outline  block (click)="cancelDelete()" >
+        <i class="fa fa-ban fa-fw" ></i >Cancel
+    </button >
+</ion-content >

@@ -1,0 +1,9 @@
+{
+  "name": "mygolf-scorer",
+  "integrations": {
+    "gulp": {},
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "app_id": ""
+}

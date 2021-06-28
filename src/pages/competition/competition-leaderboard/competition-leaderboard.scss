@@ -1,0 +1,13 @@
+competition-leaderboard-page {
+    .card-ios, .card-md {
+        font-size: $font-size-base*0.8 !important;
+    }
+
+    .mygolf-table-row, .mygolf-table-row-alt {
+        padding-left: 0 !important;
+    }
+
+    .mygolf-table-header {
+        padding-left: 0 !important;
+    }
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26.289" height="26" viewBox="0 0 26.289 26">
+  <g id="Group_916" data-name="Group 916" transform="translate(0.5 0.5)">
+    <g id="Group_910" data-name="Group 910" transform="translate(2.81 10.995)">
+      <rect id="Rectangle_503" data-name="Rectangle 503" width="4.371" height="4.321" fill="none" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <rect id="Rectangle_504" data-name="Rectangle 504" width="4.371" height="4.321" transform="translate(7.649)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect id="Rectangle_505" data-name="Rectangle 505" width="4.371" height="4.321" transform="translate(15.298)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </g>
+    <g id="Group_911" data-name="Group 911" transform="translate(2.81 18.017)">
+      <rect id="Rectangle_506" data-name="Rectangle 506" width="4.371" height="4.321" fill="none" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <rect id="Rectangle_507" data-name="Rectangle 507" width="4.371" height="4.321" transform="translate(7.649)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect id="Rectangle_508" data-name="Rectangle 508" width="4.371" height="4.321" transform="translate(15.298)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </g>
+    <path id="Path_2989" data-name="Path 2989" d="M361.259,34.656v3.262H335.97V34.656a2.331,2.331,0,0,1,2.388-2.272h2.809v2.089a.713.713,0,0,0,.72.711h1.663a.713.713,0,0,0,.72-.711V32.384h2.793v2.089a.713.713,0,0,0,.719.711h1.664a.713.713,0,0,0,.719-.711V32.384h2.793v2.089a.713.713,0,0,0,.72.711h1.663a.713.713,0,0,0,.719-.711V32.384h2.809A2.331,2.331,0,0,1,361.259,34.656Z" transform="translate(-335.97 -29.584)" fill="none" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Rectangle_509" data-name="Rectangle 509" d="M0,0H25.289a0,0,0,0,1,0,0V13.644a3.022,3.022,0,0,1-3.022,3.022H3.022A3.022,3.022,0,0,1,0,13.644V0A0,0,0,0,1,0,0Z" transform="translate(0 8.333)" fill="none" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <rect id="Rectangle_510" data-name="Rectangle 510" width="3.102" height="5.6" rx="0.91" transform="translate(5.198)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect id="Rectangle_511" data-name="Rectangle 511" width="3.102" height="5.6" rx="0.91" transform="translate(16.988)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect id="Rectangle_512" data-name="Rectangle 512" width="3.102" height="5.6" rx="0.91" transform="translate(11.093)" stroke-width="1" stroke="#89bb2b" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>

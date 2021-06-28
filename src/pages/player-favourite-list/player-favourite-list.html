@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title center>My Favourites</ion-title>
+        <ion-buttons end>
+            <button ion-button clear (click)="onRefreshFavorite()">
+                <i class="fa fa-refresh"></i> 
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-list>
+    <ion-list-header class="list-header">Favourite Clubs</ion-list-header>
+    <ion-item>
+        <button ion-button clear item-right (click)="openClubFavourite()">
+            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Favourite Club
+        </button>
+    </ion-item>
+
+
+        <ion-item *ngFor="let favourite of favourites">
+            <h3 class="course-name">{{favourite.clubName}}</h3>
+            <p class="course-detail">{{favourite.address}}</p>
+            <button ion-button icon-only item-right clear
+                    (click)="deleteFavouriteClubConfirm(favourite)">
+                <ion-icon color="danger" name="trash"></ion-icon>
+            </button>
+        </ion-item>
+
+
+    <!-- <ion-list-header class="list-header">Favourite Locations</ion-list-header> -->
+    <!-- <ion-item>
+        <button ion-button clear item-right (click)="openLocFavourite()">
+            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Favourite Location
+        </button>
+    </ion-item> -->
+
+
+        <!-- <ion-item *ngFor="let location of locations">
+                
+            <h3 class="course-name">
+                        <span *ngIf=location.city>{{location.city}} </span>
+                <span *ngIf=location.state>, {{location.state}}</span>
+                <span *ngIf=location.countryName>, {{location.countryName}}</span>
+            </h3>
+            <button ion-button icon-only item-right clear
+                    (click)="deleteFavouriteLocationConfirm(location)">
+                <ion-icon color="danger" name="trash"></ion-icon>
+            </button>
+        </ion-item> -->
+
+    </ion-list>
+
+</ion-content>

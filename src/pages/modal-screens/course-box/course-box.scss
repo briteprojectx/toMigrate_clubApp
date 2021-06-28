@@ -1,0 +1,20 @@
+course-box{
+    .item-ios [item-right], .item-md [item-right]{
+        margin-right: 1px;
+    }
+    .item-ios{
+        h3{
+            font-size: $font-size-base - 0.3rem;
+            white-space: normal;
+        }
+    }
+    .card-ios, .card-md {
+        margin: 2px;
+        width: calc(100% - 4px);
+        box-shadow: none;
+    }
+
+    .popover-content {
+        width: 40vw !important;
+    }
+}

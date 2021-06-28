@@ -1,0 +1,261 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+@import "ionic.globals";
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$font-size-base: 1.5rem; // 2rem; //
+
+$font-family-md-base: 'Cairo', sans-serif;
+$font-family-ios-base: 'Cairo', sans-serif;
+$font-family-wp-base: 'Cairo', sans-serif;
+
+$primary: #30bb5b;//#32db64;
+$secondary: #387ef5;
+
+//$primary:  #387ef5;//#32db64;
+//$secondary:#30bb5b;
+
+$danger: #f53d3d;
+$light: #f4f4f4;
+$dark: #222;
+$favorite: lighten($primary, 10%);
+$white: #ffffff;
+$gold: #FFD700;
+$warning: #FFDC00;
+
+@import "ionic.theme.default";
+
+$yellow: #fcee93;
+$darkyellow: darken($yellow, 30%);
+
+$text-color: $dark;
+$background-color: #fff;
+$border-color: lighten(silver,20%);
+$inverse-text-color: white;
+
+$badge-background: #eee;
+$badge-text-color: darken($primary, 20%);
+
+$black: #000;
+$toolbar-background: $primary;
+$toolbar-text-color: white;
+$checkbox-margin: 9px 24px 9px 4px;
+$badge-font-size: 1.4rem;
+
+$sub-header: lighten($primary, 20%); //#848484;
+$par-color: #fcee93;
+$eagle-color: #ff4343;
+$birdie-color: #6da9d3;
+$blue: darken($birdie-color, 30%);
+$page-sub-title: #fadb4e;
+$page-sub-title-text: #1E561F;
+
+
+$black: #000;
+$skyblue: skyblue;
+$darkpurple: darken(blueviolet, 30%);
+$text-color: lighten($dark, 10%);
+$background-color: #fff;
+$inverse-text-color: $white;
+$yellow: #fcee93;
+$darkyellow: darken($yellow, 30%);
+$white: #ffffff;
+
+$colors: (
+        primary: $primary,
+        secondary: $secondary,
+        danger: $danger,
+        light: $light,
+        dark: $dark,
+        blue: $blue,
+        darkyellow: $darkyellow,
+        favorite: $favorite,
+        success: $favorite,
+        par: $par-color,
+        eagle: $eagle-color,
+        birdie: $birdie-color,
+        pagetitle: $page-sub-title,
+        transparent: transparent,
+        skyblue : $skyblue,
+        darkpurple: $darkpurple,
+        // invert-text: $inverse-text-color,
+        gold: $gold,
+        warning: $warning,
+);
+
+$toolbar-background: $primary;
+$toolbar-text-color: $white;
+$checkbox-margin: 9px 24px 9px 4px;
+$badge-font-size: 1.4rem;
+$segment-button-background-color: $white;
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+$badge-ios-border-radius: 1em;
+$badge-ios-background-color: $badge-background;
+$badge-ios-text-color: $badge-text-color;
+$segment-button-ios-background-color: $segment-button-background-color;
+$searchbar-ios-input-placeholder-color: $white;
+$searchbar-ios-background-color: $primary;
+$badge-md-border-radius: 1em;
+$badge-md-background-color: $badge-background;
+$badge-md-text-color: $badge-text-color;
+$badge-ios-border-radius: 1em;
+$badge-md-border-radius: 1em;
+$badge-wp-border-radius: 1em;
+$badge-font-size: 1.4rem;
+
+
+$toolbar-ios-title-font-size: 1.4rem;
+$toolbar-ios-padding: 1px;
+$label-ios-margin: 3px 8px 3px 0;
+$list-ios-header-margin-bottom: 1px;
+
+$toolbar-md-text-color: $white;
+$toolbar-md-height: 44px;
+$badge-md-border-radius: 1em;
+$badge-md-background-color: $badge-background;
+$badge-md-text-color: $badge-text-color;
+$segment-button-md-background-color: $segment-button-background-color;
+$toolbar-md-title-font-size: 1.4rem;
+$toolbar-md-padding: 1px;
+
+
+$toolbar-background: $primary;
+$toolbar-text-color: $white;
+$toolbar-md-text-color: $white;
+$toolbar-md-height: 44px;
+$checkbox-margin: 9px 24px 9px 4px;
+
+
+
+
+
+$segment-button-background-color: $white;
+$segment-activated-button-background-color: darken($primary, 20%);
+$segment-button-ios-background-color: $segment-button-background-color;
+$segment-button-md-background-color: $segment-button-background-color;
+$segment-button-wp-background-color: $segment-button-background-color;
+$segment-button-ios-background-color-activated: darken($primary, 20%);
+$segment-button-md-background-color-activated: darken($primary, 20%);
+
+
+$segment-button-border-color: darken($primary, 20%);
+$segment-button-text-color: darken($primary, 20%);
+$segment-activated-button-text-color: white;
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+$list-ios-header-margin-bottom: 1px;
+$label-ios-margin: 3px 8px 3px 0;
+$label-md-margin: 3px 8px 3px 0;
+$list-md-header-margin-bottom: 1px;
+$list-md-header-border-bottom: solid 1px silver;
+$loading-md-spinner-color:$white;
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+$badge-wp-border-radius: 1em;
+$badge-wp-background-color: $badge-background;
+$badge-wp-text-color: $badge-text-color;
+$segment-button-wp-background-color: $segment-button-background-color;
+$toolbar-wp-title-font-size: 1.4rem;
+
+
+
+//myGolf Variables
+$page-subtitle-background-color: #fadb4e;
+$page-sub-title: #fadb4e;
+$page-sub-title-text: #1E561F;
+
+$table-caption-background-color: $favorite;// lighten($secondary, 10%);
+$table-caption-gradient: false;
+$table-caption-background-color2: lighten($table-caption-background-color, 10%);
+$table-caption-text-color: $inverse-text-color;
+
+$table-title-background-color: $favorite;
+$table-title-gradient: false;
+$table-title-background-color2: lighten($table-title-background-color, 10%);
+$table-title-text-color: $inverse-text-color;
+
+$table-header-background-color: $favorite;
+$table-header-gradient: false;
+$table-header-background-color2: lighten($table-header-background-color, 10%);
+$table-header-text-color: $inverse-text-color;
+
+$table-row-background-color: $white;
+$table-row-text-color: $text-color;
+$table-row-alt-background-color: lighten($favorite, 40%);
+$table-row-alt-text-color: $text-color;
+
+$toolbar-button-font-size: 1.3rem;
+$toolbar-title-font-size: $font-size-base;
+$toolbar-button-margin: 0px 0.5rem;
+
+$toolbar-ios-button-font-size: $toolbar-button-font-size;
+$toolbar-md-button-font-size: $toolbar-button-font-size;
+$toolbar-ios-title-font-size: $toolbar-title-font-size;
+$toolbar-md-title-font-size: $toolbar-title-font-size;
+$navbar-ios-height: 1rem;
+$navbar-md-height: 1rem;
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+$ionicons-font-path: "../assets/fonts";
+$fa-font-path: "../assets/fonts";
+$mdi-font-path: "../assets/fonts";
+$mdi-font-path: "../assets/fonts";
+
+// @import "../app/fontawesome-free/scss/fontawesome.scss";
+// @import "../app/fontawesome-free/scss/solid.scss";
+
+$grid-breakpoints: (
+ xs: 0, // Phone (0px - 575px)
+ sm: 576px, // Phablet (576px - 767px)
+ md: 768px, // Tablet vertical (768px - 991px)
+ lg: 992px, // Tablet horizontal, Desktop (992px and above)
+ xl: 1200px
+);
+
+$grid-max-widths: (
+ lg: 992px,
+ md: 768px
+);
+
+$grid-min-widths: (
+ lg: 992px,
+ xl: 1200px
+);
+
+$popover-ios-width: 75vw;// 250px;
+$popover-md-width: 75vw; //250px;
+$popover-wp-width: 75vw; //250px;

@@ -1,0 +1,36 @@
+<
+<ion-header >
+    <ion-navbar >
+        <ion-title center >Select State</ion-title >
+        <ion-buttons start >
+            <button  ion-button (click)="close()" *ngIf="openedModal" icon-only>
+                <i style="font-size:2rem;" class="mdi mdi-close" ></i >
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="add-club-list" >
+    <ion-list>
+
+        <button ion-item>
+            <ion-label >
+                <h2 class="course-name" >Kuala Lumpur</h2 >
+            </ion-label >
+            <ion-radio ></ion-radio >
+        </button >
+		<button ion-item>
+            <ion-label >
+                <h2 class="course-name" >Putrajaya</h2 >
+            </ion-label >
+            <ion-radio ></ion-radio >
+        </button >
+		<button ion-item>
+            <ion-label >
+                <h2 class="course-name" >Labuan</h2 >
+            </ion-label >
+            <ion-radio ></ion-radio >
+        </button >
+
+    </ion-list >
+</ion-content >

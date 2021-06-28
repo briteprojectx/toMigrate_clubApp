@@ -1,0 +1,28 @@
+{
+  "en":{
+    "PerformanceFilters": {
+      "title": "Filters",
+      "apply-filter": "Apply",
+      "search-type-header": "By default, show me:",
+      "search-type-upcoming": "Upcoming",
+      "search-type-all": "All",
+      "limit-header": "Limit result by:",
+      "only-participating": "Competitions I've registered",
+      "favorites-only": "My Favourite Clubs",
+      "nearby-clubs": "Held in nearby clubs",
+      "max-distance": "Max distance (KM)",
+      "membership-only": "Clubs I'm member of",
+      "limit-by-dates": "Limit result by :",
+      "last-n-days": "Days",
+      "last-n-weeks": "Weeks",
+      "last-n-months": "Months",
+      "last-n-years": "Years",
+      "custom-period": "Custom",
+      "none":"None",
+      "length":"Length",
+      "period":"Period",
+      "startDate":"Start Date",
+      "endDate":"End Date"
+    }
+  }
+}

@@ -1,0 +1,383 @@
+club-refund-redeem-history-page {
+
+    ion-toolbar {
+        .toolbar-background.toolbar-background-md, 
+        .toolbar-background.toolbar-background-ios {
+            background-color: white !important;
+        }
+
+    }
+
+    ion-row.row.refund-amount {
+        color: #30bb5b !important;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    ion-row.row.redeem-amount {
+        color: red !important;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    
+    .history-image {
+        transform: scale(1.5);
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    .history-image.redeem-amount {
+        fill: red;
+    }
+
+    .history-image.refund-amount {
+        fill: #30bb5b;
+    }
+
+    div.scroll-content {
+        height: calc(100% - 20em) !important;
+    }
+
+    @media only screen and (max-width: 768px) and (orientation: potrait) {
+        
+        div.scroll-content {
+            height: calc(100% - 20em) !important;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        ion-content {
+            zoom: 0.7 !important;
+        }
+        div.scroll-content {
+            height: calc(100% - 6em) !important;
+            margin-top: 7em !important; //7em
+            /** player app **/
+            // height: calc(100% - 7em) !important;
+            // margin-top: 5em !important;
+        }
+    }
+    @mixin border($margin: 0 0 10px, $pos: relative, $padding: 0 0 10px) {
+        // content: $content;
+        // display: $display;
+        // position: $pos;
+        margin: $margin;
+        padding: $padding;
+        position: $pos;
+    }
+    
+    ion-item.item.item-block.item-md {
+        padding-left: 0;
+    }
+
+    ion-item.item.item-block.item-ios {
+        padding-left: 0;
+    }
+
+    ion-item.item.item-block {
+        padding-left: 0;
+    }
+
+
+    .player-flight {
+        background-color: $danger !important;
+        color: $white;
+    }
+
+    .flight-subtitle {
+        font-weight: bold;
+        @include truncate(); 
+    }
+
+    .item-md ion-avatar,
+    .item-ios ion-avatar {
+        width: 4rem !important;
+        height: 4rem !important;
+        max-height: 4rem !important;
+        max-width: 4rem !important;
+        min-height: 4rem !important;
+        min-width: 4rem !important;
+    }
+
+    .player-img-flight {
+        border-radius: 50%;
+        max-height: 3rem !important;
+        width: 3rem !important;
+        max-width: 3rem !important;
+        height: 3rem  !important;
+        margin-left: 0.5rem;
+        object-fit: cover;
+        // margin-right: 0.5em;
+        // margin-left: 0.5em;
+    }
+
+    .caddie-img-flight {
+        border-radius: 50%;
+        max-height: 3rem !important;
+        width: 3rem !important;
+        max-width: 3rem !important;
+        height: 3rem  !important;
+        // margin-right: 0.5em;
+        margin-left: 0.5rem;
+        object-fit: cover;
+    }
+
+    @media (max-width: 576px) {
+        .hide-xs {
+            display: none;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 767px) {
+        .hide-sm {
+            display: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        .show-sm {
+            display: none;
+        }
+
+        .show-xs {
+            display: none;
+        }
+    }
+
+    .segment-activated .custom-badge {
+        color: white;
+    }
+
+    .scoring-badge {
+        text-align: -webkit-center;
+        @extend .custom-badge;
+        padding:0;
+        margin:0 !important;
+        margin-right: 1em !important;
+
+        .score {
+            font-size: 2.5rem !important; //x-large;
+            border-radius: 1em;
+            max-height: 1.5em;
+            width: 1.5em;
+            border-style: solid;
+            display: grid;
+            border-width: 2px;
+            // color: red;
+        }
+
+        .score-type {
+            font-size: small;
+            color: black;
+        }
+    }
+
+    // ion-badge.scoring-badge {
+    //     margin-right: 1em;
+    // }
+
+    .mygolf-table {
+        margin-top: 0px;
+    }
+
+    .mygolf-table-caption {
+        text-align: center;
+        font-weight: bold;
+        background-color: #cde2c3 !important;
+        color: black !important;
+    }
+
+    ion-segment-button.segment-button {
+        height: 3em !important;
+    }
+
+    // ion-segment-button.segment-button.tab-btn-first {
+    //     border: none;
+    //     // border-right: 2px solid #41c068;
+    //     height: 3em;
+    //     @include border;
+    // }
+
+    // ion-segment-button.segment-button.tab-btn-middle {
+    //     border: none;
+    //     height: 3em;
+    //     @include border;
+    //     // border-right: 2px solid #41c068;
+    // }
+
+    // ion-segment-button.segment-button.tab-btn-last {
+    //     border: none;
+    //     height: 3em;
+    //     @include border;
+    // }
+
+    // ion-segment-button.segment-button {
+    //     margin: 0 0 10px;
+    //     padding: 0 0 10px;
+    //     position: relative;
+    // }
+
+    // ion-segment-button.segment-button.tab-btn-first::after,
+    // ion-segment-button.segment-button.tab-btn-middle::after {
+    //     // @include border;
+    //     background-color: #41c068; 
+    //     right: 0;
+    //     top: 50%;
+    //     content: '';
+    //     display: block;
+    //     height: 16px;
+    //     //left: 50%;
+    //     position: absolute;
+    //     transform: translate(0,-50%);
+    //     width: 2px;
+    // }
+
+    // ion-segment-button.segment-button:last-child{
+    //     background-color: transparent;
+    //     right: 0;
+    //     top: 50%;
+    //     content: '';
+    //     display: none;
+    //     height: 16px;
+    //     //left: 50%;
+    //     position: absolute;
+    //     transform: translate(0,-50%);
+    //     width: 2px;
+    // }
+
+    ion-segment.segment-md .segment-button.segment-activated,
+    ion-segment.segment-ios .segment-button.segment-activated,
+    ion-segment.segment-wp .segment-button.segment-activated,
+    ion-segment.segment-button.segment-activated {
+        border-color: transparent;
+        letter-spacing: 2px;
+    }
+    //     // background-color: #cde2c3;
+    //     background-color: white;
+    //     color: black;
+    //     // border-bottom: 2px solid #41c068;
+    //     font-weight: bolder;
+    //     @include border;
+    //     // margin: 0 0 10px;
+    //     // padding: 0 0 10px;
+    //     // position: relative;
+
+    //     ion-badge.custom-badge.badge.badge-md,ion-badge.custom-badge.badge.badge-ios {
+    //         color: black;
+    //         font-weight: 600;
+    //         font-size:x-large;
+    //     }
+    // }
+
+    // ion-segment.segment-md .segment-button.segment-activated::after,
+    // ion-segment.segment-ios .segment-button.segment-activated::after,
+    // ion-segment.segment-wp .segment-button.segment-activated::after,
+    // ion-segment.segment-button.segment-activated::after {
+    //         // @include border;
+    //         background-color: red; 
+    //         bottom: 1em;
+    //         content: '';
+    //         display: block;
+    //         height: 1px;
+    //         left: 50%;
+    //         position: absolute;
+    //         transform: translate(-50%,0);
+    //         width: 50px;
+    // }
+
+
+    ion-badge.custom-badge.badge.badge-md,ion-badge.custom-badge.badge.badge-ios {
+        font-size: medium;
+    }
+
+    tee-flight-lists-page.segment-activated.custom-badge,
+    tee-flight-lists-page.segment-activated.scoring-badge {
+        color: black;
+        font-weight: 100;
+    }
+
+    // .segment-md.segment-button.activated, .segment-ios.segment-button.segment-activated {
+    //     border-color: white;
+    // }
+
+    .p-flight-status {
+        letter-spacing: 2px;
+        color: $primary;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .mygolf-table-caption {
+        font-weight: normal !important;
+    }
+
+    .booker-name {
+        color: $primary;
+        font-size: 1.5rem; //small;
+    }
+
+    .tee-top-items {
+        font-weight: bold;
+    }
+    .page-sub-title {
+        // background-color: #cde2c3;
+        background: white !important;
+    }
+
+    // .mg2u-navbar {
+    //     text-align: center;
+    // max-height: 3.5em;
+    // /* color: black; */
+    // border-bottom-left-radius: 2em;
+    // border: none;
+    // border-bottom-right-radius: 2em;
+    // align-items: center;
+    // }
+
+    // .mg2u-logo {
+    //     height: 3.5em;
+    //     margin-top: 1em;
+    // }
+
+    button.bar-button {
+        color: $primary;
+    }
+    .toolbar-background.toolbar-background-md,
+    .toolbar-background.toolbar-background-ios {
+        background-color: #DDF6D6 !important;
+    }
+
+    .btn-back {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        // transform: translate(10px, 10px);
+        transform: translate(12px, 15px);
+    }
+    .btn-next {
+        background: url(../assets/img/prev.png) no-repeat;
+        background-size: 1.5em;
+        transform: scale(-1,1) translate(12px, 15px);
+    }
+    .player-name {
+        font-size: 1em; //2rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .caddie-name {
+        font-size: 0.75em; //1.5rem;
+    }
+
+
+
+    // .flex-title {
+    //     display: flex;
+    //     align-items: flex-end;
+    //     flex-wrap: wrap;
+    //     > span {
+    //       white-space: nowrap;
+    //     }
+    //     .title-main {
+    //       flex-grow: 1;
+    //     }
+    //   }
+}

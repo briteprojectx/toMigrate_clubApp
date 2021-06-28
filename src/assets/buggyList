@@ -1,0 +1,20 @@
+    [{
+    		"id": 1,
+    		"buggyNo": "010",
+    		"name": "Green",
+    		"physicalId": "1",
+    		"description": "description",
+    		"buggyImage": "assets/img/cart-short.svg",
+    		"status": "Available"
+    	},
+    	{
+    		"id": 1,
+    		"buggyNo": "010",
+    		"name": "Green",
+    		"physicalId": "1",
+    		"description": "description",
+    		"buggyImage": "assets/img/cart-short.svg",
+    		"status": "Available"
+    	}
+
+    ]

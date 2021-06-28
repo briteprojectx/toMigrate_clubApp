@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Select Tee-box</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list class="teebox-container">
+        <ion-item *ngFor="let t of teeBoxes" class="teebox">
+                <button ion-button [color]="getTeeColor(t.name)" full solid (click)="onSelectTeebox(t)">
+                        {{t.name}}
+                     </button>
+        </ion-item>
+        
+    </ion-list>
+</ion-content>

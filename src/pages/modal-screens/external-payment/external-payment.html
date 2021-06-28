@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Payment Page</ion-title>
+        <ion-buttons end>
+                <button ion-button icon-only large (click)="onApplyClick()">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="competition-details mygolf-page-background">
+<span [innerHTML]="getPaymentPage() | safe: 'html'"></span>
+</ion-content>
+<!--<ion-footer>-->
+    <!--<button ion-button block color="dark" (click)="close()">Close</button>-->
+<!--</ion-footer>-->

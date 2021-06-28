@@ -1,0 +1,20 @@
+.select-performance-club {
+
+  .course-name{
+    padding-left:2rem;
+    color:#28BB5B;
+    font-weight:bold !important;
+    white-space:normal;
+    font-size: $font-size-base;
+  }
+  .course-detail{
+    padding-left:6rem;
+    white-space: normal;
+    font-size: $font-size-base*0.8;
+  }
+  .course-distance{
+    padding-right:10px;
+    font-size: $font-size-base*0.7;
+  }
+
+}

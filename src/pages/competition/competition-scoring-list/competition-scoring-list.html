@@ -1,0 +1,74 @@
+<ion-header >
+    <ion-navbar class="mg2u-navbar" hideBackButton >
+        <ion-title >Active Competitions</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <ion-list *ngIf="(totalComps$|async) > 0">
+        <button ion-item *ngFor="let competition of activeCompetitions$|async"
+                (click)="selectScorer(competition)" style="padding-left: 0px" >
+            <ion-card class="competition-card">
+                <!--<ion-card class="competition-card" *virtualItem="let competition" (click)="onCompetitionClick($event, competition)">-->
+                <ion-row class="info-row">
+                    <ion-col width-25 class="image-column">
+                        <ion-avatar item-left *ngIf="competition.thumbnail">
+                            <img [src]="competition.thumbnail">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="competition.imageUrl && !competition.thumbnail">
+                            <img [src]="competition.imageUrl">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="!competition.imageUrl && !competition.thumbnail">
+                            <img src="img/default_competition.png">
+                        </ion-avatar>
+
+                    </ion-col>
+                    <ion-col class="info-column">
+                        <div class="competition-info">
+                            <p class="competition-name">{{competition.competitionName}}</p>
+                            <p class="competition-date">
+                                <i class="fa fa-calendar"></i>
+                                {{competition.startDate | date:"EEE, d MMM yyyy"}}
+                                <span *ngIf="competition.status=='Upcoming'" class="competition-details"
+                                        style="color:#FF4343 !important">({{startDaysText(competition)}})</span>
+                            </p>
+                            <p class="competition-details">
+                            <span color="primary"><i color="danger" class="fa fa-map-marker"></i>
+                                {{competition.clubTag}}
+                            </span>
+                                <span color="blue" *ngIf="competition.scoringFormat">|
+                                <i class="fa fa-wpforms"></i>
+                                {{competition.scoringFormat}}
+                            </span>
+                                <span color="darkpurple" *ngIf="competition.teamEvent">|
+                              <i class="fa fa-fw fa-users"></i>
+                                Team Event
+                              </span>
+                            </p>
+
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </button>
+        <!-- <ion-item>
+            <ion-label>Switch Mode : Flight Mode</ion-label>
+            <ion-checkbox [(ngModel)]="scoringMode" (ionChange)="updateScoringMode()"></ion-checkbox>
+          </ion-item> -->
+    </ion-list>
+    
+</ion-content >
+<ion-footer style="background:white">
+    <!-- <button full outline ion-button color="primary" style="font-weight: bold"> -->
+        <!-- Current Slot Details :  -->
+        <!-- {{getCurrentSlotDetails('courseName')}}
+        {{getCurrentSlotDetails('time')}} -->
+    <!-- </button> -->
+    
+    <button (click)="close()"  ion-button full color='danger'>Close</button>
+</ion-footer>

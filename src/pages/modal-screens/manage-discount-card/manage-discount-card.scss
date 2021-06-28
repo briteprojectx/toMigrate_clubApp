@@ -1,0 +1,45 @@
+manage-discount-card-page {
+    div.scroll-content {
+        height: calc(100% - 10em);
+    }
+    .slot-available {
+        color: green;
+    }
+    .slot-not-available {
+        color: red;
+        font-style: italic;
+    }
+
+    .no-bullets {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 1em;
+    }
+    
+    .document-image {
+        height: 8em;
+        object-fit: cover;
+        max-width: 8em;
+        float: inline-end;
+        }
+    .row .column.card-right { 
+        text-align: right;
+        width:100%;
+    }
+    div.scroll-content {
+        height: calc(100% - 10em);
+    }
+
+    @media only screen and (min-width: 768px) {
+        ion-content {
+            zoom: 0.7 !important; 
+        }
+        // div.scroll-content {
+        //     height: calc(100% - 6em) !important;
+        //     margin-top: 7em !important;
+        //     /** player app **/
+        //     // height: calc(100% - 7em) !important;
+        //     // margin-top: 5em !important;
+        // }
+    }
+}

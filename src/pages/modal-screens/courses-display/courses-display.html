@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{headerName}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="competition-details player-performance">
+        <!-- <h2><b>{{title}}</b></h2> -->
+        <ion-list>
+                <ion-item class = "header-panel" style = 'background-color:#fadb4e;text-align:center;'>
+                        <h3 class = "scorecard-name" style = "font-weight:bold">{{competition.competitionName}}</h3>
+                        <h4>{{competition.clubName}}</h4>
+                    </ion-item>
+                </ion-list>
+
+    <ion-card class="custom-card " *ngFor="let round of gameRound">
+        <ion-card-header>
+            <h2><b>{{competition.totalRounds>1?"Round "+round.roundNo+" - ":""}}{{round.roundDate | date:"EEE, d MMM yyyy"}}</b></h2>
+        </ion-card-header>
+        <ion-card-content >
+                <!-- [innerHTML]="descriptionText | safe: 'html'" -->
+                <h5 *ngFor="let course of round.courseNames; let idx = index">
+                    {{idx==0?"First Nine":"Second Nine"}} : {{course}}
+                </h5>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+<!--<ion-footer>-->
+    <!--<button ion-button block color="dark" (click)="close()">Close</button>-->
+<!--</ion-footer>-->

@@ -1,0 +1,23 @@
+<ion-header >
+    <ion-navbar hideBackButton >
+        <ion-title >Select Team</ion-title >
+        <ion-buttons end>
+            <button ion-button icon-only  (click)="cancel()">
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons>
+    </ion-navbar >
+</ion-header >
+
+<ion-content>
+    <ion-list radio-group>
+            <ion-item style="background-color:beige">
+              <ion-label>All Teams</ion-label>
+              <ion-radio (click)="selectTeam(true)"></ion-radio>
+            </ion-item>
+            <ion-item *ngFor="let team of compTeams.competitionTeams" >
+                <ion-label>{{team.teamName}}</ion-label >
+                <ion-radio [value]="team" (click)="selectTeam(false,team)" ></ion-radio >
+            </ion-item >
+    </ion-list >
+</ion-content >

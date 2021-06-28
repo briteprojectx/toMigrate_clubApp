@@ -1,0 +1,591 @@
+// http://ionicframework.com/docs/v2/theming/
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+@import "_mygolf_mixins";
+@import "ionicons";
+@import "font-awesome";
+@import "materialdesignicons";
+
+$image-path: '../assets/img/' !default;
+
+
+.main-logo {
+    //background: url(../assets/img/logo-48x.png);
+    background: url(#{$image-path}/logo-48x.png);
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    background-size: 80px !important;
+    margin: 10px 5px;
+}
+
+.britesoft-logo {
+    background: url(../assets/img/bs-logo.png);
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    background-size: 30px !important;
+    margin: 10px 5px;
+}
+.loading-logo {
+    background: url(../assets/img/logo-48x.png);
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    padding-top: 300px !important;
+    padding-bottom: 0;
+    background-size: 220px !important;
+    margin: 10px 5px;
+}
+
+.custom-list-header {
+    background-color: $sub-header; //$black;
+    color: $white;
+}
+
+
+.custom-badge {
+    border: none;
+    background-color: $badge-background;
+    color: $badge-text-color;
+    font-size: $badge-font-size;
+    background: none;
+}
+
+.avatar-left {
+    display: inline;
+    float: left;
+}
+
+.avatar-right {
+    display: inline;
+    float: right;
+}
+ion-avatar, .custom-avatar{
+    &.rounded {
+        img{
+            border-radius: 50%;
+        }
+
+    }
+}
+
+.item-md, .item-ios {
+    ion-avatar {
+        min-height: 4rem;
+        min-width: 4rem;
+    }
+    p{
+        color: $text-color;
+    }
+}
+
+.mygolf-special-page-background, .mygolf-sign-in-page-background {
+    //background: $white url(../assets/img/bg1.png), url(../assets/img/bg2.png), url(../assets/img/cover.png) no-repeat, repeat-x;
+    background-color: $background-color;
+    background: url(../assets/img/bg1.png), url(../assets/img/bg2.png), url(../assets/img/cover.png) !important;
+    background-repeat: no-repeat, repeat-x, repeat-x !important;
+    background-position: right bottom, left bottom, left top !important;
+    background-size: 100px, 40px, 200px !important;
+}
+
+.logged-in-user {
+    color: $danger !important;
+}
+
+.mygolf-page-background {
+    background-color: $background-color;
+}
+.button-panel{
+    text-align: center;
+}
+.mg-ph { //player-home
+    background-size: 20px 20px;
+    padding-right: 30px;
+    background-repeat: no-repeat;
+}
+
+.mg-flag-blue {
+    background-image: url("../assets/img/icons/flag_blue.png");
+}
+
+.mg-chart-bar {
+    background-image: url("../assets/img/icons/chart_bar.png");
+}
+
+.mg-edit {
+    background-image: url("../assets/img/icons/edit.png");
+}
+
+.mg-friends {
+    background-image: url("../assets/img/icons/friends.png");
+}
+
+.mg-trophy {
+    background-image: url("../assets/img/icons/trophy.png");
+}
+.mg-txt-left {
+    text-align: left;
+}
+
+.mg-txt-right {
+    text-align: right;
+}
+.list-header {
+    color: $text-color;
+    font-weight: bold;
+    border-top: none;
+    border-bottom: solid 1px $border-color;
+}
+
+.item-divider-ios, .item-divider-md {
+    color: $text-color;
+    font-weight: bold;
+}
+.toolbar {
+    .toolbar-title-md {
+        color:#5DBC81
+        //text-align: center;
+    }
+    .toolbar-title-ios {
+        color:#5DBC81
+        //text-align: center;
+    }
+    .toolbar-title {
+        color:#5DBC81
+        //text-align: center;
+    }
+    .bar-buttons-md[start]{
+        order: 1;
+    }
+    ion-segment {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        .segment-button {
+            max-width: 100px;
+            height: 2.6rem;
+            font-size: 1.2rem;
+            line-height: 2.5rem;
+        }
+    }
+
+}
+.swiper-container-horizontal > .swiper-pagination {
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+}
+ion-segment.segment-md, ion-segment.segment-ios, ion-segment.segment-wp {
+    @include flex-display($flex:1, $align-items:center, $justify-content:center);
+    width: 100%;
+    .segment-button {
+        @include flex-display($flex:1);
+        width: 0;
+        height: 2.6rem;
+        //border: solid #30BB5B 1px;
+        border: solid $segment-button-border-color 1px;
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+        color: $segment-button-text-color;
+        //color: $primary;//darken($primary, 30%);
+        //background-color: #FFFFFF;
+        background-color: $segment-button-background-color;
+        &.segment-activated {
+            color: $segment-activated-button-text-color;
+            background-color: $segment-activated-button-background-color;
+            //background-color: $primary;//darken($primary, 30%);
+            opacity: 1;
+            -webkit-transition: 100ms all linear;
+            transition: 100ms all linear;
+            @include transition(100ms all linear);
+        }
+        &:not(:first-of-type) {
+            border-left-width: 0;
+        }
+        &:first-of-type {
+            margin-right: 0;
+            border-radius: 4px 0 0 4px;
+        }
+        &:last-of-type {
+            margin-left: 0;
+            border-left-width: 0;
+            border-radius: 0 4px 4px 0;
+        }
+    }
+}
+.ios, .md , .wp{
+    .label-md, .label-ios, label-wp {
+        margin: 3px 0px;
+    }
+    .item-input {
+        .label-ios{
+            color: gray;
+        }
+    }
+    .item-md, .item-ios, .item-wp {
+        &.item-block {
+            padding-right: inherit;
+            background: white;
+            border-bottom: solid 1px $border-color;
+            &.small-text {
+                font-size: small;
+            }
+            &.gradient {
+                padding-right: inherit;
+                @extend %gradient-item;
+                border-bottom: none;
+            }
+            &.page-sub-title {
+                background: $page-sub-title;
+                color: $page-sub-title-text;
+                padding-left: 5px;
+                border-bottom: none;
+
+                &.align-center {
+                    text-align: center;
+                }
+            }
+            &.game-scoring {
+                @include linear-gradient($danger, darken($danger, 30%));
+                @extend %special-item;
+                p {
+                    color: $inverse-text-color;
+                    font-size: smaller;
+                }
+                p:first-child {
+                    font-size: medium;
+                }
+                ion-label {
+                    margin: 3px 5px;
+                }
+                h2 {
+                    color: $inverse-text-color;
+                }
+            }
+            &.shorter-height{
+                .item-inner{
+                    @extend %mygolf-item-inner;
+                    min-height: 25px;
+                }
+            }
+            .item-inner {
+                @extend %mygolf-item-inner;
+            }
+        }
+
+    }
+    ion-card.mygolf-table, ion-grid.mygolf-table, ion-list.mygolf-table{
+        &.flat-table{
+            margin: 0px;
+            width: 100%;
+            box-shadow: none;
+        }
+        .mygolf-table-title, .mygolf-header {
+            @extend %table-title;
+            padding: 5px;
+        }
+        .mygolf-table-caption{
+            @extend %table-caption;
+        }
+        ion-card-content{
+            padding: 0px;
+        }
+        ion-item, ion-row {
+            &.mygolf-table-header{
+                @extend %table-header;
+                //padding: 1rem;
+                padding-left: 5px;
+                line-height: 4rem;
+            }
+            &.mygolf-table-row{
+                @extend %table-row;
+                padding-left: 5px;
+            }
+            &.mygolf-table-row-alt{
+                @extend %table-alternate-row;
+                padding-left: 5px;
+            }
+        }
+    }
+    .loading-md, .loading-ios, .loading-wp {
+        .loading-wrapper {
+            @extend .mygolf-loading-wrapper;
+
+        }
+
+        .spinner-ios, .spinner-ios-small {
+            line {
+                stroke: $primary;
+            }
+        }
+        .spinner-bubbles, .spinner-circles, .spinner-crescent, .spinner-dots {
+            circle {
+                fill: $primary
+            }
+        }
+        .spinner-crescent circle {
+            stroke: $primary
+        }
+    }
+}
+
+.ios {
+    .ion-page.show-page ~ .nav-decor {
+        background: #fff;
+    }
+    .item-ios {
+        color: $text-color;
+    }
+}
+
+.md {
+
+}
+ion-buttons{
+    .bar-button{
+        margin: $toolbar-button-margin;
+        &.bar-button-md[icon-only], .bar-button-ios[icon-only]  {
+            ion-icon{
+                padding: 0 .1em;
+                min-width: 28px;
+                font-size: 2em;
+                line-height: .67;
+                pointer-events: none;
+            }
+
+        }
+    }
+
+}
+
+.header-md::after,
+.tabs-md[tabsPlacement="top"] > .tabbar::after,
+.footer-md::before,
+.tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+  content: none;
+}
+
+div.scroll-content {
+    height: calc(100% - 7em);
+    padding-bottom: 4em;
+}
+
+button.bar-button {
+    color: $primary;
+}
+
+.toolbar-background.toolbar-background-md,
+.toolbar-background.toolbar-background-ios {
+    background-color: #DDF6D6 !important;
+}
+
+@media screen and (max-width: 519px) {
+
+  }
+  
+  @media screen and (min-width: 520px) and (max-width: 1023px) {
+    ion-footer {
+        img {
+            height: 4rem !important;
+        }
+        ion-col {
+            padding: 0 !important;
+        }
+    }
+}
+@media screen and (min-width: 1024px) {
+    ion-footer {
+        img {
+            height: 3.5rem !important;
+        }
+        ion-col {
+            padding: 0 !important;
+        }
+    }
+}
+
+
+// @media (min-width: map-get($grid-breakpoints, lg)) {
+//     // Your rules here
+//     * {
+//         font-size: 1rem;
+//     }
+//    }
+
+
+//    ion-header .toolbar {
+//     margin: auto;
+//    }
+   
+//    @media (min-width: map-get($grid-breakpoints, lg)) {
+//     ion-navbar.toolbar,
+//     ion-header .toolbar[fixed],
+//     ion-footer .toolbar[fixed],
+//     ion-navbar .mg2u-navbar,
+//     ion-tabs .tabbar {
+//       margin: 0;
+//       padding-right: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+//       padding-left: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+//     }
+//     h1 {
+//         font-size: calc($base-font-size * 2) !important;
+//     }
+//     h2 {
+//         font-size: calc($base-font-size * 1.5) !important;
+//     }
+//     h3 {
+//         font-size: calc($base-font-size * 1.17) !important;
+//     }
+//     h4 {
+//         font-size: calc($base-font-size * 1) !important;
+//     }
+//     h5 {
+//         font-size: calc($base-font-size * 0.83) !important;
+//     }
+//     h6 {
+//         font-size: calc($base-font-size * 0.75) !important;
+//     }
+
+//    }
+
+   @media (min-width: map-get($grid-breakpoints, xl)) {
+    // ion-navbar.toolbar,
+    // ion-header .toolbar[fixed],
+    // ion-footer .toolbar[fixed],
+    // ion-navbar .mg2u-navbar,
+    // ion-tabs .tabbar {
+    //   margin: 0;
+    //   padding-right: calc((100% - #{map-get($grid-max-widths, xl)}) / 2);
+    //   padding-left: calc((100% - #{map-get($grid-max-widths, xl)}) / 2);
+    // }
+
+    * {
+        font-size: 1rem !important;
+    }
+    // h1 {
+    //     font-size: calc($base-font-size * 2) !important;
+    // }
+    // h2 {
+    //     font-size: calc($base-font-size * 1.5) !important;
+    // }
+    // h3 {
+    //     font-size: calc($base-font-size * 1.17) !important;
+    // }
+    // h4 {
+    //     font-size: calc($base-font-size * 1) !important;
+    // }
+    // h5 {
+    //     font-size: calc($base-font-size * 0.83) !important;
+    // }
+    // h6 {
+    //     font-size: calc($base-font-size * 0.75) !important;
+    // }
+        // .alert-md .alert-radio-label,
+        // .alert-ios .alert-radio-label {
+        //     // padding-top: 0;
+        //     // padding-bottom: 0;
+        // }
+
+        .alert-md .alert-tappable,
+        .alert-ios .alert-tappable {
+            min-height: 3rem;
+        }
+
+        .alert-wrapper {
+            min-width: 50vw !important;
+            max-width: unset !important;
+        }
+    
+        .alert-md .alert-wrapper,
+        .alert-ios .alert-wrapper {
+            min-width: 50vw !important;
+            max-width: unset !important;
+        }
+    
+        div.alert-wrapper {
+            min-width: 50vw !important;
+            max-width: unset !important;
+        }
+   }
+   
+   @media (min-width: map-get($grid-breakpoints, lg)) {
+    .alert-md .alert-tappable,
+    .alert-ios .alert-tappable {
+        min-height: 3rem;
+    }
+
+    .alert-wrapper {
+        min-width: 50vw !important;
+        max-width: unset !important;
+    }
+
+    .alert-md .alert-wrapper,
+    .alert-ios .alert-wrapper {
+        min-width: 50vw !important;
+        max-width: unset !important;
+    }
+
+    div.alert-wrapper {
+        min-width: 50vw !important;
+        max-width: unset !important;
+    }
+   }
+
+   button[disabled], [ion-button][disabled] {
+       font-style: italic;
+   }
+
+    
+
+   .mg2u-navbar {
+    text-align: center;
+    max-height: 3.5rem;
+    border-bottom-left-radius: 2em;
+    // border: none;
+    border-bottom-right-radius: 2em;
+    align-items: center;
+    border-style: solid;
+    border-top: none;
+    border-color: #5DBC81;
+    border-width: 2px;
+//   padding-right: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+//   padding-left: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+}
+.mg2u-logo {
+    // height: 10em;
+    margin-top: 1em;
+    height: 4rem !important;
+}
+
+@media only screen and (min-height: 600px) and (min-width: 768px) {
+    .md .modal-wrapper,
+    .ios .modal-wrapper {
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+      height: 80%;
+      top: 10%;
+        }
+  }
+
+  .alert-message {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }

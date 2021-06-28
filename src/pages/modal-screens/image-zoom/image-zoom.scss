@@ -1,0 +1,12 @@
+image-zoom {
+    ion-card {
+        img {
+            image-orientation: from-image;
+        }
+    }
+
+    div.scroll-content {
+        height:calc(100% - 2rem);
+        padding-bottom: 4em;
+    }
+}

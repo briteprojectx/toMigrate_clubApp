@@ -1,0 +1,878 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar" hideBackButton>
+        <ion-title>Manage Club Voucher</ion-title>
+        <ion-buttons start (click)="close()">
+            <button ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="has-header">
+
+    <ion-segment [(ngModel)]="optionTypes" color="warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button (click)="setOptionType(1)" value="manage" disabled="true">
+            MANAGE
+        </ion-segment-button>
+        <ion-segment-button (click)="setOptionType(2)" value="assign">
+            ASSIGNMENT
+        </ion-segment-button>
+    </ion-segment>
+
+    <ion-grid fixed *ngIf="innerWidth < 768">
+
+    <ion-list *ngIf="optionTypes === 'assign' && (!selectedPlayer && !selectedVoucher)">
+        <ion-item>
+            
+            <button item-start ion-button>
+                <span>
+                    Voucher Series List</span>
+            </button>
+            <button (click)="voucherQuickView = !voucherQuickView" item-end ion-button>
+                <span *ngIf="!voucherQuickView">View Top 3 Usage</span>
+                <span *ngIf="voucherQuickView">Hide Top 3 Usage</span>
+            </button>
+        </ion-item>
+        <ion-row col-12>
+            <ion-col col-8 style="padding-left:1em">
+                <!-- <ion-label color="primary">Code</ion-label> -->
+                <ion-input placeholder="Search by voucher series" [(ngModel)]="searchVoucher"></ion-input>
+            </ion-col>
+            <ion-col col-4 style="text-align: right; align-self: center;">
+                <button ion-button (click)="onSearchVoucherClick()"><i class="fas fa-fw fa-search"></i></button>
+                <button ion-button (click)="onRefreshClick()"><i class="fas fa-fw fa-sync"></i></button>
+            </ion-col>
+        </ion-row>
+        <!-- <ion-input placeholder="Enter club id " [(ngModel)]="searchClubId"></ion-input>
+        <button ion-button (click)="onSearchVoucherClick('club')">Filter</button> -->
+        <ng-container *ngFor="let vs of clubVoucherSeries">
+            <ion-card *ngIf="0"> <!-- not used-->
+                <ion-row>
+                    <ion-col>
+                        <ion-row>
+                            <ion-col col-12>
+                                <b>{{vs.name}}</b> - {{vs.voucherSeries}}
+                            </ion-col>
+                            <ion-col col-12 padding-left padding-right no-padding text-left>
+                                <ul>
+                                    <li *ngIf="vs.description" [innerHTML]="escapeCRLF(vs.description)"></li>
+                                    <!-- {{vs.description}} -->
+                                    <!-- <li>Applicable only for xxx</li>
+                                    <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                                        <!-- <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li> -->
+                                        <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                            {{getVoucherApplicableText(vs,'allowDays')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToBookingAmount">
+                                            {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToFlight">
+                                            {{getVoucherApplicableText(vs,'flight')}}
+                                        </li>
+                                        <li *ngIf="getVoucherAmountDetails(vs)">{{getVoucherAmountDetails(vs)}}</li>
+                                        <!-- <li>Amount {{currencySymbol}} {{vs.voucherAmount}}</li> -->
+                                        
+                                        <li>
+                                            Validity {{vs.validityDays}} days
+                                        </li>
+                                        <!-- <li>{{getVoucherAmount(vs,'assigned')}} assigned | {{getVoucherAmount(vs,'remaining')}}
+                                            remaining</li> -->
+                                    </ul>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-row>
+                            <ion-col col-12>
+                                <img *ngIf="vs.voucherImage" (click)="onImageClick(vs.voucherImage)" style="width: 4em;" [src]="vs.voucherImage" />
+                            </ion-col>
+                            <ion-col  col-12>
+                                <!-- padding-left padding-right no-padding text-left -->
+                                <button small (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                    <!-- selectedVoucher=true -->
+                                    <i class="fas fa=fw fa-user-cog"></i>&nbsp;Assign / Unassign Players</button>
+                            </ion-col>
+                            <ion-col>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned<br>
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+            <ion-card>
+                <ion-row>
+                    <ion-col>
+                        <ion-row>
+                            <ion-col col-12>
+                                <b>{{vs.name}}</b> - {{vs.voucherSeries}}
+                            </ion-col>
+                            <ion-col *ngIf="0" col-12 padding-left padding-right no-padding text-left>
+                                <ul>
+                                    <li *ngIf="vs.description" [innerHTML]="escapeCRLF(vs.description)"></li>
+                                    <div *ngIf="voucherMoreDetails">
+
+                                        <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                            {{getVoucherApplicableText(vs,'allowDays')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToBookingAmount">
+                                            {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToFlight">
+                                            {{getVoucherApplicableText(vs,'flight')}}
+                                        </li>
+                                        
+                                        </div>
+                                        <li *ngIf="getVoucherAmountDetails(vs)">{{getVoucherAmountDetails(vs)}}</li>
+                                
+                                        <li>
+                                            Validity {{vs.validityDays}} days
+                                        </li>
+                                        
+                                        <button ion-button clear small>
+                                        <li (click)="voucherMoreDetails = true" *ngIf="!voucherMoreDetails">See More</li>
+                                        <li (click)="voucherMoreDetails = false" *ngIf="voucherMoreDetails">See Less</li>
+                                        </button>
+                                    </ul>
+                                    <!-- <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned |
+                                    <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining -->
+                            </ion-col>
+                            <ion-col  col-12>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned&nbsp;|&nbsp;
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                                <!-- padding-left padding-right no-padding text-left -->
+                                <!-- <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                    <i class="fas fa=fw fa-user-cog"></i></button> -->
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-row>
+                            <ion-col col-12>
+                                <img *ngIf="vs.voucherImage" (click)="onImageClick(vs.voucherImage)" style="width: 4em;" [src]="vs.voucherImage" />
+                            </ion-col>
+                            <ion-col *ngIf="0"  col-12>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned <br>
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                                <!-- padding-left padding-right no-padding text-left -->
+                                <!-- <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                    <i class="fas fa=fw fa-user-cog"></i></button> -->
+                            </ion-col>
+                            <!-- <ion-col>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned<br>
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                            </ion-col> -->
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+                <ion-row col-12>
+                    <button item-end small (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                        <i class="fas fa=fw fa-user-cog"></i>&nbsp;Assign / Unassign Vouchers</button>
+                </ion-row>
+            </ion-card>
+                    
+        <ng-container *ngIf="voucherQuickView && getPlayerAssignedVoucherSeries(vs.id) && getPlayerAssignedVoucherSeries(vs.id).length > 0">
+            <ng-container *ngFor="let player of getPlayerAssignedVoucherSeries(vs.id); let idx = index">
+            <ion-item *ngIf="idx < 3" (click)="onSelectPlayerList(player,vs)">
+                <ion-avatar item-start>
+                    <img
+                    [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+                </ion-avatar>
+                <span item-start>{{player.playerName}} #{{player.playerId?player.playerId:player.id}}</span>
+                <button style="font-size:1.5em" *ngIf="player&&player.vouchersIssued>0" ion-button item-end clear>
+                    {{player.vouchersIssued?"("+player.vouchersIssued+")":''}}
+                </button>
+                <button (click)="onSelectPlayerList(player,vs)" item-end ion-button outline>
+                    <i class="fas fa-fw fa-user-edit"></i>
+                </button>
+            </ion-item>
+        </ng-container>
+            </ng-container>
+        </ng-container>
+
+    </ion-list>
+    <ion-list *ngIf="optionTypes === 'assign' && selectedVoucher || selectedPlayer">
+        <ion-item>
+            <!-- <button ion-button item-start  (click)="selectedVoucher=false;selectedPlayer=false;">
+                <i class="fas fa-fw fa-backward"></i></button>  -->
+                <button ion-button block>
+                    <span>Player Voucher Assignment</span>
+                </button>
+        </ion-item>
+        <ion-card *ngIf="selVoucherSeries">
+            <ion-row>
+                <ion-col>
+                    <ion-row>
+                        <ion-col col-12>
+                            <b>{{selVoucherSeries.name}}</b> - {{selVoucherSeries.voucherSeries}}
+                        </ion-col>
+                        <ion-col col-12 padding-left padding-right no-padding text-left>
+                            <ul>
+                                <li *ngIf="selVoucherSeries.description" [innerHTML]="escapeCRLF(selVoucherSeries.description)"></li>
+                                <!-- <li>Applicable only for xxx</li>
+                                <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                                    <!-- <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li> -->
+                                    <div *ngIf="voucherMoreDetails">
+                                    <li *ngIf="selVoucherSeries.allowOnWeekdays || selVoucherSeries.allowOnWeekends || selVoucherSeries.allowOnPublicHolidays">
+                                        {{getVoucherApplicableText(selVoucherSeries,'allowDays')}}
+                                    </li>
+                                    <li *ngIf="selVoucherSeries.appliesToBookingAmount">
+                                        {{getVoucherApplicableText(selVoucherSeries,'bookingAmount')}}
+                                    </li>
+                                    <li *ngIf="selVoucherSeries.appliesToFlight">
+                                        {{getVoucherApplicableText(selVoucherSeries,'flight')}}
+                                    </li>
+                                </div>
+    
+                                <li>Amount {{currencySymbol}} {{selVoucherSeries.voucherAmount}}</li>
+                                
+                                <li>
+                                    Validity {{selVoucherSeries.validityDays}} days
+                                </li>
+                                    <!-- <li>{{getVoucherAmount(vs,'assigned')}} assigned | {{getVoucherAmount(vs,'remaining')}}
+                                        remaining</li> -->
+                                        <button ion-button clear small>
+                                        <li (click)="voucherMoreDetails = true" *ngIf="!voucherMoreDetails">See More</li>
+                                        <li (click)="voucherMoreDetails = false" *ngIf="voucherMoreDetails">See Less</li>
+                                    </button>
+                                </ul>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+                <ion-col col-3 style="align-self: flex-end;">
+                    <ion-row>
+                        <ion-col col-12>
+                            <img *ngIf="selVoucherSeries.voucherImage"  (click)="onImageClick(selVoucherSeries.voucherImage)" style="width: 4em;" [src]="selVoucherSeries.voucherImage" />
+                        </ion-col>
+                        <ion-col>
+                            <b>{{getVoucherAmount(selVoucherSeries,'assigned')}}</b> assigned<br>
+                            <b>{{getVoucherAmount(selVoucherSeries,'remaining')}}</b> remaining
+                        </ion-col>
+                        <ion-col  col-12>
+                            <!-- <button (click)="onPlayerAssignClick(selVoucherSeries,player)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                Assign</button> -->
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <!-- <ion-item>
+                    
+                </ion-item> -->
+                
+        <ion-item *ngIf="!hasPlayer">
+            <button ion-button item-start outline (click)="selectedVoucher=false;selectedPlayer=false;onRefreshClick();" color="danger">
+                <i class="fas fa-fw fa-backward"></i>&nbsp;Back
+            </button> 
+                <button ion-button item-start (click)="onSelectPlayer(selVoucherSeries)" outline>
+                    <i class="fas fa-fw fa-user-plus"></i>&nbsp;Select Player to assign
+            </button>
+            <button ion-button item-end (click)="onSeriesAssignClick(selVoucherSeries)" outline>
+                <i class="fas fa-fw fa-sync"></i>
+        </button>
+
+        </ion-item>
+        <ion-item *ngIf="hasPlayer">
+                <button ion-button item-start outline color="danger" (click)="selectedVoucher=true;selectedPlayer=false;this.hasPlayer=false;this.player=null;
+                this.getClubVouchersIssued(selVoucherSeries);">
+                    <i class="fas fa-fw fa-backward"></i>&nbsp;Back</button> 
+                <!-- <button ion-button item-end (click)="onSelectPlayer(selVoucherSeries)" outline>
+                    <i class="fas fa-fw fa-user-edit"></i>&nbsp;Change Player
+                </button> -->
+        </ion-item>
+            </ion-row>
+            <!-- <ion-row>
+
+
+            </ion-row>
+            <ion-row>
+
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                </ion-col>
+            </ion-row> -->
+        </ion-card>
+        <!-- <ion-item *ngIf="!hasPlayer">
+            <button ion-button item-start  (click)="selectedVoucher=false">
+                <i class="fas fa-fw fa-backward"></i></button> 
+                <button ion-button item-start (click)="onSelectPlayer(selVoucherSeries)" outline>
+                    <i class="fas fa-fw fa-user-plus"></i>Select Player to assign
+            </button>
+            <button ion-button item-end (click)="onSeriesAssignClick(selVoucherSeries)" outline>
+                <i class="fas fa-fw fa-sync"></i>
+        </button>
+
+        </ion-item> -->
+        <ion-item *ngIf="!hasPlayer">
+        <button ion-button block >
+            Players issued for this voucher series
+        </button>
+    </ion-item>
+        <ng-container *ngIf="!hasPlayer && playersAssigned && playersAssigned.length > 0">
+        <ion-item *ngFor="let player of playersAssigned" (click)="onSelectPlayerList(player)">
+            <ion-avatar item-start>
+                <img
+                [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+            </ion-avatar>
+            <span item-start>{{player.playerName}} #{{player.playerId?player.playerId:player.id}}</span>
+            <button style="font-size:1.5em" *ngIf="player&&player.vouchersIssued>0" ion-button item-end clear>
+                {{player.vouchersIssued?"("+player.vouchersIssued+")":''}}
+            </button>
+            <button (click)="onSelectPlayerList(player)" item-end ion-button outline>
+                <!-- <i class="fas fa-fw fa-user-plus"></i> -->
+                <i class="fas fa-fw fa-user-edit"></i>
+            </button>
+        </ion-item>
+        </ng-container>
+
+        <!-- <ion-row col-12>
+            <ion-col col-9 style="padding-left:1em">
+        <ion-input placeholder="Enter voucher code"></ion-input>
+            </ion-col>
+            <ion-col col-3 style="text-align: right; align-self: center;">
+        <button ion-button>Search</button>
+            </ion-col>
+        </ion-row> -->
+        <ng-container *ngIf="hasPlayer">
+        <!-- <ion-item >
+                <button ion-button item-start outline color="danger" (click)="selectedVoucher=true;selectedPlayer=false;this.hasPlayer=false;this.player=null;
+                this.getClubVouchersIssued(selVoucherSeries);">
+                    <i class="fas fa-fw fa-backward"></i>&nbsp;</button> 
+                <button ion-button item-end (click)="onSelectPlayer(selVoucherSeries)" outline>
+                    <i class="fas fa-fw fa-user-edit"></i>&nbsp;Change Player
+                </button>
+            </ion-item> -->
+        <ion-item>
+            <button ion-button item-end block>
+                Assigning voucher(s) for
+                <!-- <h3>{{player.playerName}} (#{{player.playerId}})</h3>
+                <h4>{{player.email}}</h4> -->
+                <!-- for {{player.firstName}} #{{player.playerId}} -->
+            </button>
+        </ion-item>
+        <ion-row *ngIf="player" padding-left padding-right>
+            <ion-col col-3 padding>
+                <img  style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em"
+                [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+            </ion-col>
+            <ion-col padding>
+                <h4 style="margin: 0; color:#30bb5b">{{player.playerName}} (#{{player.playerId?player.playerId:player.id}})</h4>
+                <h5 style="margin: 0;">{{player.email}}</h5>
+            </ion-col>
+            <!-- <h4>Club membership # / Guest</h4> -->
+        </ion-row>
+        <ion-item>
+            <ion-label>
+                Player has <span style="font-weight:bold; color:#30bb5b;">{{playerVoucher&&playerVoucher.length>0?playerVoucher.length:'no'}}</span> voucher(s) assigned for this series
+            </ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label>How many vouchers?</ion-label>
+            <ion-input text-right type="number" style="color: #30bb5b;font-weight: bold;font-size: 2em;" [(ngModel)]="playerNoOfVoucher">
+            </ion-input>
+        </ion-item>
+        <ion-item>
+            <button item-start (click)="onPlayerAssignClick(selVoucherSeries,player)" *ngIf="type==='club' && fromClub" ion-button>
+                <i class="fas fa-fw fa-check"></i>Assign</button>
+                <button color="danger" item-end (click)="onPlayerUnassignClick(selVoucherSeries,player)" 
+                *ngIf="(playerVoucher && playerVoucher.length > 0) && type==='club' && fromClub" ion-button>
+                    <i class="fas fa-fw fa-times"></i>Unassign</button>
+        </ion-item>
+        <ion-item>
+            <button outline item-end (click)="onViewMoreVouchers(selVoucherSeries,player)" 
+            *ngIf="!displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+            ion-button block>View player voucher(s)</button>
+                <button item-end outline (click)="displayPlayerVoucher=false" 
+                *ngIf="displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+                ion-button block>
+                    <i class="fas fa-fw fa-check"></i>Close</button>
+        </ion-item>
+    </ng-container>
+
+
+
+    </ion-list>
+
+    <ion-list *ngIf="displayPlayerVoucher">
+        <ng-container *ngFor="let vs of playerVoucher">
+            <ion-card>
+                <ion-row>
+                    <ion-col>
+                        <ion-row>
+                            <ion-col col-12>
+                                <b>{{vs.name}}</b> - {{vs.seriesId}}
+                            </ion-col>
+                            <ion-col col-12 padding-left padding-right no-padding text-left>
+                                <ul>
+                                    <li *ngIf="selVoucherSeries.description" [innerHTML]="escapeCRLF(selVoucherSeries.description)"></li>
+                                    <!-- <li>Applicable only for xxx</li>
+                                    <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                                        <!-- <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li> -->
+                                        <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                            {{getVoucherApplicableText(vs,'allowDays')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToBookingAmount">
+                                            {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToFlight">
+                                            {{getVoucherApplicableText(vs,'flight')}}
+                                        </li>
+        
+                                        <li>Amount {{currencySymbol}} {{vs.voucherAmount}}</li>
+                                        
+                                        <!-- <li>
+                                            Validity 
+                                            days
+                                        </li> -->
+                                        <li *ngIf="vs && vs.voucherNumber">Voucher No. #{{vs.voucherNumber}}</li>
+                                        <!-- <li>{{getVoucherAmount(vs,'assigned')}} assigned | {{getVoucherAmount(vs,'remaining')}}
+                                            remaining</li> -->
+                                    </ul>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col *ngIf="0" col-3>
+                        <button *ngIf="type==='club' && fromClub" ion-button outline>
+                            <!-- selectedVoucher=true -->
+                            <i class="fas fa=fw fa-user-cog"></i>&nbsp;Assign / Unassign Players
+                        </button>
+                        <ion-row *ngIf="0">
+                            <ion-col col-12>
+                                <img *ngIf="vs.voucherImage" (click)="onImageClick(vs.voucherImage)" style="width: 4em;" [src]="vs.voucherImage" />
+                            </ion-col>
+                            <ion-col  col-12>
+                                <!-- padding-left padding-right no-padding text-left -->
+                                <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                    <!-- selectedVoucher=true -->
+                                    <i class="fas fa=fw fa-user-cog"></i></button>
+                            </ion-col>
+                            <ion-col>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned<br>
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </ng-container>
+        <ion-item>
+        <button item-end outline (click)="displayPlayerVoucher=false" 
+                *ngIf="displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+                ion-button block>
+                    <i class="fas fa-fw fa-check"></i>Close</button>
+                </ion-item>
+    </ion-list>
+</ion-grid>
+<ion-grid *ngIf="innerWidth >= 768">
+    <ion-list *ngIf="optionTypes === 'assign' && (!selectedPlayer && !selectedVoucher)">
+        <ion-item>
+            
+            <button item-start ion-button>
+                <span>
+                    Voucher Series List</span>
+            </button>
+            <button (click)="voucherQuickView = !voucherQuickView" item-end ion-button>
+                <span *ngIf="!voucherQuickView">View Top 3 Usage</span>
+                <span *ngIf="voucherQuickView">Hide Top 3 Usage</span>
+            </button>
+        </ion-item>
+        <ion-row col-12>
+            <ion-col col-8 style="padding-left:1em">
+                <!-- <ion-label color="primary">Code</ion-label> -->
+                <ion-input placeholder="Search by voucher series" [(ngModel)]="searchVoucher"></ion-input>
+            </ion-col>
+            <ion-col col-4 style="text-align: right; align-self: center;">
+                <button ion-button (click)="onSearchVoucherClick()"><i class="fas fa-fw fa-search"></i></button>
+                <button ion-button (click)="onRefreshClick()"><i class="fas fa-fw fa-sync"></i></button>
+            </ion-col>
+        </ion-row>
+        <!-- <ion-input placeholder="Enter club id " [(ngModel)]="searchClubId"></ion-input>
+        <button ion-button (click)="onSearchVoucherClick('club')">Filter</button> -->
+        <ng-container >
+            <ion-row col-12>
+                <ion-col col-6 col-md-6 col-xl-4 col-lg-4 *ngFor="let vs of clubVoucherSeries">
+                    <ion-card>
+                        <ion-row>
+                            <ion-col>
+                                <ion-row>
+                                    <ion-col col-12>
+                                        <b>{{vs.name}}</b> - {{vs.voucherSeries}}
+                                    </ion-col>
+                                    <ion-col *ngIf="0" col-12 padding-left padding-right no-padding text-left>
+                                        <ul>
+                                            <li *ngIf="vs.description" [innerHTML]="escapeCRLF(vs.description)"></li>
+                                            <div *ngIf="voucherMoreDetails">
+        
+                                                <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                                    {{getVoucherApplicableText(vs,'allowDays')}}
+                                                </li>
+                                                <li *ngIf="vs.appliesToBookingAmount">
+                                                    {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                                </li>
+                                                <li *ngIf="vs.appliesToFlight">
+                                                    {{getVoucherApplicableText(vs,'flight')}}
+                                                </li>
+                                                
+                                                </div>
+                                                <li *ngIf="getVoucherAmountDetails(vs)">{{getVoucherAmountDetails(vs)}}</li>
+                                        
+                                                <li>
+                                                    Validity {{vs.validityDays}} days
+                                                </li>
+                                                
+                                                <button ion-button clear small>
+                                                <li (click)="voucherMoreDetails = true" *ngIf="!voucherMoreDetails">See More</li>
+                                                <li (click)="voucherMoreDetails = false" *ngIf="voucherMoreDetails">See Less</li>
+                                                </button>
+                                            </ul>
+                                            <!-- <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned |
+                                            <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining -->
+                                    </ion-col>
+                                    <ion-col  col-12>
+                                        <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned&nbsp;|&nbsp;
+                                        <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                                        <!-- padding-left padding-right no-padding text-left -->
+                                        <!-- <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                            <i class="fas fa=fw fa-user-cog"></i></button> -->
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                            <ion-col col-3>
+                                <ion-row>
+                                    <ion-col col-12>
+                                        <img *ngIf="vs.voucherImage" (click)="onImageClick(vs.voucherImage)" style="width: 4em;" [src]="vs.voucherImage" />
+                                    </ion-col>
+                                    <ion-col *ngIf="0"  col-12>
+                                        <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned <br>
+                                        <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                                        <!-- padding-left padding-right no-padding text-left -->
+                                        <!-- <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                            <i class="fas fa=fw fa-user-cog"></i></button> -->
+                                    </ion-col>
+                                    <!-- <ion-col>
+                                        <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned<br>
+                                        <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                                    </ion-col> -->
+                                </ion-row>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row col-12>
+                            <button item-end small (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                <i class="fas fa=fw fa-user-cog"></i>&nbsp;Assign / Unassign Vouchers</button>
+                        </ion-row>
+                        <ion-row>
+                            <ng-container *ngIf="voucherQuickView && getPlayerAssignedVoucherSeries(vs.id) && getPlayerAssignedVoucherSeries(vs.id).length > 0">
+                                <ng-container *ngFor="let player of getPlayerAssignedVoucherSeries(vs.id); let idx = index">
+                                <ion-item *ngIf="idx < 3" (click)="onSelectPlayerList(player,vs)">
+                                    <ion-avatar item-start>
+                                        <img
+                                        [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+                                    </ion-avatar>
+                                    <span item-start>{{player.playerName}} #{{player.playerId?player.playerId:player.id}}</span>
+                                    <button style="font-size:1.5em" *ngIf="player&&player.vouchersIssued>0" ion-button item-end clear>
+                                        {{player.vouchersIssued?"("+player.vouchersIssued+")":''}}
+                                    </button>
+                                    <button (click)="onSelectPlayerList(player,vs)" item-end ion-button outline>
+                                        <i class="fas fa-fw fa-user-edit"></i>
+                                    </button>
+                                </ion-item>
+                            </ng-container>
+                                </ng-container>
+                        </ion-row>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+                    
+        
+        </ng-container>
+
+    </ion-list>
+    <ion-list *ngIf="optionTypes === 'assign' && selectedVoucher || selectedPlayer">
+        <ion-item>
+            <!-- <button ion-button item-start  (click)="selectedVoucher=false;selectedPlayer=false;">
+                <i class="fas fa-fw fa-backward"></i></button>  -->
+                <button ion-button block>
+                    <span>Player Voucher Assignment</span>
+                </button>
+        </ion-item>
+        <ion-row>
+            <ion-col col-6>
+                <ion-card *ngIf="selVoucherSeries">
+                    <ion-row>
+                        <ion-col>
+                            <ion-row>
+                                <ion-col col-12>
+                                    <b>{{selVoucherSeries.name}}</b> - {{selVoucherSeries.voucherSeries}}
+                                </ion-col>
+                                <ion-col col-12 padding-left padding-right no-padding text-left>
+                                    <ul>
+                                        <li *ngIf="selVoucherSeries.description" [innerHTML]="escapeCRLF(selVoucherSeries.description)"></li>
+                                        <!-- <li>Applicable only for xxx</li>
+                                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                                            <!-- <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li> -->
+                                            <div *ngIf="voucherMoreDetails">
+                                            <li *ngIf="selVoucherSeries.allowOnWeekdays || selVoucherSeries.allowOnWeekends || selVoucherSeries.allowOnPublicHolidays">
+                                                {{getVoucherApplicableText(selVoucherSeries,'allowDays')}}
+                                            </li>
+                                            <li *ngIf="selVoucherSeries.appliesToBookingAmount">
+                                                {{getVoucherApplicableText(selVoucherSeries,'bookingAmount')}}
+                                            </li>
+                                            <li *ngIf="selVoucherSeries.appliesToFlight">
+                                                {{getVoucherApplicableText(selVoucherSeries,'flight')}}
+                                            </li>
+                                        </div>
+            
+                                        <li>Amount {{currencySymbol}} {{selVoucherSeries.voucherAmount}}</li>
+                                        
+                                        <li>
+                                            Validity {{selVoucherSeries.validityDays}} days
+                                        </li>
+                                            <!-- <li>{{getVoucherAmount(vs,'assigned')}} assigned | {{getVoucherAmount(vs,'remaining')}}
+                                                remaining</li> -->
+                                                <button ion-button clear small>
+                                                <li (click)="voucherMoreDetails = true" *ngIf="!voucherMoreDetails">See More</li>
+                                                <li (click)="voucherMoreDetails = false" *ngIf="voucherMoreDetails">See Less</li>
+                                            </button>
+                                        </ul>
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
+                        <ion-col col-3 style="align-self: flex-end;">
+                            <ion-row>
+                                <ion-col col-12>
+                                    <img *ngIf="selVoucherSeries.voucherImage"  (click)="onImageClick(selVoucherSeries.voucherImage)" style="width: 4em;" [src]="selVoucherSeries.voucherImage" />
+                                </ion-col>
+                                <ion-col>
+                                    <b>{{getVoucherAmount(selVoucherSeries,'assigned')}}</b> assigned<br>
+                                    <b>{{getVoucherAmount(selVoucherSeries,'remaining')}}</b> remaining
+                                </ion-col>
+                                <ion-col  col-12>
+                                    <!-- <button (click)="onPlayerAssignClick(selVoucherSeries,player)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                        Assign</button> -->
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <!-- <ion-item>
+                            
+                        </ion-item> -->
+                        
+                <ion-item *ngIf="!hasPlayer">
+                    <button ion-button item-start outline (click)="selectedVoucher=false;selectedPlayer=false;onRefreshClick();" color="danger">
+                        <i class="fas fa-fw fa-backward"></i>&nbsp;Back
+                    </button> 
+                        <button ion-button item-start (click)="onSelectPlayer(selVoucherSeries)" outline>
+                            <i class="fas fa-fw fa-user-plus"></i>&nbsp;Select Player to assign
+                    </button>
+                    <button ion-button item-end (click)="onSeriesAssignClick(selVoucherSeries)" outline>
+                        <i class="fas fa-fw fa-sync"></i>
+                </button>
+        
+                </ion-item>
+                <ion-item *ngIf="hasPlayer">
+                        <button ion-button item-start outline color="danger" (click)="selectedVoucher=true;selectedPlayer=false;this.hasPlayer=false;this.player=null;
+                        this.getClubVouchersIssued(selVoucherSeries);">
+                            <i class="fas fa-fw fa-backward"></i>&nbsp;Back</button> 
+                        <!-- <button ion-button item-end (click)="onSelectPlayer(selVoucherSeries)" outline>
+                            <i class="fas fa-fw fa-user-edit"></i>&nbsp;Change Player
+                        </button> -->
+                </ion-item>
+                    </ion-row>
+                    <!-- <ion-row>
+        
+        
+                    </ion-row>
+                    <ion-row>
+        
+                        </ion-col>
+                        <ion-col style="align-self: center;text-align: right;">
+                        </ion-col>
+                    </ion-row> -->
+                </ion-card>
+
+            </ion-col>
+            <ion-col col-6 *ngIf="!hasPlayer">
+                
+        <ion-item *ngIf="!hasPlayer">
+            <button ion-button block >
+                Players issued for this voucher series
+            </button>
+        </ion-item>
+            <ng-container *ngIf="!hasPlayer && playersAssigned && playersAssigned.length > 0">
+            <ion-item *ngFor="let player of playersAssigned" (click)="onSelectPlayerList(player)">
+                <ion-avatar item-start>
+                    <img
+                    [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+                </ion-avatar>
+                <span item-start>{{player.playerName}} #{{player.playerId?player.playerId:player.id}}</span>
+                <button style="font-size:1.5em" *ngIf="player&&player.vouchersIssued>0" ion-button item-end clear>
+                    {{player.vouchersIssued?"("+player.vouchersIssued+")":''}}
+                </button>
+                <button (click)="onSelectPlayerList(player)" item-end ion-button outline>
+                    <!-- <i class="fas fa-fw fa-user-plus"></i> -->
+                    <i class="fas fa-fw fa-user-edit"></i>
+                </button>
+            </ion-item>
+            </ng-container>
+            </ion-col>
+            <ion-col col-6  *ngIf="hasPlayer">
+                
+        <ng-container>
+            <!-- <ion-item >
+                    <button ion-button item-start outline color="danger" (click)="selectedVoucher=true;selectedPlayer=false;this.hasPlayer=false;this.player=null;
+                    this.getClubVouchersIssued(selVoucherSeries);">
+                        <i class="fas fa-fw fa-backward"></i>&nbsp;</button> 
+                    <button ion-button item-end (click)="onSelectPlayer(selVoucherSeries)" outline>
+                        <i class="fas fa-fw fa-user-edit"></i>&nbsp;Change Player
+                    </button>
+                </ion-item> -->
+            <ion-item>
+                <button ion-button item-end block>
+                    Assigning voucher(s) for
+                    <!-- <h3>{{player.playerName}} (#{{player.playerId}})</h3>
+                    <h4>{{player.email}}</h4> -->
+                    <!-- for {{player.firstName}} #{{player.playerId}} -->
+                </button>
+            </ion-item>
+            <ion-row *ngIf="player" padding-left padding-right>
+                <ion-col col-3 padding>
+                    <img  style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em"
+                    [src]="getPlayerDetails(player,'image')" onerror="this.src='img/default-user.jpg'">
+                </ion-col>
+                <ion-col padding>
+                    <h4 style="margin: 0; color:#30bb5b">{{player.playerName}} (#{{player.playerId?player.playerId:player.id}})</h4>
+                    <h5 style="margin: 0;">{{player.email}}</h5>
+                </ion-col>
+                <!-- <h4>Club membership # / Guest</h4> -->
+            </ion-row>
+            <ion-item>
+                <ion-label>
+                    Player has <span style="font-weight:bold; color:#30bb5b;">{{playerVoucher&&playerVoucher.length>0?playerVoucher.length:'no'}}</span> voucher(s) assigned for this series
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label style="max-width: 9em !important;">How many vouchers?</ion-label>
+                <ion-input text-right type="number" style="color: #30bb5b;font-weight: bold;font-size: 2em;" [(ngModel)]="playerNoOfVoucher">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <button item-start (click)="onPlayerAssignClick(selVoucherSeries,player)" *ngIf="type==='club' && fromClub" ion-button>
+                    <i class="fas fa-fw fa-check"></i>Assign</button>
+                    <button color="danger" item-end (click)="onPlayerUnassignClick(selVoucherSeries,player)" 
+                    *ngIf="(playerVoucher && playerVoucher.length > 0) && type==='club' && fromClub" ion-button>
+                        <i class="fas fa-fw fa-times"></i>Unassign</button>
+            </ion-item>
+            <ion-item>
+                <button outline item-end (click)="onViewMoreVouchers(selVoucherSeries,player)" 
+                *ngIf="!displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+                ion-button block>View player voucher(s)</button>
+                    <button item-end outline (click)="displayPlayerVoucher=false" 
+                    *ngIf="displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+                    ion-button block>
+                        <i class="fas fa-fw fa-check"></i>Close</button>
+            </ion-item>
+        </ng-container>
+        
+    <ion-list *ngIf="displayPlayerVoucher">
+        <ng-container *ngFor="let vs of playerVoucher">
+            <ion-card>
+                <ion-row>
+                    <ion-col>
+                        <ion-row>
+                            <ion-col col-12>
+                                <b>{{vs.name}}</b> - {{vs.seriesId}}
+                            </ion-col>
+                            <ion-col col-12 padding-left padding-right no-padding text-left>
+                                <ul>
+                                    <li *ngIf="selVoucherSeries.description" [innerHTML]="escapeCRLF(selVoucherSeries.description)"></li>
+                                    <!-- <li>Applicable only for xxx</li>
+                                    <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li> -->
+                                        <!-- <li>Valid from {{getDateText(voucher.validFrom)}} till {{getDateText(voucher.validUntil)}}</li> -->
+                                        <li *ngIf="vs.allowOnWeekdays || vs.allowOnWeekends || vs.allowOnPublicHolidays">
+                                            {{getVoucherApplicableText(vs,'allowDays')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToBookingAmount">
+                                            {{getVoucherApplicableText(vs,'bookingAmount')}}
+                                        </li>
+                                        <li *ngIf="vs.appliesToFlight">
+                                            {{getVoucherApplicableText(vs,'flight')}}
+                                        </li>
+        
+                                        <li>Amount {{currencySymbol}} {{vs.voucherAmount}}</li>
+                                        
+                                        <!-- <li>
+                                            Validity 
+                                            days
+                                        </li> -->
+                                        <li *ngIf="vs && vs.voucherNumber">Voucher No. #{{vs.voucherNumber}}</li>
+                                        <!-- <li>{{getVoucherAmount(vs,'assigned')}} assigned | {{getVoucherAmount(vs,'remaining')}}
+                                            remaining</li> -->
+                                    </ul>
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col *ngIf="0" col-3>
+                        <button *ngIf="type==='club' && fromClub" ion-button outline>
+                            <!-- selectedVoucher=true -->
+                            <i class="fas fa=fw fa-user-cog"></i>&nbsp;Assign / Unassign Players
+                        </button>
+                        <ion-row *ngIf="0">
+                            <ion-col col-12>
+                                <img *ngIf="vs.voucherImage" (click)="onImageClick(vs.voucherImage)" style="width: 4em;" [src]="vs.voucherImage" />
+                            </ion-col>
+                            <ion-col  col-12>
+                                <!-- padding-left padding-right no-padding text-left -->
+                                <button (click)="onSeriesAssignClick(vs)" *ngIf="type==='club' && fromClub" ion-button outline>
+                                    <!-- selectedVoucher=true -->
+                                    <i class="fas fa=fw fa-user-cog"></i></button>
+                            </ion-col>
+                            <ion-col>
+                                <b>{{getVoucherAmount(vs,'assigned')}}</b> assigned<br>
+                                <b>{{getVoucherAmount(vs,'remaining')}}</b> remaining
+                            </ion-col>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </ng-container>
+        <ion-item>
+        <button item-end outline (click)="displayPlayerVoucher=false" 
+                *ngIf="displayPlayerVoucher && type==='club' && fromClub && playerVoucher && playerVoucher.length > 0" 
+                ion-button block>
+                    <i class="fas fa-fw fa-check"></i>Close</button>
+                </ion-item>
+    </ion-list>
+            </ion-col>
+        </ion-row>
+        <!-- <ion-item *ngIf="!hasPlayer">
+            <button ion-button item-start  (click)="selectedVoucher=false">
+                <i class="fas fa-fw fa-backward"></i></button> 
+                <button ion-button item-start (click)="onSelectPlayer(selVoucherSeries)" outline>
+                    <i class="fas fa-fw fa-user-plus"></i>Select Player to assign
+            </button>
+            <button ion-button item-end (click)="onSeriesAssignClick(selVoucherSeries)" outline>
+                <i class="fas fa-fw fa-sync"></i>
+        </button>
+
+        </ion-item> -->
+
+        <!-- <ion-row col-12>
+            <ion-col col-9 style="padding-left:1em">
+        <ion-input placeholder="Enter voucher code"></ion-input>
+            </ion-col>
+            <ion-col col-3 style="text-align: right; align-self: center;">
+        <button ion-button>Search</button>
+            </ion-col>
+        </ion-row> -->
+
+
+
+    </ion-list>
+
+</ion-grid>
+</ion-content>
+<ion-footer style="background:white">
+    <button (click)="close()" ion-button full color='danger'>Close</button>
+</ion-footer>

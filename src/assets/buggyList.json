@@ -1,0 +1,24 @@
+    [{
+    		"id": 1,
+    		"buggyNo": "010",
+    		"name": "Green",
+    		"physicalId": "1",
+    		"description": "description",
+    		"buggyImage": "assets/img/cart-short.svg",
+    		"status": "Available",
+			"lastAssigned": "2020-05-20",
+			"lastCompleted": "2020-05-20"
+    	},
+    	{
+    		"id": 1,
+    		"buggyNo": "011",
+    		"name": "Gold",
+    		"physicalId": "2",
+    		"description": "description",
+    		"buggyImage": "assets/img/cart-short.svg",
+    		"status": "Available",
+			"lastAssigned": "2020-05-20",
+			"lastCompleted": "2020-05-20"
+    	}
+
+    ]

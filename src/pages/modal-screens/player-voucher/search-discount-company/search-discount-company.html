@@ -1,0 +1,301 @@
+<ion-header >
+    <ion-navbar class="mg2u-navbar" hideBackButton >
+        <ion-title >{{headerTitle}}</ion-title >
+        <ion-buttons start (click)="close()" >
+            <button  ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+<ion-content class="has-header" >
+    <!-- <ion-segment [(ngModel)] = "optionTypes" color = "warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button (click) = "setOptionType(1)" value = "types">
+            TYPES
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(2)" value = "discount">
+            DISCOUNT CARDS
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(3)" value = "voucher">
+            VOUCHERS
+        </ion-segment-button>
+    </ion-segment> -->
+<div *ngIf="0">
+    <div *ngIf="0">
+    <ion-list *ngIf="optionTypes === 'types'">
+        <ion-item>
+            <button ion-button clear item-right >
+                <!-- (click)="addPlayerTypes()" -->
+                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Player Type
+            </button>
+        </ion-item>
+        <ion-card>
+            <ion-row>
+                <ion-col><strong>Senior</strong>
+                <ul class="no-bullets">
+                    <li>Current Age : 60</li>
+                </ul></ion-col>
+                <ion-col col-3 style="align-self: center;text-align: right;">
+                    <button ion-button outline><i class="far fa-fw fa-edit"></i></button>
+                    <button ion-button outline color="danger"><i class="far fa-fw fa-trash-alt"></i></button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row>
+                <ion-col><strong>Government</strong>
+                <ul class="no-bullets">
+                    <li><i class="fas fa-fw fa-hashtag"></i>ID : x123asf</li>
+                    <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li>
+        </ul>
+    </ion-col>
+    <ion-col col-3 style="align-self: center;text-align: right;">
+        <button ion-button outline><i class="far fa-fw fa-edit"></i></button>
+        <button ion-button outline color="danger"><i class="far fa-fw fa-trash-alt"></i></button>
+    </ion-col>
+            </ion-row>
+        </ion-card>
+    </ion-list>
+
+    <ion-list *ngIf="optionTypes === 'discount'">
+        <ion-row no-padding>
+        <ion-col col-12 no-padding>
+            <button ion-button clear full>Discount Card(s)</button>
+        </ion-col>
+        <ion-item>
+            <button ion-button clear item-right >
+                <!-- (click)="addPlayerTypes()" -->
+                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Discount Card
+            </button>
+        </ion-item>
+    </ion-row>
+        <ion-card>
+            <ion-row>
+                <ion-col no-padding padding-left><b>AGSSG - Premier Senior Golfer - <i>With Insurance</i> </b>
+                    <ul class="no-bullets">
+                        <li><i class="fas fa-fw fa-hashtag"></i>ID : AGSSG123</li>
+                        <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li>
+            </ul>
+        </ion-col>
+                <ion-col no-padding padding-right col-4 text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Valid only for Club A</li>
+                        <li>Valid only for Club B</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>       
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button ion-button outline><i class="far fa-fw fa-edit"></i></button>
+                    <button ion-button outline color="danger"><i class="far fa-fw fa-trash-alt"></i></button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row>
+                <ion-col no-padding padding-left><b>AGSSG - Premier Golfer 1 - <i>With Insurance</i> </b>
+                    <ul class="no-bullets">
+                        <li><i class="fas fa-fw fa-hashtag"></i>ID : AGSSG456</li>
+                        <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li>
+            </ul>
+        </ion-col>
+                <ion-col no-padding padding-right col-4 text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Valid only for Club A</li>
+                        <li>Valid only for Club B</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>       
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button ion-button outline><i class="far fa-fw fa-edit"></i></button>
+                    <button ion-button outline color="danger"><i class="far fa-fw fa-trash-alt"></i></button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+
+        <ion-card>
+            <ion-row>
+                <ion-col no-padding padding-left><b>Reward Card A </b>
+                    <ul class="no-bullets">
+                        <li><i class="fas fa-fw fa-hashtag"></i>ID : RewA123</li>
+                        <li><i class="fas fa-fw fa-paperclip"></i>Has document attached</li>
+            </ul>
+        </ion-col>
+                <ion-col no-padding padding-right col-4 text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Valid only for Club A</li>
+                        <li>Valid only for Club B</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>       
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button ion-button outline><i class="far fa-fw fa-edit"></i></button>
+                    <button ion-button outline color="danger"><i class="far fa-fw fa-trash-alt"></i></button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+
+    </ion-list>
+
+    <ion-list *ngIf="optionTypes === 'voucher'">
+        <ion-row col-12>
+            <ion-col col-9 style="padding-left:1em">
+        <!-- <ion-label color="primary">Code</ion-label> -->
+        <ion-input placeholder="Enter voucher code"></ion-input>
+            </ion-col>
+            <ion-col col-3 style="text-align: right; align-self: center;">
+        <button ion-button>Search</button>
+            </ion-col>
+        </ion-row>
+        <ion-card>
+            <ion-row>
+                <ion-col><b>Voucher N</b></ion-col>
+                <ion-col text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Applicable only for xxx</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button *ngIf="type==='player'" ion-button outline>Claim</button>
+                    <button *ngIf="type==='club'" ion-button outline>Apply</button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row>
+                <ion-col><b>Voucher N</b></ion-col>
+                <ion-col text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Applicable only for xxx</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button *ngIf="type==='player'" ion-button outline>Claim</button>
+                    <button *ngIf="type==='club'" ion-button outline>Apply</button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+        <ion-card>
+            <ion-row>
+                <ion-col><b>Voucher N</b></ion-col>
+                <ion-col text-right>Expires dd-mm-yyyy</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col padding-left padding-right no-padding text-left col-9>
+                    <ul>
+                        <li>Applicable only for xxx</li>
+                        <li>Valid from dd-mm-yyyy till dd-mm-yyyy</li>
+                    </ul>
+                </ion-col>
+                <ion-col style="align-self: center;text-align: right;">
+                    <button *ngIf="type==='player'" ion-button outline>Claim</button>
+                    <button *ngIf="type==='club'" ion-button outline>Apply</button>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+
+    </ion-list>
+</div>
+<ion-list *ngIf="type==='playerType'">
+    <ion-item>
+        <ion-label>Select Player Type</ion-label>
+        <ion-select style="max-width:100%" [(ngModel)]="playerTypes">
+            <ng-container *ngFor="let pType of playerTypes">
+                <ion-option *ngIf="pType.use" [value]="pType.id">{{pType.name}}</ion-option>
+            </ng-container>
+          <!-- <ion-option value="cash">Club - Cash</ion-option>
+          <ion-option value="offcc">Club - Credit/Debit Card</ion-option>
+          <ion-option value="offnb">Club - Offline Fund Transfer</ion-option>
+          <ion-option value="online">Club - Online Fund Transfer</ion-option>
+          <ion-option value="mg2ucredit">MyGolf2u Credit</ion-option> -->
+        </ion-select>
+      </ion-item>
+</ion-list>
+<ion-list *ngIf="type==='playerDiscount'">
+      <ion-item *ngIf="discountCompanies && discountCompanies.length > 0">
+        <ion-label>Select Discount Company</ion-label>
+        <ion-select style="max-width:100%" [(ngModel)]="selectedDiscountCompany">
+            <ng-container *ngFor="let discComp of discountCompanies">
+                <ion-option value="discComp.id">{{discComp.name}}</ion-option>
+            </ng-container>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="discountPrograms && discountPrograms.length > 0">
+        <ion-label>Select Discount Program</ion-label>
+        <ion-select style="max-width:100%" [(ngModel)]="selectedDiscountProgram">
+            <ng-container *ngFor="let program of discountPrograms">
+                <ion-option value="program.id">{{program.name}}</ion-option>
+            </ng-container>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+          <ion-label>
+              Membership #
+          </ion-label>
+          <ion-input [(ngModel)]="cardMembershipNo" placeholder="Enter membership # here" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label>Valid from</ion-label>
+          <ion-datetime displayFormat="DDD, DD MMM 'YY" 
+          pickerFormat="DD-MMM-YYYY" [(ngModel)]="cardValidFrom"></ion-datetime>
+          <!-- [min]="minDate" -->
+      </ion-item>
+      <ion-item>
+          <ion-label>Valid until</ion-label>
+          <ion-datetime displayFormat="DDD, DD MMM 'YY" 
+          pickerFormat="DD-MMM-YYYY" [(ngModel)]="cardValidUntil"></ion-datetime>
+          <!-- (ionChange)="asdsd()" -->
+      </ion-item>
+      <ion-item [disabled]="true"><i>Upload document (coming soon)</i></ion-item>
+</ion-list>
+<ion-list *ngIf="type==='playerVoucher'">
+
+</ion-list>
+</div>
+<ion-list>
+    <ion-row col-12>
+        <ion-col col-9 style="padding-left:1em">
+    <ion-input placeholder="Search discount company by name" [(ngModel)]="searchCompany"></ion-input>
+        </ion-col>
+        <ion-col col-3 style="text-align: right; align-self: center;">
+            <button ion-button (click)="onSearchCompanyClick()">Search</button>
+        </ion-col>
+    </ion-row>
+    <ng-container *ngFor="let discComp of discountCompanies"> 
+        <ion-card (click)="onSelectThis(discComp)">
+            <ion-item>
+                <b>{{discComp.name}}</b>
+                <ul>
+                    <li>{{discComp.description}}</li>
+                    <li *ngIf="getCompAddress(discComp)">{{getCompAddress(discComp)}}</li>
+                </ul>
+            </ion-item>
+        </ion-card>
+    </ng-container>
+</ion-list>
+</ion-content >
+<ion-footer style="background:white">
+    <!-- <button full outline ion-button color="primary" style="font-weight: bold"> -->
+        <!-- Current Slot Details :  -->
+        <!-- {{getCurrentSlotDetails('courseName')}}
+        {{getCurrentSlotDetails('time')}} -->
+    <!-- </button> -->
+    <button (click)="close()"  ion-button full color='danger'>Close</button>
+</ion-footer>

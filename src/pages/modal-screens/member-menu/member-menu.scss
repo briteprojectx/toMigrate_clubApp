@@ -1,0 +1,9 @@
+member-menu-page {
+    .slot-available {
+        color: green;
+    }
+    .slot-not-available {
+        color: red;
+        font-style: italic;
+    }
+}

@@ -1,0 +1,110 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons> -->
+        <!-- <ion-title>Buggy Details</ion-title> -->
+        <img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+
+    </ion-navbar>
+</ion-header>
+<ion-content class = "competition-details player-performance">
+    <ion-list>
+        <!-- <ion-item class = "header-panel" style = 'background-color:#fadb4e;text-align:center;'>
+            <h3 class = "scorecard-name" style = "font-weight:bold">{{buggyDetails.name}} ({{buggyDetails.buggyNo}}</h3>
+            <h4>{{buggyDetails.description}}</h4>
+        </ion-item> -->
+        <ion-thumbnail (click)="zoomImage(buggyDetails)" style="text-align: -webkit-center;">
+            <img [src] = "(buggyDetails && buggyDetails.buggyImage)?buggyDetails.buggyImage:''"
+            onerror = "this.src='assets/img/cart-short.svg'" style="max-width:8em;">
+        </ion-thumbnail>
+        <!-- <ion-item style="text-align:right;">
+                <ion-label>Switch View</ion-label>
+                <ion-toggle [(ngModel)]="switchView"></ion-toggle>
+              </ion-item> -->
+<div *ngIf="switchView">
+    <ion-grid>
+        <ion-row>
+                <ion-col class="detail-param"> Buggy Name (#)</ion-col>
+                <ion-col class="detail-field">{{buggyDetails.name}} (#{{buggyDetails.buggyNo}})</ion-col>
+            </ion-row>
+            <ion-row>
+                    <ion-col class="detail-param">Physical ID</ion-col>
+                    <ion-col class="detail-field">{{buggyDetails.physicalId}}</ion-col>
+                </ion-row>
+            <ion-row>
+                    <ion-col class="detail-param">Last Assigned</ion-col>
+                    <ion-col class="detail-field">{{buggyDetails.lastAssigned | date:"EEE, d MMM yyyy"}}</ion-col>
+                </ion-row>
+                <ion-row>
+                        <ion-col class="detail-param">Last Completed</ion-col>
+                        <ion-col class="detail-field">{{buggyDetails.lastCompleted | date:"EEE, d MMM yyyy"}}</ion-col>
+                    </ion-row>
+            <ion-row>
+                <ion-col class="detail-param">Description</ion-col>
+                <ion-col class="detail-field">{{buggyDetails.description}}</ion-col>
+            </ion-row>
+            <ion-row>
+                    <ion-col class="detail-param">Maintenance Date</ion-col>
+                    <ion-col class="detail-field">{{buggyDetails.maintenanceDate | date:"EEE, d MMM yyyy"}}</ion-col>
+                </ion-row>
+                <ion-row>
+                        <ion-col class="detail-param">Status</ion-col>
+                        <ion-col class="detail-field">{{getFullStatus(buggyDetails.status)}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col class="detail-param">Weekly Usage</ion-col>
+                            <ion-col class="detail-field">{{displayAvailableDays(buggyDetails.availabilityDays)}}</ion-col>
+                            
+                    </ion-row>
+                    <ion-row>
+                            <ion-col col-6 class="detail-param">Working Schedule<br><i>(next 30 days)</i></ion-col>
+                            <ion-col col-6 class="detail-field">{{getEndDate(1,true)}} to {{getEndDate(30)}}</ion-col>
+                            <i>*Tap on date for more details</i>
+                            <div class="row" style="width:100%; border-width:1px; border-style: solid;">
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(1)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(2)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(3)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(4)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(5)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(6)}}</div>
+                                    <div class="column date-header" style='width: 14.2%;text-align:center;'>{{getTextDay(7)}}</div>
+                                    <ng-container *ngFor="let x of buggyAvl; let i of index;">
+                                            <div (click)="getDateDetail(x)" 
+                                            class="column date-data" style='width: 14.2%;text-align:center;'>
+                                            {{x.availableOn | date:"dd"}}
+                                            <i style="color: green" *ngIf="x.available; else notWorking" class="far fa-fw fa-check-circle"></i>
+                                            <ng-template #notWorking>
+                                                    <i style="color: red" class="far fa-fw fa-times-circle"></i>
+                                            </ng-template>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                    </ion-row>
+                </ion-grid>
+</div>
+<div *ngIf="!switchView">
+        <ion-item-divider class = "list-subHeader">
+            Buggy Name (#) - Physical ID
+        </ion-item-divider>
+        <ion-item class = "item-wrap">
+            {{buggyDetails.name}} (#{{buggyDetails.buggyNo}}) - {{buggyDetails.physicalId}}
+        </ion-item>
+        <ion-item-divider class = "list-subHeader">
+            Description
+        </ion-item-divider>
+        <ion-item class = "item-wrap">
+            {{buggyDetails.description}}
+        </ion-item>
+        <ion-item-divider class = "list-subHeader">
+            Status
+        </ion-item-divider>
+        <ion-item class = "item-wrap">
+            {{buggyDetails.status}}
+        </ion-item>
+        </div>
+
+    </ion-list>
+</ion-content>

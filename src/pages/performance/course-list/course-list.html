@@ -1,0 +1,37 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title center >Select Course</ion-title >
+          <ion-buttons start>
+              <button ion-button icon-only
+                  (click)="close()">
+                  <!--<i class="fa fa-close fa-lg" aria-hidden="true"></i>-->
+
+                   <ion-icon name="close-circle" color="invert-text"></ion-icon>
+                </button>
+</ion-buttons>
+    </ion-navbar >
+</ion-header >
+
+
+<ion-content class="select-performance-club" >
+
+    <ion-list >
+        <ion-list-header class="list-header" >{{selectedClub.clubName}}</ion-list-header >
+        <button ion-item *ngFor="let c of clubCourses" (click)="courseSelected($event, c)" >
+            <!--ion-avatar class="avatar-left custom-avatar" >
+                <img src="{{club.clubImage}}" />
+            </ion-avatar -->
+            <h3 class="course-name" >{{c.courseName}}</h3 >
+
+            <!--p class="course-detail" >{{club.address}}</p >
+            <span class="course-distance" item-right ><p class="course-distance">{{clubDistance(club)}}</p></span >
+      -->  </button >
+
+    </ion-list >
+
+</ion-content >
+<!-- <ion-footer>
+<ion-toolbar position="bottom" light>
+    <button block danger (click)="close()" >Cancel</button >
+</ion-toolbar >
+</ion-footer> -->

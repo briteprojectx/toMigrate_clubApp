@@ -1,0 +1,11 @@
+{
+  "en":{
+    "CompetitionListPage": {
+      "title": "myGolf: Competitions",
+      "alert-title": "Competition List Error",
+      "competitions": "competitions",
+      "displaying": "Displaying",
+      "get-more": "Get More"
+    }
+  }
+}

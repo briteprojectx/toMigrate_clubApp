@@ -1,0 +1,297 @@
+@import "media_query";
+
+@mixin linear-gradient($color1, $color2, $angle: 180deg) {
+    background: -webkit-linear-gradient($color1, $color2);
+    background: -moz-linear-gradient($color1, $color2);
+    background: -ms-linear-gradient($color1, $color2);
+    background: -o-linear-gradient($angle, $color1, $color2);
+    background: linear-gradient($angle, $color1, $color2);
+}
+
+@mixin flex-display($flex:1, $align-items:center, $justify-content:center) {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-flex: $flex;
+    -webkit-flex: $flex;
+    -ms-flex: $flex;
+    flex: $flex;
+
+    -webkit-box-pack: $justify-content;
+    -webkit-justify-content: $justify-content;
+    -ms-flex-pack: $justify-content;
+    justify-content: $justify-content;
+
+    -webkit-box-align: $align-items;
+    -webkit-align-items: $align-items;
+    -ms-flex-align: $align-items;
+    align-items: $align-items;
+}
+
+@mixin transition($args...) {
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
+}
+
+/*--------------------------------
+	Responsive ratio
+	Used for creating scalable elements that maintain the same ratio
+	example:
+	.element {
+		@include responsive-ratio(400, 300);
+	}
+*/
+
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+    $padding: unquote(( $y / $x ) * 100 + '%');
+
+    @if $pseudo {
+        &::before {
+            @include pseudo($pos: relative);
+            width: 100%;
+            padding-top: $padding;
+        }
+    } @else {
+        padding-top: $padding;
+    }
+}
+
+%vertical-align-content {
+    display: flex !important;
+    align-content: center !important;
+    align-items: center !important;
+}
+
+@mixin align($vertical: true, $horizontal: false, $position: relative) {
+    @if $position {
+        position: $position;
+    }
+    @if $vertical {
+        top: 50%;
+    }
+    @if $horizontal {
+        left: 50%;
+    }
+
+    @if $vertical and $horizontal {
+        transform: translateX(-50%) translateY(-50%);
+    } @else if $vertical {
+        transform: translateY(-50%);
+    } @else {
+        transform: translateX(-50%);
+    }
+}
+
+//Truncate the text if longer than given width and show ellipsis
+@mixin truncate() {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@mixin truncate-max-witdth($truncation-boundary) {
+    max-width: $truncation-boundary;
+    @include truncate();
+}
+
+@mixin pseudo($display: block, $pos: absolute, $content: '') {
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false) {
+    @include pseudo($pos: $position);
+    width: 0;
+    height: 0;
+    @if $round {
+        border-radius: 3px;
+    }
+    @if $direction == down {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
+        margin-top: 0 - round( $size / 2.5 );
+    } @else if $direction == up {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-bottom: $size solid $color;
+        margin-bottom: 0 - round( $size / 2.5 );
+    } @else if $direction == right {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
+        margin-right: -$size;
+    } @else if $direction == left {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
+        margin-left: -$size;
+    }
+}
+
+%clearfix {
+    *zoom: 1;
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+%table-row-base {
+    min-height: 25px;
+    ion-col {
+        padding: 2px;
+        &.no-padding {
+            padding: 0px;
+        }
+        &.align-center {
+            text-align: center;
+        }
+        &.align-right {
+            text-align: right;
+        }
+        &.align-left {
+            text-align: left;
+        }
+        &.no-wrap{
+            * {
+                @include truncate();
+            }
+
+        }
+        .sort-ascending {
+            //border: solid 1px $inverse-text-color;
+            height: 100%;
+            &::after {
+                @include css-triangle($dark, up, $position:relative, $round:true);
+                display: inline-block;
+                padding-top: 2px;
+                margin-left: 0px;
+            }
+        }
+    }
+    &.align-center {
+        text-align: center;
+    }
+    &.align-right {
+        text-align: right;
+    }
+    &.align-left {
+        text-align: left;
+    }
+    ion-avatar {
+        margin: 3px;
+        height: 100%;
+        &.no-margin {
+            margin: 0px;
+        }
+        img {
+            //max-width: 100%;
+            //max-height: 100%;
+            max-width: 4rem;
+            max-height: 4rem;
+        }
+    }
+}
+
+%table-title {
+    @if $table-caption-gradient {
+        @include linear-gradient($table-title-background-color, $table-caption-background-color2);
+    }
+    @else {
+        background-color: $table-title-background-color;
+    }
+    color: $table-title-text-color;
+    text-align: center;
+    font-weight: bold;
+    @extend %table-row-base;
+
+}
+
+%table-header {
+    @if $table-header-gradient {
+        @include linear-gradient($table-header-background-color, $table-header-background-color2);
+    }
+    @else{
+        background-color: $table-header-background-color;
+    }
+    color: $table-header-text-color;
+    font-weight: bold;
+    @extend %table-row-base;
+
+}
+
+%table-caption {
+    @if $table-caption-gradient{
+        @include linear-gradient($table-caption-background-color, $table-caption-background-color2);
+    }
+    @else{
+        background-color: $table-caption-background-color;
+    }
+
+    color: $table-caption-text-color;
+    text-align: center;
+    font-weight: bold;
+}
+
+%table-row {
+    background-color: $table-row-background-color;
+    color: $table-row-text-color;
+    @extend %table-row-base;
+    ion-col.vertical-align {
+        @extend %vertical-align-content;
+        * {
+            width: 100%;
+        }
+    }
+}
+
+%table-alternate-row {
+    background-color: $table-row-alt-background-color;
+    color: $table-row-alt-text-color;
+    @extend %table-row-base;
+    ion-col.vertical-align {
+        @extend %vertical-align-content;
+        * {
+            width: 100%;
+        }
+    }
+}
+
+.mygolf-loading-wrapper {
+    padding: 16px 20px;
+    max-width: 270px;
+    max-height: 90%;
+    border-radius: 30px;
+    color: $primary;
+    background: lighten($dark, 30);
+    box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+}
+
+%mygolf-item-inner {
+    background-image: none;
+    padding-right: 0px;
+    border-bottom: none;
+    min-height: 50px;
+}
+
+%gradient-item, .custom-item {
+    @include linear-gradient($color1: #fff, $color2: #f1f1f1);
+    font-size: $font-size-base * 1.1;
+
+}
+
+%special-item {
+    color: $inverse-text-color;
+    font-weight: bolder;
+    font-size: $font-size-base*1.1;
+}

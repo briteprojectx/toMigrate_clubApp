@@ -1,0 +1,68 @@
+/*
+* Customization for Ionic Alert component
+*/
+.alert-head {
+  background-color: $primary;
+  font-weight: bold;
+  padding: 10px 10px 10px 10px;
+  .alert-title {
+    font-size: 1.5rem;
+  }
+  &.alert-error {
+    background-color: $danger;
+    color: white;
+  }
+}
+.alert-message {
+  border: none;
+  margin-top: 0.8rem;
+  .info {
+    color: $primary;
+  }
+  .error {
+    color: $danger;
+    border: none;
+  }
+}
+
+.cfrmBtn:before {
+  content: "\f000";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+
+
+.alert-message-cancel-button > .button-inner:before {
+  content: $fa_var_times;
+  font-family: FontAwesome;
+  color: $danger;
+  font-size: medium;
+  margin-right: 5px;
+  float: left;
+}
+
+.alert-message-ok-button > .button-inner:before {
+  content: $fa_var_check;
+  font-family: FontAwesome;
+  color: $primary;
+  font-size: medium;
+  margin-right: 5px;
+}
+
+.alert-message-delete-button > .button-inner:before {
+  content: $fa_var_trash;
+  font-family: FontAwesome;
+  color: $danger;
+  font-size: medium;
+  margin-right: 5px;
+}

@@ -1,0 +1,37 @@
+booking-search-page {
+
+  //.css-calendar {
+  //  color: #D92929;
+  //  padding-right: 5px;
+  //}
+  //.friend-row {
+  //  @extend .custom-item;
+  //}
+  //.custom-avatar-img {
+  //  min-width: 4rem;
+  //  min-height: 4rem;
+  //}
+
+  //[item-left] {
+  //  background-image: none;
+  //}
+  .male {
+    color: $skyblue;
+  }
+  .female {
+    color: $eagle-color;
+  }
+  ion-item.item.item-block {
+    border-bottom-width: 0;
+  }
+
+  ion-segment.segment {
+    width: 96%
+  }
+
+  .small-label {
+    color: #30bb5b;
+    margin: 3px 0px;
+    font-size: 1.2rem;
+  }
+}

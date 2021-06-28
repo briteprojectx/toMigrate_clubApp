@@ -1,0 +1,45 @@
+
+<ion-content class="has-header" >
+    <ion-card class="custom-card" >
+            <ion-item>
+                    <button ion-button clear small style="font-size:xx-small"><i>* Scroll for more information</i></button>
+                </ion-item>
+        <ion-card-content *ngIf="courseHole.holeImage" >
+            <img [src]="courseHole.holeImage" onerror = "this.src='img/course-default.png'"/>
+            <!-- <img src="img/course-default.png" /> -->
+        </ion-card-content >
+    </ion-card >
+    <ion-list>
+        <ion-list-header class="list-header" >Distances</ion-list-header >
+        <button ion-item>
+            Black
+            <ion-badge *ngIf="courseHole.holeDistanceBlack">{{courseHole.holeDistanceBlack}} Meters</ion-badge>
+            <ion-badge *ngIf="courseHole.holeDistanceBlack">{{toYard(courseHole.holeDistanceBlack)}} Yards</ion-badge>
+            <ion-badge *ngIf="!courseHole.holeDistanceBlack">Not Available</ion-badge>
+        </button>
+        <button ion-item>
+            White
+            <ion-badge *ngIf="courseHole.holeDistanceWhite">{{courseHole.holeDistanceWhite}} Meters</ion-badge>
+            <ion-badge *ngIf="courseHole.holeDistanceWhite">{{toYard(courseHole.holeDistanceWhite)}} Yards</ion-badge>
+
+            <ion-badge *ngIf="!courseHole.holeDistanceWhite">Not Available</ion-badge>
+        </button>
+        <button ion-item>
+            Blue
+            <ion-badge *ngIf="courseHole.holeDistanceBlue">{{courseHole.holeDistanceBlue}} Meters</ion-badge>
+            <ion-badge *ngIf="courseHole.holeDistanceBlue">{{toYard(courseHole.holeDistanceBlue)}} Yards</ion-badge>
+            <ion-badge *ngIf="!courseHole.holeDistanceBlue">Not Available</ion-badge>
+        </button>
+        <button ion-item>
+            Red
+            <ion-badge *ngIf="courseHole.holeDistanceRed">{{courseHole.holeDistanceRed}} Meters</ion-badge>
+            <ion-badge *ngIf="courseHole.holeDistanceRed">{{toYard(courseHole.holeDistanceRed)}} Yards</ion-badge>
+            <ion-badge *ngIf="!courseHole.holeDistanceRed">Not Available</ion-badge>
+        </button>
+    </ion-list>
+</ion-content >
+<ion-footer>
+<ion-toolbar position="bottom" light >
+    <button ion-button block color="danger" (click)="close()" >Close</button >
+</ion-toolbar >
+</ion-footer>

@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="close()">
+                <ion-icon name="close-circle" color="invert-text"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Select preferred origin</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list >
+        <button ion-item (click)="countrySelected()">
+            <img style="max-height:2em" src="img/flag/default_worldwide.png">
+            &nbsp; All countries</button>
+        <button ion-item *ngFor="let country of countryList" (click)="countrySelected(country)">
+            <img style="max-height:2em" [src]="getFlagUrl(country.flagUrl)" onerror="this.src='img/flag/default_worldwide.png'">
+            &nbsp; {{country.name}} ({{country.id}})
+        </button>
+    </ion-list>
+</ion-content>

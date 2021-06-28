@@ -1,0 +1,471 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <!-- <img *ngIf="(loggedIn$|async)" class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /> -->
+            <ion-buttons start>
+                <button ion-button icon-only (click)="openMenu()">
+                    <ion-icon name="menu"></ion-icon>
+                </button>
+            </ion-buttons>
+        <ion-title center>
+            <img *ngIf="(loggedIn$|async)" class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" />
+            <span *ngIf="!(loggedIn$|async)">Club App</span>
+            </ion-title>
+
+            <ion-buttons end>
+                <button ion-button icon-only (click)="refreshHomePage()">
+                    <ion-icon name="refresh"></ion-icon>
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content no-padding [class]="isLogin_()">
+    <!-- {{showLoginForm}}, {{sessionState}}, {{loggedIn}} -->
+    <div *ngIf="!(loggedIn$|async) && !(showLoginForm|async)" class="signing-in loading">
+        
+        <div style="display:flex; text-align:center">
+            <div style="order:1;">
+                <img class="ri" src="assets/img/mg2u-circle-512.png" /></div>
+            
+            <div class="ti" style="order:2; width:100%">
+                <div>
+                Please wait while initializing...<br>
+                <button ion-button *ngIf="!retryClicked" (click)="onPageInit(true)">
+                    <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i>&nbsp;Tap here to retry
+                </button>
+                <br>
+                <ion-label class="force-relog" *ngIf="!retryClicked" 
+                (click)="signOut()">If this persists, click here to re-login</ion-label>
+            </div>
+            </div>
+            <!-- <h4 class="ti" *ngIf="serverUnreachable">
+                Server unreachable. Try again.<br>
+                <button ion-button *ngIf="!retryClicked" (click)="onPageInit(true)">
+                    <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i>&nbsp;Tap here to retry
+                </button>
+                <br>
+                <ion-label class="force-relog" *ngIf="!retryClicked" (click)="onSignout()">If this persists, click here to re-login</ion-label>
+            </h4> -->
+        </div>
+    </div>
+    <ion-grid fixed *ngIf="showLoginForm|async">
+        <div class="sign-in-panel">
+            <form [formGroup]="credential" (ngSubmit)="signIn()">
+                <!-- custom-list  -->
+                <ion-list class="list-sign-in">
+                    <div style="text-align: center;margin-top: -3em;">
+                        <!-- class="main-logo" -->
+                        <img src="assets/img/mg2u-logo-circle-club.png" />
+                        <!-- <img src="assets/img/mg2u-logo-circle1.svg" /> -->
+                    </div>
+                    <h3 style="text-align: center;color:#62AE4D;font-size:2em;font-weight:bold">
+                        Sign In
+                    </h3>
+                    <!-- shorter-height -->
+                    <ion-item class="signin-textfield">
+                        <ion-label><i class="fa fa-lg fa-user fa-fw"></i></ion-label>
+                        <ion-input type="email" formControlName="email" placeholer="Organizer/Club Email"></ion-input>
+                    </ion-item>
+                    <ion-item class="signin-textfield">
+                        <ion-label><i class="fa fa-lg fa-key fa-fw"></i></ion-label>
+                        <ion-input [type]="!showPassword?'password':'text'" formControlName="password"
+                            placeholder="Password"></ion-input>
+                        <div icon-only ion-button large color="dark" clear item-right
+                            (click)="toggleShowPassword($event)" style="margin:0px; font-size: 1em;">
+                            <ion-icon *ngIf="showPassword" name="eye"></ion-icon>
+                            <ion-icon *ngIf="!showPassword" name="eye-off"></ion-icon>
+                        </div>
+                    </ion-item>
+                    <!-- <ion-item  class="signin-textfield" (click)="signIn()" style="background-color: #C8F6BC;height:2em">
+                                <h3 style="text-align: center;color:#62AE4D;font-size:2em">
+                                        Login
+                                    </h3>
+                        </ion-item> -->
+                        <!-- <div class="signin-textfield" style="background-color: #C8F6BC;
+                        height:3em;margin-left:3.2rem;
+                                    border-bottom: solid;
+                                    border-bottom-width: 1px;border-color: green;
+                                    width: calc(100% - 5rem) !important; display: inline-table;">
+                        <button style="font-size: x-large;text-transform: capitalize;color:#62AE4D; " clear ion-button full
+                                type="submit" [disabled]="!authForm.valid">Login</button>
+                                </div> -->
+
+                    <div class="signin-textfield" 
+                     style="background-color: #C8F6BC;height:3em;
+                        border-bottom: solid;
+                        border-bottom-width: 1px;border-color: green;
+                        width: calc(100% - 2rem) !important; display: inline-table;">
+                        <button style="font-size: x-large;text-transform: capitalize;color:#62AE4D" clear ion-button
+                            full type="submit" [disabled]="!credential.valid">Login</button>
+                    </div>
+
+                </ion-list>
+
+            </form>
+           <div *ngIf="isCordova()">
+                <p padding text-center text-wrap>
+                    <a style="
+                    text-decoration: none;
+                    font-weight: bold;"
+                    href="https://play.google.com/store/apps/details?id=com.brite.mygolf2u" target="_blank"
+                        data-saferedirecturl="https://www.google.com/url?q=https://play.google.com/store/apps/details?id%3Dcom.brite.mygolf2u&amp;source=gmail&amp;ust=1580444318493000&amp;usg=AFQjCNHV70fq7ymmR4ZFINUBBxGUGYED1Q">
+                        Are you a player user? Tap here to download myGolf2u Player App
+                       </a>
+                </p>
+           </div>
+           <div *ngIf="!isCordova()">
+            <p padding text-center text-wrap>
+                <a style="
+                text-decoration: none;
+                font-weight: bold;"
+                href="http://m.mygolf2u.com" target="_blank"
+                    data-saferedirecturl="https://www.google.com/url?q=https://play.google.com/store/apps/details?id%3Dcom.brite.mygolf2u&amp;source=gmail&amp;ust=1580444318493000&amp;usg=AFQjCNHV70fq7ymmR4ZFINUBBxGUGYED1Q">
+                    Are you a player user? Tap here for myGolf2u Player App
+                   </a>
+            </p>
+       </div>
+        </div><br><br>
+        <!-- <h5 style="color:#62AE4D;text-align: center;border-top: #5B9B4A;border-top-style: solid;margin-left: 2em;margin-right: 2em;">Don't have an account? <b style="text-transform: uppercase;">Register here</b></h5> -->
+    </ion-grid>
+    <ion-list *ngIf="(loggedIn$|async) && (totalComps$|async) > 0 && 0 === 1">
+        <button ion-item *ngFor="let competition of activeCompetitions$|async"
+                (click)="selectScorer(competition)" style="padding-left: 0px" >
+            <ion-card class="competition-card">
+                <!--<ion-card class="competition-card" *virtualItem="let competition" (click)="onCompetitionClick($event, competition)">-->
+                <ion-row class="info-row">
+                    <ion-col width-25 class="image-column">
+                        <ion-avatar item-left *ngIf="competition.thumbnail">
+                            <img [src]="competition.thumbnail">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="competition.imageUrl && !competition.thumbnail">
+                            <img [src]="competition.imageUrl">
+                        </ion-avatar>
+                        <ion-avatar item-left *ngIf="!competition.imageUrl && !competition.thumbnail">
+                            <img src="img/default_competition.png">
+                        </ion-avatar>
+
+                    </ion-col>
+                    <ion-col class="info-column">
+                        <div class="competition-info">
+                            <p class="competition-name">{{competition.competitionName}}</p>
+                            <p class="competition-date">
+                                <i class="fa fa-calendar"></i>
+                                {{competition.startDate | date:"EEE, d MMM yyyy"}}
+                                <span *ngIf="competition.status=='Upcoming'" class="competition-details"
+                                        style="color:#FF4343 !important">({{startDaysText(competition)}})</span>
+                            </p>
+                            <p class="competition-details">
+                            <span color="primary"><i color="danger" class="fa fa-map-marker"></i>
+                                {{competition.clubTag}}
+                            </span>
+                                <span color="blue" *ngIf="competition.scoringFormat">|
+                                <i class="fa fa-wpforms"></i>
+                                {{competition.scoringFormat}}
+                            </span>
+                                <span color="darkpurple" *ngIf="competition.teamEvent">|
+                              <i class="fa fa-fw fa-users"></i>
+                                Team Event
+                              </span>
+                            </p>
+
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </button>
+        <!-- <ion-item>
+            <ion-label>Switch Mode : Flight Mode</ion-label>
+            <ion-checkbox [(ngModel)]="scoringMode" (ionChange)="updateScoringMode()"></ion-checkbox>
+          </ion-item> -->
+    </ion-list>
+
+    <!-- && (totalComps$|async) > 0 -->
+    <!-- ;else transitionPage2 -->
+
+    <ion-grid fixed>
+        <ion-list *ngIf="(loggedIn$|async)" class="home-list">
+
+            <!-- style="padding-top:2em" -->
+            <ion-row>
+                <ion-col col-3>
+                    <ion-avatar class="no-margin" item-end>
+                        <img class="player-img-flight left" [src]="getClubProfileImage()"
+                            onerror="this.src='img/default_user.png'">
+                            <!-- assets/img/caddie-image.png -->
+                    </ion-avatar>
+                </ion-col>
+                <ion-col >
+                    <ion-row>
+                        <span [innerHTML]="getClubLoggedIn()"></span>
+                        <!-- Alex Martenson ( Caddie #3124 )  -->
+                    </ion-row>
+                    <ion-row *ngIf="getUserRoles('caddie_master') && clubInfo" col-12 class="home-player-index" no-padding>
+                        <ion-col col-12 no-padding>
+                            {{clubInfo?clubInfo.clubName:''}}
+                        </ion-col>
+                        <ion-col col-12 no-padding *ngIf="(session$|async)?.user.userType.toLowerCase()==='britesoft'"
+                    (click)="onClubPicklist()">
+                        Change Club Here
+                    </ion-col>
+                        <ion-row col-12 no-padding *ngIf="(session$|async)?.user.userType.toLowerCase()!=='britesoft'">
+                            <ion-col col-8 no-padding>
+                                Joined Aug 12, 2014
+                            </ion-col>
+                            <ion-col no-padding col-4 style="text-align: right;">
+                                {{clubInfo?clubInfo.countryId:''}} <i class="fas fa-fw fa-cog"></i>
+                            </ion-col>
+                        </ion-row>
+
+                    </ion-row>
+                    <ion-row *ngIf="getUserRoles('caddy_assignments') && caddyInfo" (click)="goCaddyDetails()" col-12 class="home-player-index" no-padding>
+                        <ion-col col-12 no-padding>
+                            {{clubInfo?clubInfo.clubName:''}}
+                        </ion-col>
+                        <ion-row col-12 no-padding>
+                            <ion-col col-8 no-padding>
+                                Caddie Id : {{caddyInfo?caddyInfo.id:''}} <br>
+                                Joined {{caddyInfo?caddyInfo.dateJoined:''}}
+                            </ion-col>
+                            <ion-col no-padding col-4 style="text-align: right;">
+                                {{caddyInfo?caddyInfo.nationality.id:''}} <i class="fas fa-fw fa-cog"></i>
+                            </ion-col>
+                        </ion-row>
+
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+            <ng-template *ngIf="0; else showHome">
+                <ion-row class="home-row">
+                    <ion-col col-12 class="home-booking" (click)="goClubBooking()">
+                        <img src="assets/img/booking-registration.svg" />
+                        <p class="home-box-title">Booking & Registration</p>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="home-row">
+                    <ion-col col-5 class="home-box" (click)="goCaddyList()"><img src="assets/img/friends.png" />
+                        <p class="home-box-title">Caddies</p>
+                    </ion-col>
+                    <!-- <ion-col col-2>&nbsp;</ion-col> -->
+                    <ion-col col-5 class="home-box" (click)="goBuggyList()"><img class="home-box-buggies"
+                            src="assets/img/cart-short.svg" style="max-height: 4em;" />
+                        <p class="home-box-title">Buggies</p>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="home-row">
+                    <ion-col col-5 class="home-box" (click)="goCaddieMaster()">
+                        <img src="assets/img/book.png" />
+                        <p class="home-box-title">Caddie Master</p>
+                    </ion-col>
+                    <!-- <ion-col col-2>&nbsp;</ion-col> -->
+                    <ion-col col-5 class="home-box" (click)="goCaddieMarshall()"><img src="assets/img/book.png" />
+                        <p class="home-box-title">Course Starter</p>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="home-row" (click)="goCompetitionsList()">
+                    <!-- <ion-col col-5 class="home-box"><img src="assets/img/friends.png" /><p class="home-box-title">Caddies</p></ion-col>
+                                        -->
+                    <ion-col col-5 class="home-box"><img src="assets/img/tournaments.png" />
+                        <p class="home-box-title">Competitions</p>
+                    </ion-col>
+                    <ion-col col-5 class="home-box-none">&nbsp;</ion-col>
+                </ion-row>
+            </ng-template>
+
+            <!-- [ngClass]="getCompBorderClass()" [style.border-color]="getCompBorderClass('style')">
+                        <img [ngClass]="getCompImageClass()" -->
+
+            <ng-template #showHome>
+                <ion-row class="home-row">
+                    <!-- <ion-col  *ngIf="getUserRoles('booking')" col-12 class="home-booking" (click)="goClubBooking()">
+                        <div [ngClass]="getCompBorderClass()" [style.border-color]="getCompBorderClass('style')" 
+                        class="home-box-inner">
+                            <img [ngClass]="getCompImageClass()" class="home-image" src="assets/img/home-icon-booking-registration.svg" />
+                        </div>
+                        <p class="home-box-title">Booking & Registration
+                            <span *ngIf="activeClubBookings">&nbsp;(<span style="color:red">{{activeClubBookings}}</span>)
+                    </span>
+                        </p>
+                    </ion-col> -->
+                    <ion-col  *ngIf="getUserRoles('booking')" col-5 class="home-box" (click)="goClubBooking()">
+                        <div [ngClass]="getCompBorderClass()" [style.border-color]="getCompBorderClass('style')" 
+                        class="home-box-inner">
+                            <img [ngClass]="getCompImageClass()" class="home-image" src="assets/img/home-icon-booking-registration.svg" />
+                            <!-- style="margin-top: -0.5em;max-height: 4em;" -->
+                        </div>
+                        <p style="white-space: nowrap;" class="home-box-title">Booking & Registration
+                            <!-- <span *ngIf="activeClubBookings">&nbsp;(<span style="color:red">{{activeClubBookings}}</span>)</span> -->
+                        </p>
+                    </ion-col>
+                    <ion-col  *ngIf="getUserRoles('booking')" col-5 class="home-box" (click)="goAllClubBooking()">
+                        <div [ngClass]="getCompBorderClass()" [style.border-color]="getCompBorderClass('style')" 
+                        class="home-box-inner">
+                            <!-- <img [ngClass]="getCompImageClass()" class="home-image" src="assets/img/home-icon-booking-registration.svg" /> -->
+                            <i style="font-size: 5em !important;color: #51ab57; margin-top:0.5rem" class="far fa-fw fa-large fa-address-book"></i>
+                            <!-- style="margin-top: -0.5em;max-height: 4em;" -->
+                        </div>
+                        <p class="home-box-title">Bookings
+                            <span *ngIf="activeClubBookings">&nbsp;(<span style="color:red">{{activeClubBookings}}</span>)
+                    </span>
+                        </p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('caddie_master')" col-5 class="home-box" (click)="goCaddieMaster()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-caddie-master.svg" />
+                        </div>
+                        <p class="home-box-title">Caddie Master</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('course_starter')" col-5 class="home-box" (click)="goCaddieMarshall()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-course-starter.svg" />
+                        </div>
+                        <p class="home-box-title">Course Starter</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('caddies')" col-5 class="home-box" (click)="goCaddyList()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-caddie.svg" />
+                        </div>
+                        <p class="home-box-title">Caddies</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('buggies')" col-5 class="home-box" (click)="goBuggyList()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-buggy.svg" style="max-height: 4em;" />
+                        </div>
+                        <p class="home-box-title">Buggies</p>
+                    </ion-col>
+                    <ion-col (click)="goCompetitionsList()" *ngIf="getUserRoles('competitions')" col-5 class="home-box">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/home-icon-tournament.svg" />
+                        </div>
+                        <p class="home-box-title">Competitions</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('booking_stats')" col-5 class="home-box" (click)="goBookingChart()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/home-icon-performance.svg" />
+                        </div>
+                        <p class="home-box-title">Booking Stats</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('caddy_assignments')" col-5 class="home-box" (click)="goCaddyAssignments()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-caddie.svg" />
+                        </div>
+                        <p class="home-box-title">Bookings</p>
+                    </ion-col>
+                    <!-- <ion-col col-2>&nbsp;</ion-col> -->
+                    <ion-col *ngIf="getUserRoles('caddy_schedules')" col-5 class="home-box" (click)="goCaddySchedules()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-buggy.svg" style="max-height: 4em;" />
+                        </div>
+                        <p class="home-box-title">Schedule</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('caddy_reviews')" col-5 class="home-box" (click)="goCaddyRatings()">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/club-icon-buggy.svg" style="max-height: 4em;" />
+                        </div>
+                        <p class="home-box-title">Ratings</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('scoring')" (click)="goCompetitionScoring()" col-5 class="home-box">
+                        <div class="home-box-inner">
+                            <img class="home-image" src="assets/img/home-icon-tournament.svg" />
+                        </div>
+                        <p class="home-box-title">Scoring</p>
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('voucher')" col-5 class="home-box" (click)="goVoucherManagement()">
+                        <div class="home-box-inner">
+                        <img class="home-image" src="assets/img/fi-xnslxl-label-solid_green.png"  style="max-height: 4em;"/>
+                            <!-- <img class="home-image" src="assets/img/club-icon-course-starter.svg" style="max-height: 4em;" /> -->
+                        </div>
+                        <p style="white-space: nowrap;" class="home-box-title">Manage Vouchers</p>
+                    </ion-col>
+                    
+                    <ion-col *ngIf="getUserRoles('voucher')" col-5 class="home-box" (click)="goPrivilegeManagement()">
+                        <div class="home-box-inner">
+                            <i style="font-size: 5em !important;color: #72C072; margin-top:0.5rem" class="fas fa-fw fa-large fa-users-cog"></i>
+                        <!-- <img class="home-image" src="assets/img/fi-xnslxl-label-solid_green.png"  style="max-height: 4em;"/> -->
+                        </div>
+                        <p style="white-space: nowrap;" class="home-box-title">Manage Approvals</p>
+                    </ion-col>
+                    <ion-col col-5 class="home-box" (click)="goCaddyScheduleDisplayPage()">
+                        <!-- *ngIf="getUserRoles('caddy_assignments')" -->
+                        <div class="home-box-inner">
+                        <img class="home-image" src="assets/img/home-icon-scorecard.svg"  style="max-height: 4em;"/>
+                        </div>
+                        <p class="home-box-title">Caddy Schedule</p> 
+                    </ion-col>
+                    <ion-col *ngIf="getUserRoles('booking')"  col-5 class="home-box" (click)="goRefundRedeemHistoryPage()">
+                        <div class="home-box-inner">
+                        <img class="home-image" src="assets/img/home-icon-scorecard.svg"  style="max-height: 4em;"/>
+                        </div>
+                        <p class="home-box-title">Refund / Redeem History</p>
+                    </ion-col>
+                </ion-row>
+            </ng-template>
+
+        </ion-list>
+    </ion-grid>
+    <ng-template *ngIf="!sessionState || sessionState === null">
+        <!-- *ngIf = "!(showLoginForm|async) && !(loggedIn$|async)" -->
+
+        <div class="signing-in loading">
+            <div style="text-align:center">
+                <img class="ri" src="assets/img/mg2u-logo-circle.svg" />
+                <h4 class="ti">
+                    Please wait ...<br>
+                    <button ion-button *ngIf="!retryClicked" (click)="onPageInit(true)">
+
+                        <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i>Tap here to retry
+                    </button>
+                    <!-- <br>
+                    <ion-label class="force-relog" *ngIf="!retryClicked" (click)="onSignout()">If this persists, click here to re-login</ion-label> -->
+    
+                </h4>
+            </div>
+        </div>
+    </ng-template>
+    <!-- <ion-label *ngIf="(loggedIn$ | async) && (refreshTried$|async) && (totalComps$|async) === 0">
+        There are no active tournaments for today
+    </ion-label> -->
+    <!-- <div class="filler">
+        <img src="assets/img/mygolf2u-scorer-title.png">
+    </div> -->
+</ion-content>
+<!-- <ion-footer *ngIf="(loggedIn$|async)" style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-calendar.svg" />
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-notification.svg" />
+        </ion-col>
+        <ion-col col-4>
+            <img style="height: 5rem;" src="assets/img/mg2u-logo-circle.svg" />
+        </ion-col>
+        <ion-col col-2 (click)="openYoutube()">
+            <img style="height: 5rem; padding:1rem;" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" src="assets/img/footer-icon-player.svg" />
+        </ion-col>
+    </ion-row>
+
+</ion-footer> -->
+<ion-footer *ngIf="!(loggedIn$|async) && !isCordova()">
+<ion-row>
+    <ion-col style="text-align:center;">
+        <a href="https://play.google.com/store/apps/details?id=com.brite.mygolf2u_club" target="_blank"
+            data-saferedirecturl="https://www.google.com/url?q=https://play.google.com/store/apps/details?id%3Dcom.brite.mygolf2u_club&amp;source=gmail&amp;ust=1580444318493000&amp;usg=AFQjCNHV70fq7ymmR4ZFINUBBxGUGYED1Q">
+            <img alt="Get it on Google Play"
+                src="https://ci5.googleusercontent.com/proxy/iodRaVsEAYkieUHVNGACdpt1unV5q10atQcOcwj7hXT4u_LD9E9BwHbSc38QKkdsNkaRrVXTJd2013avwMmQPwDcv_wQaEBjTxo=s0-d-e1-ft#http://mygolf2u.com/briteweb/icon/MGOLF/AndroidNew.icon"
+                class="CToWUd"
+                onerror="this.src='assets/img/playStore.png'"> </a>
+    </ion-col>
+    <ion-col style="text-align:center;">
+        <a href="https://apps.apple.com/us/app/mygolf2u-club-app/id1523816364" target="_blank"
+            data-saferedirecturl="https://www.google.com/url?q=https://itunes.apple.com/app/mygolf2u/id1092380543?l%3Dth%26mt%3D8&amp;source=gmail&amp;ust=1580444318493000&amp;usg=AFQjCNECkfEc3kMpYOO8IfTbxz5uIw3Ctw">
+            <img alt="Get it on App Store"
+                src="https://ci5.googleusercontent.com/proxy/TzjS6u0Im4dx-WW4E0CywQEpKEomlF6KOFCSqaJlbO3ik9FRWIrvebGwWqrFDVjHAse1v6mCVa1jQqiK-trI5cnsEzEKqjZJxw=s0-d-e1-ft#http://mygolf2u.com/briteweb/icon/MGOLF/IphoneNew.icon"
+                class="CToWUd"
+                onerror="this.src='assets/img/appStore.png'"> </a>
+
+    </ion-col>
+
+</ion-row>
+</ion-footer>

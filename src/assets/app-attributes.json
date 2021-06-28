@@ -1,0 +1,122 @@
+[{
+    "page": "bookingHome",
+    "filters": {
+        "fromDate": null,
+        "toDate": null,
+        "fromTime": "07:00",
+        "toTime": "17:30",
+        "selectClubType": "allClubs",
+        "moreFilters": false
+    },
+    "historical": true,
+	"enableNearby": false
+}, {
+    "page": "playerHome",
+    "bookingEnabled": true
+    
+}, {
+    "page": "newBooking",
+    "allowClubContact": false
+}, {
+    "page": "clubBookingList",
+    "filters": {
+        "fromDate": null,
+        "toDate": null,
+        "showRefundBy": false
+    },
+    "filterRefundMethodList": [{
+        "id": "cash",
+        "name": "Cash",
+        "visible": true,
+        "enabled": true,
+        "APIname": "Cash"
+    },{
+        "id": "clbc",
+        "name": "myGolf2u Club Credit",
+        "visible": true,
+        "enabled": true,
+        "APIname": "ClubCredit"
+    },{
+        "id": "btrf",
+        "name": "Bank Transfer",
+        "visible": true,
+        "enabled": false,
+        "APIname": "BankTransfer"
+    },{
+        "id": "m2uc",
+        "name": "myGolf2u Credit",
+        "visible": false,
+        "enabled": false,
+        "APIname": ""
+    },{
+        "id": "ctyledger",
+        "name": "City Ledger",
+        "visible": false,
+        "enabled": false,
+        "APIname": ""
+    }]
+}, {
+    "page": "refundBookingPlayers",
+    "includeTaxes": true
+}, {
+    "page": "bookingDetails",
+    "showConsoleLog": true,
+    "enablePaymentTimer": true,
+    "showRecalculate": true,
+    "paymentTimerDuration": 5
+}, {
+    "page": "playerHome",
+    "maintenance": {
+        "maintenanceMessage": null,
+        "showMaintenanceMessage": true,
+        "blockForMaintenance": true,
+		"fromDate": "2021-05-04",
+		"toDate": "2021-05-04",
+		"fromTime": "13:00",
+        "toTime": "14:07",
+        "daysBefore": 3
+    },
+    "appVersion": {
+        "minVersionCode": "4.4.25",
+        "blockForVersion": false
+    }, 
+    "announcement": {
+        "announcementMessage": "",
+        "showAnnouncement": true,
+		"fromDate": "2021-01-01",
+		"toDate": "2021-05-06"
+    }
+}, {
+    "page": "pricesDisplay",
+    "clubPaymentMethodList": [{
+        "id": "cash",
+        "name": "Cash",
+        "visible": true,
+        "enabled": true,
+        "APIname": "cash"
+    },{
+        "id": "offcc",
+        "name": "Offline Credit/Debit Card",
+        "visible": true,
+        "enabled": true,
+        "APIname": "offcc"
+    },{
+        "id": "offnb",
+        "name": "Offline Transfer",
+        "visible": true,
+        "enabled": true,
+        "APIname": "offnb"
+    },{
+        "id": "ctledger",
+        "name": "City Ledger",
+        "visible": false,
+        "enabled": false,
+        "APIname": "ctledger"
+    },{
+        "id": "charge",
+        "name": "Charge to Account",
+        "visible": false,
+        "enabled": false,
+        "APIname": "charge"
+    }]
+}]

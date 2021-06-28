@@ -1,0 +1,38 @@
+<!-- Generated template for the ClubCalendarComponent component -->
+<ion-header>
+  <ion-navbar class="mg2u-navbar">
+    <ion-title center><img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /></ion-title>
+    <ion-buttons end>
+      <!-- (click)="refreshAllStats('today')" -->
+      <button ion-button>Refresh</button>
+      <!-- <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i> -->
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
+    (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)"
+    (onTimeSelected)="onTimeSelected($event)" step="30" class="calendar">
+  </calendar>
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+  <ion-row style="text-align: center;">
+    <ion-col col-2>
+      <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+    </ion-col>
+    <ion-col col-2>
+      <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+    </ion-col>
+    <ion-col col-4>
+      <!-- (click)="onHomeClick()" -->
+      <img style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+    </ion-col>
+    <ion-col col-2>
+      <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+    </ion-col>
+    <ion-col col-2>
+      <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+    </ion-col>
+  </ion-row>
+
+</ion-footer>

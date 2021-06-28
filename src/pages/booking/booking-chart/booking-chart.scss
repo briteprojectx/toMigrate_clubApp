@@ -1,0 +1,274 @@
+booking-chart {
+  div.scroll-content {
+    height: 100%;
+  }
+ion-content {
+  --background: white !important;
+
+  ion-label:hover {
+    color: rgb(25, 206, 25) !important;
+  }
+}
+
+/*shadow css*/
+
+.shadow-1 {
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-2 {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-3 {
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-4 {
+  box-shadow: 0px 15px 50px 0px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-5 {
+  box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.5);
+}
+
+// canvas {
+//   width: 100% !important;
+//   height: 100% !important;
+// }
+
+.totalPax {
+  width: 100%;
+  height: 400px;
+}
+
+.card {
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  color: white;
+  transition: all 0.5s;
+  box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+  visibility: visible;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  .time {
+    cursor: pointer;
+    margin: auto;
+    font-weight: 500;
+    border-radius: 30px;
+    padding: 10px;
+    transition: all 0.1s linear;
+  }
+
+  // .flightToday {
+  //   width: 100px;
+  // }
+  .today {
+    transition: all 0.1s linear;
+    color: rgba(126, 198, 34, 0.8);
+    border: 1px solid rgba(126, 198, 34, 0.8);
+  }
+
+  .week {
+    transition: all 0.1s linear;
+    color: rgba(54, 162, 235, 0.8);
+    border: 1px solid rgba(54, 162, 235, 0.8);
+  }
+
+  .month {
+    transition: all 0.1s linear;
+    color: rgba(255, 206, 86, 0.8);
+    border: 1px solid rgba(255, 206, 86, 0.8);
+  }
+
+  .future {
+    transition: all 0.1s linear;
+    color: rgba(250, 89, 68, 0.8);
+    border: 1px solid rgba(250, 89, 68, 0.8);
+  }
+
+  .today:hover,
+  .activeToday {
+    color: white;
+    background: rgba(126, 198, 34, 0.8);
+    box-shadow: 0px 15px 50px 0px rgba(126, 198, 34, 0.6);
+    transform: scale(1.1);
+  }
+
+  .week:hover,
+  .activeWeek {
+    color: white;
+    background: rgba(54, 162, 235, 0.8);
+    box-shadow: 0px 15px 50px 0px rgba(54, 162, 235, 0.6);
+    transform: scale(1.1);
+  }
+
+  .month:hover,
+  .activeMonth {
+    color: white;
+    background: rgba(255, 206, 86, 0.8);
+    box-shadow: 0px 15px 50px 0px rgba(255, 206, 86, 0.6);
+    transform: scale(1.1);
+  }
+
+  .future:hover,
+  .activeFuture {
+    color: white;
+    background: rgba(250, 89, 68, 0.8);
+    box-shadow: 0px 15px 50px 0px rgba(250, 89, 68, 0.6);
+    transform: scale(1.1);
+  }
+}
+
+.statics {
+  height: 32px;
+}
+
+ion-button {
+  --background: rgba(158, 20, 238, 0.7);
+}
+
+ion-label {
+  text-overflow: none !important;
+  white-space: normal !important;
+  margin: 0 !important;
+}
+
+.caddies {
+  height: 50px;
+}
+
+.courses {
+  height: 0px;
+}
+
+@media screen and (max-width: 1155px) {
+  .caddies {
+    height: 0px;
+  }
+
+  .courses {
+    height: 60px !important;
+  }
+
+  ion-select {
+    font-size: 13px !important;
+  }
+
+  ion-card-header {
+    padding: 10px 3px !important;
+    margin: 0 !important;
+  }
+
+  .heading {
+    margin: 0 !important;
+  }
+
+  .totalPax {
+    width: 100%;
+    height: 300px !important;
+
+    canvas {
+      height: 300px !important;
+    }
+  }
+
+  .card {
+    padding: 0;
+    margin: 0;
+  }
+
+  .time {
+    font-size: 12px;
+    padding: 7px !important;
+  }
+
+  .head-stat {
+    font-size: 16px !important;
+  }
+
+  ion-label {
+    font-size: 16px !important;
+    text-overflow: none !important;
+    white-space: normal !important;
+    margin: 0 !important;
+  }
+
+  ion-text {
+    font-size: 16px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  ion-row {
+    margin: 0px 5px 0px 5px !important;
+
+    ion-col {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .statics {
+    height: 25px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .card {
+    padding: 0;
+    margin: 0;
+  }
+
+  .time {
+    font-size: 10px;
+    padding: 5px !important;
+  }
+
+  .head-stat {
+    font-size: 12px !important;
+  }
+
+  ion-label {
+    font-size: 12px !important;
+  }
+
+  ion-text {
+    font-size: 12px !important;
+  }
+
+  h2 {
+    font-size: 18px !important;
+  }
+}
+.btn-back {
+  background: url(../assets/img/prev.png) no-repeat;
+  background-size: 1.5em;
+  // transform: translate(10px, 10px);
+  transform: translate(12px, 11px);
+}
+.btn-next {
+  background: url(../assets/img/prev.png) no-repeat;
+  background-size: 1.5em;
+  transform: scale(-1,1) translate(12px, 11px);
+}
+.mygolf-table-caption {
+  text-align: center;
+  font-weight: bold;
+  // background-color: #cde2c3 !important;
+  color: black !important;
+}
+}

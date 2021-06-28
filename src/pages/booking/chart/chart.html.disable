@@ -1,0 +1,558 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="shadow-3">
+    <div class="logo ion-text-center">
+      <img src="assets/logo.jpeg" width="40px" height="40px">
+    <ion-title color="dark"><b>my<ion-note color="primary">Golf</ion-note>2u</b></ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div>
+
+    <!-- globally set type of chart start -->
+    <div class="shadow-3">
+      <ion-item>
+        <ion-label>
+          myGolf2u
+        </ion-label>
+        <ion-label>Chart Type</ion-label>
+        <ion-select placeholder="Type of Chart" name="type" [(ngModel)]="type" interface="popover"
+          (ionChange)="select(type)">
+          <ion-option value='line'>Line</ion-option>
+          <ion-option value='bar'>Bar</ion-option>
+          <ion-option value='doughnut'>doughnut</ion-option>
+          <ion-option value='pie'>Pie</ion-option>
+        </ion-select>
+      </ion-item>
+    </div>
+     <!-- globally set type of chart end -->
+
+    <ion-grid>
+      <ion-row>
+
+        <!--PAX Today's Flight  Chart -->
+        <ion-col col-sm-12 col-md-6 col-lg-8>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <!--PAX locally select type of chart -->
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px"><b>Today's Flight</b></h2>
+                  </ion-label>
+                  <ion-select slot="end" name="typePax" [(ngModel)]="typePax" interface="popover"
+                    (ionChange)="selectTypePax(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+            <!--PAX fullDate -->
+            <div class="links ion-text-center">
+              <a class="time activeToday"
+                (click)="todayData(pax)">{{date | date:'fullDate'}}</a>
+            </div>
+
+            <!--PAX chart -->
+            <ion-card-content>
+              <div class="totalPax">
+                <canvas #totalPax width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+  
+        <!--PAX Today's Flight statistics  Start-->
+            <ion-row>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor = "let data of paxStats">
+                  <ion-label color="medium">
+                    {{data.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Today's Flight</b></ion-label>
+                </div>
+                <ion-item *ngFor = "let pax of paxFlight">
+                  <ion-note color="success">
+                    {{pax.value}}
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Percentage</b></ion-label>
+                </div>
+                <ion-item *ngFor = "let data of paxPercentage">
+                  <ion-note color="success">
+                    {{data.value}}<span *ngIf="data.value">%</span>
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+
+        <!-- Bookings Chart -->
+        <ion-col  col-sm-12 col-md-6 col-lg-4>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+
+               <!--Bookings locally select type of chart -->
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Bookings</b></h2>
+                  </ion-label>
+                  <ion-select slot="end" name="typeBooking" [(ngModel)]="typeBooking" interface="popover"
+                    (ionChange)="selectTypeBooking(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+            <!--Bookings Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday: verifyBookingName == 'today' && activeClass == 'today'}"
+                (click)="bookingtodayData(booking)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek: verifyBookingName == 'week'}"
+                (click)="bookingthisWeekData(booking)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth: verifyBookingName == 'month'}"
+                (click)="bookingthisMonthData(booking)">This Month</a>
+              <a class="time future" [ngClass]="{activeFuture: verifyBookingName == 'future'}"
+                (click)="bookingfutureData(booking)">Future</a>
+            </div>
+
+            <!-- Bookings chart -->
+            <ion-card-content>
+              <div class="totalPax">
+              <canvas #booking width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+         
+          <!--Bookings statistics  Start -->
+            <ion-row>
+              <ion-col size-xs="6" col-sm-6 col-md-6 col-lg-6>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor="let booking of bookingStats">
+                  <ion-label color="medium">
+                   {{booking.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="6" col-sm-6 col-md-6 col-lg-6>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">{{bookingName}}</b></ion-label>
+                </div>
+                <ion-item *ngFor="let data of bookingData">
+                  <ion-note color="primary">
+                    {{data.value}}
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <!-- Revenue Chart Start -->
+      <ion-row>
+        <ion-col  col-sm-12 col-md-12 col-lg-4>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Revenue</b></h2>
+                  </ion-label>
+
+                  <!--Revenue locally select type of chart -->
+                  <ion-select slot="end" name="typeRevenue" [(ngModel)]="typeRevenue" interface="popover"
+                    (ionChange)="selectTypeRevenue(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+            <!--Revenue Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday: verifyRevenueName == 'today' && activeClass == 'today'}"
+                (click)="revenuetodayData(revenue)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek:  verifyRevenueName == 'week'}"
+                (click)="revenuethisWeekData(revenue)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth:  verifyRevenueName == 'month'}"
+                (click)="revenuethisMonthData(revenue)">This Month</a>
+              <a class="time future" [ngClass]="{activeFuture:  verifyRevenueName == 'future'}"
+                (click)="revenuefutureData(revenue)">Future</a>
+            </div>
+
+            <!-- Revenue Chart -->
+            <ion-card-content>
+              <div class="totalPax">
+              <canvas #barCanvas width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+          <!--Revenue statistics  Start -->
+            <ion-row>
+              <ion-col size-xs="6" col-sm-6 col-md-6 col-lg-6>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor="let revenue of revenueStats">
+                  <ion-label color="medium">
+                    {{revenue.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+                <ion-col size-xs="6" col-sm-6 col-md-6 col-lg-6>
+                  <div class="ion-margin statics">
+                    <ion-label><b class="head-stat">{{revenueName}}</b></ion-label>
+                  </div>
+                  <ion-item *ngFor="let data of revenueData">
+                    <ion-note color="success">
+                      RM {{data.value}}
+                    </ion-note>
+                  </ion-item>
+               </ion-col>
+            </ion-row>
+        </ion-col>
+
+          <!-- Members vs Guest Chart Start -->
+        <ion-col  col-sm-12 col-md-12 col-lg-4>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Members vs Guest</b></h2>
+                  </ion-label>
+
+                   <!--Members locally select type of chart -->
+                  <ion-select slot="end" name="typeMembers" [(ngModel)]="typeMembers" interface="popover"
+                    (ionChange)="selectTypeMembers(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+            <!--Members Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday: verifyMemberName == 'today' && activeClass == 'today'}"
+                (click)="membertodayData(member)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek: verifyMemberName == 'week'}"
+                (click)="memberthisWeekData(member)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth: verifyMemberName == 'month'}"
+                (click)="memberthisMonthData(member)">This Month</a>
+                <a class="time future" [ngClass]="{activeFuture: verifyMemberName == 'future'}"
+                (click)="memberfutureData(member)">Future</a>
+            </div>
+
+            <!--Members Chart -->
+            <ion-card-content>
+              <div class="totalPax">
+              <canvas #members width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+          
+          <!--Members statistics Start -->
+            <ion-row>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor="let member of memberStats">
+                  <ion-label color="medium">
+                   {{member.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">{{MemberName}}</b></ion-label>
+                </div>
+                <ion-item *ngFor="let data of membersData; let i= index; let last = last">
+                  <ion-note color="warning">
+                    {{data.value}}
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Percentage</b></ion-label>
+                </div>
+               <ion-item *ngFor="let data of membersData; let i= index; let last = last">
+                <ion-note color="warning" *ngIf="!last">
+                  {{(data.value/memberlastItem.value)*100  | number:'2.0-0'}}%
+                </ion-note>
+              </ion-item>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+
+        <!-- Male vs Female Chart start -->
+        <ion-col  col-sm-12 col-md-12 col-lg-4>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Male vs Female</b></h2>
+                  </ion-label>
+
+                  <!--Males locally select type of chart -->
+                  <ion-select slot="end" name="typeMale" [(ngModel)]="typeMale" interface="popover"
+                    (ionChange)="selectTypeMale(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+             <!--Males Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday: verifyMaleName == 'today' && activeClass == 'today'}"
+                (click)="maletodayData(male)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek:verifyMaleName == 'week'}"
+                (click)="malethisWeekData(male)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth: verifyMaleName == 'month'}"
+                (click)="malethisMonthData(male)">This Month</a>
+                <a class="time future" [ngClass]="{activeFuture: verifyMaleName == 'future'}"
+                (click)="malefutureData(male)">Future</a>
+            </div>
+
+            <!-- Males Chart -->
+            <ion-card-content>
+              <div class="totalPax">
+              <canvas #male width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+          
+          <!--Males statistics Start -->
+            <ion-row>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor="let male of maleStats">
+                  <ion-label color="medium">
+                   {{male.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">{{MaleName}}</b></ion-label>
+                </div>
+                <ion-item *ngFor="let data of maleData; let i= index; let last = last">
+                  <ion-note color="success">
+                    {{data.value}}
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Percentage</b></ion-label>
+                </div>
+               <ion-item *ngFor="let data of maleData; let i= index; let last = last">
+                <ion-note color="success" *ngIf="!last">
+                  {{(data.value/malelastItem.value)*100  | number:'2.0-0'}}%
+                </ion-note>
+              </ion-item>
+              </ion-col>
+            </ion-row>
+        </ion-col>
+      </ion-row>
+
+      <!-- Caddies & Buggies Chart start -->
+      <ion-row>
+        <ion-col  col-sm-12 col-md-12 col-lg-5>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Caddies & Buggies</b></h2>
+                  </ion-label>
+                 
+                   <!--Caddies locally select type of chart -->
+                  <ion-select slot="end" name="typeCaddies" [(ngModel)]="typeCaddies" interface="popover"
+                    (ionChange)="selectTypeCaddies(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+             <!--Caddies Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday: verifyCaddiesName == 'today' && activeClass == 'today'}"
+                (click)="caddiestodayData(caddies)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek: verifyCaddiesName == 'week'}"
+                (click)="caddiesthisWeekData(caddies)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth: verifyCaddiesName == 'month'}"
+                (click)="caddiesthisMonthData(caddies)">This Month</a>
+                <a class="time future" [ngClass]="{activeFuture:verifyCaddiesName == 'future'}"
+                (click)="caddiesfutureData(caddies)">Future</a>
+            </div>
+
+            <!-- Caddies Chart -->
+            <ion-card-content>
+              <div class="totalPax">
+              <canvas #caddies width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+          
+          <!--Caddies statistics Start -->
+            <ion-row>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statisticss</b></ion-label>
+                </div>
+                <ion-item *ngFor="let caddie of caddiesStats">
+                  <ion-label color="medium">
+                    {{caddie.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">{{CaddiesName}}</b></ion-label>
+                </div>
+                <ion-item *ngFor="let data of caddiesData; let i= index; let last = last">
+                  <ion-note color="warning">
+                    {{data.value}}
+                  </ion-note>
+                </ion-item>
+                <ion-item>
+                  <ion-note color="success">
+                   Coming Soon
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Percentage</b></ion-label>
+                </div>
+               <ion-item *ngFor="let data of caddiesData; let i= index; let last = last">
+                <ion-note color="warning" *ngIf="!last">
+                  {{(data.value/caddieslastItem.value)*100  | number:'2.0-0'}}%
+                </ion-note>
+              </ion-item>
+              </ion-col>
+            </ion-row>
+            <div class="caddies"></div>
+        </ion-col>
+
+        <!-- Course Utilization Chart start -->
+        <ion-col  col-sm-12 col-md-12 col-lg-7>
+          <ion-card class="shadow-3 card">
+            <ion-card-header>
+              <div class="ion-margin-horizontal heading">
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2 style="font-size:28px;"><b>Course Utilization</b></h2>
+                  </ion-label>
+
+                  <!--Course locally select type of chart -->
+                  <ion-select slot="end" name="typeCourse" [(ngModel)]="typeCourse" interface="popover"
+                    (ionChange)="selectTypeCourse(type)">
+                    <ion-option value='line'>Line</ion-option>
+                    <ion-option value='bar'>Bar</ion-option>
+                    <ion-option value='doughnut'>doughnut</ion-option>
+                    <ion-option value='pie'>Pie</ion-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-card-header>
+
+             <!--Course Analisys By Today , Week , Month  and Future-->
+            <div class="links">
+              <a class="time today" [ngClass]="{activeToday:verifyCourseName == 'today' && activeClass == 'today'}"
+                (click)="coursetodayData(course)">Today</a>
+              <a class="time week" [ngClass]="{activeWeek:verifyCourseName == 'week'}"
+                (click)="coursethisWeekData(course)">This Week</a>
+              <a class="time month" [ngClass]="{activeMonth: verifyCourseName == 'month'}"
+                (click)="coursethisMonthData(course)">This Month</a>
+                <a class="time future" [ngClass]="{activeFuture: verifyCourseName == 'future'}"
+                (click)="coursefutureData(course)">Future</a>
+            </div>
+
+            <!--Course Courses Chart -->
+            <ion-card-content>
+              <div class="totalPax">
+                <canvas #courses width="400px" height="400px"></canvas>
+              </div>
+            </ion-card-content>
+          </ion-card>
+          
+          <!--Course statistics Start -->
+            <ion-row>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Statistics</b></ion-label>
+                </div>
+                <ion-item *ngFor="let course of coursesStats">
+                  <ion-label color="medium">
+                    {{course.name}}
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">{{CourseName}}</b></ion-label>
+                </div>
+                <ion-item *ngFor="let data of courseData; let i= index; let last = last">
+                  <ion-note color="warning">
+                    {{data.value}}
+                  </ion-note>
+                </ion-item>
+              </ion-col>
+              <ion-col  col-sm-4 col-md-4 col-lg-4>
+                <div class="ion-margin statics">
+                  <ion-label><b class="head-stat">Percentage</b></ion-label>
+                </div>
+               <ion-item *ngFor="let data of courseData; let i= index; let last = last">
+                <ion-note color="warning" *ngIf="!last">
+                  {{(data.value/courselastItem.value)*100  | number:'2.0-0'}}%
+                </ion-note>
+              </ion-item>
+              </ion-col>
+            </ion-row>
+          <div class="courses"></div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

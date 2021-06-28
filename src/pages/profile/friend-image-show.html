@@ -1,0 +1,18 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title center >{{player.firstName}}'s Picture</ion-title >
+    </ion-navbar >
+</ion-header >
+<ion-content class="has-header mygolf-page-background competition-details scoring-page" >
+	<ion-card class="custom-card">
+        <ion-card-content >
+            <img [src]="player.photoUrl" onerror="this.src='img/default_user.png'"/>
+        </ion-card-content >
+    </ion-card >
+    <ion-fab center bottom>
+        <button ion-fab (click)="cancelEditImage()" color="danger" >
+            <ion-icon name="close" ></ion-icon >
+        </button >
+    </ion-fab>
+
+</ion-content >

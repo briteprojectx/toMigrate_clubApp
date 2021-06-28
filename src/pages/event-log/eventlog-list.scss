@@ -1,0 +1,55 @@
+eventlog-list-page{
+    .event-item {
+        font-size: medium;
+        &.error {
+            color: red;
+            .event-title, .event-time, .event-category{
+                color: red;
+            }
+        }
+        &.warn {
+            color: #ad6704;
+            .event-title, .event-time, .event-category{
+                color: #ad6704;;
+            }
+        }
+        &.info{
+            color: green;
+            .event-title, .event-time, .event-category {
+                color: green;
+            }
+        }
+        .event-time {
+            float: left;
+        }
+        .event-category{
+            float: right;
+        }
+        .event-delete{
+            float: right;
+            //color: red;
+            font-size: medium;
+            margin-right: 10px;
+            margin-left: 5px;
+        }
+        .event-title {
+            margin-top: 5px;
+            button {
+                float: right;
+                margin-right: 10px;
+                font-size: medium;
+                color: black;
+            }
+        }
+        .event-message {
+            margin-top: 5px;
+            white-space: normal;
+            font-size: small;
+        }
+        .extra-message{
+            margin-top: 5px;
+            white-space: normal;
+            font-size: small;
+        }
+    }
+}

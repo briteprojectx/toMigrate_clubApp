@@ -1,0 +1,27 @@
+@import "../../app/mygolf_mixins";
+.ios, .md {
+    page-select-scorer {
+        .flight-subtitle {
+            font-weight: bold;
+            @include truncate();
+        }
+        .flight-member{
+            div.player-name{
+                text-decoration: underline;
+                color: blue;
+                cursor: pointer; cursor: hand;
+            }
+            &.scoring-finished {
+                div{
+                    color: red;
+                }
+                div.player-name{
+                    cursor: none;
+                    text-decoration: none;
+                }
+            }
+        }
+
+    }
+}
+

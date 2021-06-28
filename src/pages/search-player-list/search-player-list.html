@@ -1,0 +1,36 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title center >Search</ion-title >
+    </ion-navbar >
+    <ion-toolbar light >
+        <ion-searchbar [(ngModel)]="searchQuery"
+                       debounce="1000"
+                       (ionInput)="onSearchInput($event)" >
+
+        </ion-searchbar >
+    </ion-toolbar >
+</ion-header >
+<ion-content class="search-player-list" >
+
+    <ion-list >
+        <button ion-item *ngFor="let friend of playerList.players" (click)="playerSelected($event, friend)" >
+            <ion-avatar item-left >
+                <img src="{{friend.thumbnail ? friend.thumbnail : friend.photoUrl}}" class="custom-avatar-img" >
+            </ion-avatar >
+            <h2 >{{friend.playerName}}</h2 >
+            <p ><i class="fa fa-calendar css-calendar" aria-hidden="true" ></i >Member Since:
+                                                                                {{friend.dateJoined|date:"MMM d,yyyy"}}
+            </p >
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='M'" ><i class="fa fa-mars fa-2x"
+                                                                                         aria-hidden="true" ></i ></span >
+            <span item-right style="padding-right:10px;" *ngIf="friend.gender==='F'" ><i class="fa fa-venus fa-2x"
+                                                                                         aria-hidden="true" ></i ></span >
+        </button >
+    </ion-list >
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)"
+                         threshold="30%" >
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data..." ></ion-infinite-scroll-content >
+    </ion-infinite-scroll >
+</ion-content >

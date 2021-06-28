@@ -1,0 +1,22 @@
+player-voucher-page {
+    .slot-available {
+        color: green;
+    }
+    .slot-not-available {
+        color: red;
+        font-style: italic;
+    }
+
+    .no-bullets {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 1em;
+    }
+
+    .document-image {
+    height: 6em; //3em;
+    object-fit: cover;
+    max-width: 8em;
+    float: inline-end;
+    }
+}

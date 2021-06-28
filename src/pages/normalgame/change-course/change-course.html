@@ -1,0 +1,30 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title center >Change course</ion-title >
+    </ion-navbar >
+</ion-header >
+
+<ion-content padding class="change-course" >
+  <p danger>Note: This will download the latest course details, which may affect your net scores</p>
+    <div class="current-course" >
+        <ion-list-header class="list-header" >
+            Changing course: {{getWhichNine()}}
+        </ion-list-header >
+        <ion-label >Current Course: {{currentCourse.courseName}}</ion-label >
+    </div >
+
+    <ion-list-header class="list-header" >Select new course</ion-list-header >
+    <ion-list [(ngModel)]="newCourse" radio-group >
+        <ion-item *ngFor="let course of coursesToSelect" class="course" >
+            <ion-label class="course-name" >{{course.courseName}}</ion-label >
+            <ion-radio [value]="course" ></ion-radio >
+        </ion-item >
+    </ion-list >
+    <ion-toolbar class="button-panel" light >
+        <button ion-button  *ngIf="isChanged()" color="primary" round class="change"
+                (click)="changeCourse()" >Change
+        </button >
+        <button ion-button color="danger" round (click)="cancel()" class="cancel">Cancel</button >
+    </ion-toolbar >
+
+</ion-content >

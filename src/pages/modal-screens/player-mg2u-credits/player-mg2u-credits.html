@@ -1,0 +1,111 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar" hideBackButton>
+        <ion-title>myGolf2u Credits</ion-title>
+        <ion-buttons start (click)="close()">
+            <button ion-button icon-only>
+                <ion-icon name="close-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end (click)="refreshCredits()">
+            <button ion-button icon-only>
+                <i class="fa fa-fw fa-sync"></i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="has-header">
+
+    <ion-segment [(ngModel)]="optionTypes" color="warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button (click)="setOptionType(1)" value="mygolf2u" disabled="true">
+            MYGOLF2U
+        </ion-segment-button>
+        <ion-segment-button (click)="setOptionType(2)" value="club">
+            CLUB
+        </ion-segment-button>
+    </ion-segment>
+    <!-- <ion-segment [(ngModel)] = "optionTypes" color = "warning" no-padding style="padding-top:1em; padding-bottom:1em">
+        <ion-segment-button (click) = "setOptionType(1)" value = "types">
+            TYPES
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(2)" value = "discount">
+            DISCOUNT CARDS
+        </ion-segment-button>
+        <ion-segment-button (click) = "setOptionType(3)" value = "voucher">
+            VOUCHERS
+        </ion-segment-button>
+    </ion-segment> -->
+
+    <ion-grid fixed>
+        <button *ngIf="optionTypes === 'club'" ion-button (click)="onChangePreferredOrigin()">
+            <span *ngIf="preferredCountry">{{preferredCountry.name}} ({{preferredCountry.id}})</span> 
+            <!-- <img *ngIf="countrySel && countrySel.name" style="max-height: 2em;"
+                [src]="getFlagUrl(countrySel.flagUrl)" onerror="this.src='img/flag/default_worldwide.png'" />
+            {{(countryId===null || countryId === '')?'ALL':countryId}} -->
+        </button>
+    <ion-list *ngIf="optionTypes === 'club'">
+        <ion-item style="color:#30bb5b; font-weight: bold; padding-right:1rem; font-size: 2rem ">
+            <ion-label text-wrap item-start>Total Balance : </ion-label>
+            <ion-label item-end text-right>{{getTotalClubCredits()}}</ion-label>
+            
+        </ion-item>
+        <div *ngIf="playerCredits">
+        <!-- <ng-container *ngFor="let clubCredit of filteredPlayerCredits()">
+            <ion-list-header>
+                <ion-avatar item-left>
+                    <img [src]="clubCredit.club&&clubCredit.club.clubLogo?clubCredit.club.clubLogo:clubCredit.club.clubImage"
+                    onerror="this.src='img/default_club.png'" />
+                </ion-avatar>
+                <ion-label item-right>{{clubCredit.club.name}}</ion-label>
+            </ion-list-header>
+            <ion-item>
+                Credits Balance : {{clubCredit.currency.symbol}} {{clubCredit.balance | number: '1.2-2'}}
+            </ion-item>
+        </ng-container> -->
+        <ion-item style="font-weight: bold; padding-right:1em;" padding-left padding-right>
+            <ion-label item-start>Club</ion-label>
+            <ion-label item-end text-right>Credit Balance {{preferredCountry?"("+preferredCountry.currencySymbol+")":""}}</ion-label>
+            <!-- <ion-col col-3>Club
+            </ion-col>
+            <ion-col text-right>Credit Balance</ion-col> -->
+        </ion-item>
+        <ng-container *ngFor="let clubCredit of filteredPlayerCredits()" >
+        <ion-row (click)="goRefundRedeemHistory(clubCredit)" style=" padding-right:1em;">
+                <ion-col col-2 no-padding>
+                    <ion-item>
+                    <ion-avatar item-left>
+                        <img [src]="clubCredit.club&&clubCredit.club.clubLogo?clubCredit.club.clubLogo:clubCredit.club.clubImage"
+                        onerror="this.src='img/default_club.png'" />
+                    </ion-avatar>
+                </ion-item>
+                </ion-col>
+                <ion-col col-7 no-padding style="font-weight: bold" text-left>
+                    <ion-item text-wrap text-left>
+                        {{clubCredit.club.name}}
+                    </ion-item>
+                </ion-col>
+                <ion-col col-3 no-padding text-right>
+                    <ion-item item-end text-right>
+                        {{clubCredit.balance | number: '1.2-2'}}
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ng-container>
+    </div>
+    </ion-list>
+
+</ion-grid>
+</ion-content>
+<ion-footer style="background:white">
+    <!-- <button full outline ion-button color="primary" style="font-weight: bold"> -->
+    <!-- Current Slot Details :  -->
+    <!-- {{getCurrentSlotDetails('courseName')}}
+        {{getCurrentSlotDetails('time')}} -->
+    <!-- </button> -->
+    <!-- <button *ngIf="optionTypes === 'club'" ion-button full color="gold">
+        Total Club Credits :   {{getTotalClubCredits()}}</button> -->
+        <!-- {{getTotalClubCredits()}} -->
+        <!-- {{playerCredits[0].currency.symbol}} -->
+
+    <button (click)="close()" ion-button full style="background-color: #659c76;">Close</button>
+</ion-footer>

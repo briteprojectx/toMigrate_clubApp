@@ -1,0 +1,27 @@
+courses-display-page {
+    .item-divider-ios, .item-divider-md{
+        &.list-subHeader {
+            //background-color: $badge-background;
+            color: $primary;
+            padding-top: 1rem;
+            //padding-bottom:0.5rem;
+            border-bottom: solid thin $badge-background;
+
+            font-weight: bold;
+            vertical-align: middle;
+            font-size: $font-size-base * 0.8 !important;
+
+        }
+    }
+
+    .item-wrap {
+        ion-label {
+            color: #666;
+            font-size: small;
+            white-space: normal !important;
+
+        }
+        border-bottom: solid thin $dark;
+
+    }
+}

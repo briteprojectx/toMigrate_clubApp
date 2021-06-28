@@ -1,0 +1,33 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title >Options</ion-title >
+        <ion-buttons end >
+            <button (click)="onApplyClick()" >
+                Apply
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+
+<ion-content >
+
+    <ion-list radio-group >
+
+        <ion-list-header >
+            Club & Course Selection
+        </ion-list-header >
+
+
+        <ion-list-header ><br >
+            Date Filter
+        </ion-list-header >
+
+        <ion-item >
+            <ion-label >Start Date</ion-label >
+            <ion-datetime displayFormat="MMM DD YYYY" pickerFormat="MMM DD YYYY" ></ion-datetime >
+        </ion-item >
+
+    </ion-list >
+
+</ion-content >

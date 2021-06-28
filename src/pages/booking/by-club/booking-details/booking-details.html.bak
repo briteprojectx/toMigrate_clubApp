@@ -1,0 +1,1423 @@
+<ion-header>
+    <ion-navbar class="mg2u-navbar">
+        <ion-title center><img class="mg2u-logo" src="assets/img/mg2u-logo-top.svg" /></ion-title>
+        <ion-buttons end>
+            <button *ngIf="!teeSlotNew" ion-button (click)="onRefreshClick()">Refresh</button>
+        </ion-buttons>
+
+    </ion-navbar>
+    <!-- <ion-toolbar color = "light" *ngIf="!teeSlotNew" > -->
+    <!-- <ion-segment [(ngModel)] = "bookings" color = "warning" padding>
+            <ion-segment-button (click) = "setBookingType(1)" value = "search">
+                SEARCH TEE TIMES
+            </ion-segment-button>
+            <ion-segment-button (click) = "setBookingType(2)" value = "mybookings">
+                MY BOOKINGS
+            </ion-segment-button>
+        </ion-segment> -->
+    <!-- <ion-item style="text-align: center;">Booking Reference #23512</ion-item> -->
+
+    <!-- </ion-toolbar> -->
+</ion-header>
+<ion-content>
+    <ion-refresher pullMin="100" (ionRefresh)="onRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-down" pullingText="" refreshingSpinner="circles"
+            refreshingText="Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <ion-item-group>
+        <ion-item-divider sticky *ngIf="!teeSlotNew"
+        style="margin-bottom:0;margin:10px;width:calc(100% - 2.3rem);padding-left:5px;padding-right:5px;border-style:solid;border-color:green;border-width:thin;border-radius:1em;background-color:#DDF6D6;">
+        <ion-row >
+            <ion-col col-6 style="text-align: left;font-size: medium;">
+                <strong>{{teeTimeSlotDisplay.slot.teeOffDate | date:"EEEE, d MMMM yyyy"}}</strong><br>
+                Status : <strong>{{getBookingDetails('status')}}</strong>
+            </ion-col>
+            <ion-col col-6 style="text-align: right;font-size:medium;font-weight: bold;">
+            
+            <span style="color:#1b6a34;">{{getProperTime(teeTimeSlotDisplay.slot.teeOffTime)}}</span><br>
+                <span style="font-size: 2.3rem;
+                letter-spacing: 1px;align-self: center;">
+                <strong>{{getBookingDetails('currency')}} {{getBookingDetails('price')  | number: '1.2-2'}}</strong>
+            </span>
+            </ion-col>
+        </ion-row></ion-item-divider>
+        <ion-item *ngIf="teeSlotNew"
+        style="margin-top:3px;margin:10px;width:calc(100% - 2.3rem);padding-left:5px;padding-right:5px;border-style:solid;border-color:green;border-width:thin;border-radius:1em;background-color:#DDF6D6;">
+        <ion-row >
+            <ion-col style="text-align:left;font-size: medium;font-weight: bold;">
+                {{teeTimeSlotDisplay.slot.teeOffDate | date:"EEEE, d MMMM yyyy"}}
+            </ion-col>
+            <ion-col style="text-align:right;color:#1b6a34;font-size: medium;font-weight: bold;">
+                {{getProperTime(teeTimeSlotDisplay.slot.teeOffTime)}}
+            </ion-col>
+        </ion-row>
+        </ion-item>
+    <ion-item *ngIf="0"
+        style="margin-top:3px;margin:10px;width:calc(100% - 2.3rem);padding-left:5px;padding-right:5px;border-style:solid;border-color:green;border-width:thin;border-radius:1em;background-color:#DDF6D6;">
+        <ion-row *ngIf="teeSlotNew">
+            <ion-col style="text-align:left;font-size: medium;font-weight: bold;">
+                {{teeTimeSlotDisplay.slot.teeOffDate | date:"EEEE, d MMMM yyyy"}}
+            </ion-col>
+            <ion-col style="text-align:right;color:#1b6a34;font-size: medium;font-weight: bold;">
+                {{getProperTime(teeTimeSlotDisplay.slot.teeOffTime)}}
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!teeSlotNew">
+            <ion-col style="text-align: left;">
+                <h1 style="font-weight:bold;text-overflow: ellipsis;overflow: hidden;">{{getClubCourseDetails('club')}}</h1>
+                <h2 style="font-weight:bold;text-overflow: ellipsis;overflow: hidden;">{{getClubCourseDetails('course')}}</h2>
+            </ion-col>
+            <!-- <ion-col style="text-align: right;">
+                <strong>{{getBookingDetails('price')}}</strong>
+                Booked 
+            </ion-col> -->
+        </ion-row>
+        <ion-row *ngIf="!teeSlotNew">
+            <ion-col style="text-align: left;">
+                Status :
+            </ion-col>
+            <ion-col style="text-align: right;">
+                {{getBookingDetails('reference')}}
+                <!-- Booked by <strong>{{bookingSlot.bookedByPlayer?bookingSlot.bookedByPlayer.playerName:''}}</strong> -->
+            </ion-col>
+            
+            <!-- <ion-col style="text-align: right;font-weight: bold;
+            font-size: x-large;
+            letter-spacing: 2px;">
+                <strong>{{getBookingDetails('price')}}</strong>
+            </ion-col> -->
+        </ion-row>
+        <ion-row *ngIf="!teeSlotNew">
+            <ion-col style="text-align: left;">
+                
+        <strong>{{getBookingDetails('status')}}</strong>, By <strong>{{bookingSlot.bookedByPlayer.playerName}}</strong>
+            </ion-col>
+            
+        </ion-row>
+        
+    </ion-item>
+    <ion-list>
+        <ion-card no-padding class="slot-box"> <!-- booking information-->
+            <ion-card-header no-padding class="slot-subtitle-box">
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;"  (click)="toggleBookingClick(1)">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-time.svg" />
+                    </ion-col>
+                    <ion-col col-9 style="background-color: white;letter-spacing: 2px;"  (click)="toggleBookingClick(1)">
+                        Booking Information
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <i *ngIf="checkBookingTabsComplete('1')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('1')" *ngIf="!checkBookingTabsComplete('1')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge> -->
+                    </ion-col> 
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpTeeSlotInfo" style="padding:1rem;" class="slot-detail-box">
+                <!-- <ion-item>
+                Booked by {{bookingSlot.bookedByPlayer?bookingSlot.bookedByPlayer.playerName:''}}
+                </ion-item> -->
+                <ion-item style="text-align: center;letter-spacing:1px;padding:0;">
+                    <h1 *ngIf="getClubCourseDetails('club')" style="font-weight:bold;text-overflow: ellipsis;overflow: hidden;">{{getClubCourseDetails('club')}}</h1>
+                    <h2 style="font-weight:bold;text-overflow: ellipsis;overflow: hidden;margin-bottom:1rem">{{getClubCourseDetails('course')}}</h2>
+                    <!-- <span> -->
+                    <!-- </span> -->
+                    <span *ngIf="!teeSlotNew && bookingSlot">
+                        <div class="row">
+                            <div class="column" style="width:50%; text-align: left;"><span style="color:#30bb5b">Booked by: </span><strong>{{bookingSlot.bookedByPlayer.playerName}}</strong></div>
+                            <!-- <div class="column" style="width:50%; text-align: left;">Status : Paid in Full</div> -->
+                            <!-- <div class="column" style="width:50%; text-align: left;"><span style="color:#30bb5b">Ref: </span><strong>{{getBookingDetails('reference')}}</strong></div> -->
+                        </div>
+                        <div class="row">
+                            <div class="column" style="width:50%; text-align: left;"><span style="color:#30bb5b">Ref: </span><strong>{{getBookingDetails('reference')}}</strong></div>
+                        </div>
+                        <br>
+                        <h1 style="color:#30bb5b; text-align:left;"><strong>Booking Details</strong></h1>
+                        <div class="row">
+                            <div class="column info-item info-header" style="width:40%">Item</div>
+                            <div class="column info-requested info-header" style="width:40%;">Requested</div>
+                            <div class="column info-actual info-header" style="width:20%">Actual</div>
+                        </div>
+                        <div class="row" *ngIf="bookingSlot.slotAssigned.startCourse.id !== bookingSlot.slotPreferred.startCourse.id">
+                            <div class="column info-item">Course Played</div>
+                            <div class="column info-requested">{{bookingSlot.slotAssigned.startCourse.name}}</div>
+                            <div class="column info-actual">{{bookingSlot.slotPreferred.startCourse.name}}</div>
+                        </div>
+                        <div class="row" *ngIf="bookingSlot.slotAssigned.teeOffTime !== bookingSlot.slotPreferred.teeOffTime">
+                            <div class="column info-item">Tee Off Time</div>
+                            <div class="column info-requested">{{getProperTime(bookingSlot.slotPreferred.teeOffTime)}}</div>
+                            <div class="column info-actual">{{getProperTime(bookingSlot.slotAssigned.teeOffTime)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="column info-item">Holes to Play</div>
+                            <div class="column info-requested">{{bookingSlot.ninesPlayed?bookingSlot.ninesPlayed*9:'-'}}</div>
+                            <div class="column info-actual">{{bookingSlot.ninesPlayed?bookingSlot.ninesPlayed*9:'-'}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="column info-item">Players</div>
+                            <div class="column info-requested">{{bookingSlot.totalPlayers}}</div>
+                            <div class="column info-actual">{{bookingSlot.bookingPlayers.length}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="column info-item">Buggies</div>
+                            <div class="column info-requested">{{bookingSlot.buggyRequested}}</div>
+                            <div class="column info-actual">{{buggyReq}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="column info-item">Caddies</div>
+                            <div class="column info-requested">{{bookingSlot.caddyRequested}}</div>
+                            <div class="column info-actual">{{caddyReq}}</div>
+                        </div>
+                        <div class="row" style="margin-bottom:1rem" (click)="onEstimatePriceClick()">
+                            <div class="column info-item">Estimated Cost ({{bookingSlot.slotAssigned.currency.symbol}})<i style="color:#30bb5b; font-size:2rem;" class="fa fa-fw fa-question-circle"></i></div>
+                            <div class="column info-requested">{{getEstimatedPrice('requested') | number: '1.0-2'}}</div>
+                            <div class="column info-actual">{{getEstimatedPrice('actual') | number: '1.0-2'}}</div>
+                        </div>
+                        <h3 (click)="onMoreTeeSlotSettings()" style=" text-align:left;">See Tee Slot Settings<i style="color:hsl(139, 59%, 46%); font-size:2rem;" class="fa fa-fw fa-question-circle"></i></h3>
+                     </span>
+                   
+                </ion-item>
+                <ion-item *ngIf="teeSlotNew">
+                    <h2>How many golfers playing?</h2>
+                    <button class="button-subtract" clear icon-only color="danger" (click)="addPlayers(-1)" ion-button item-right>
+                        <img src="assets/img/button-minus.svg" />
+                    </button>
+                    <button class="button-value" outline ion-button item-right>{{playerReq}}</button>
+                    <button class="button-add"  clear icon-only (click)="addPlayers(1)" ion-button item-right>
+                        <img src="assets/img/button-plus.svg" /> 
+                    </button>
+               
+                        <!-- <button class="button-subtract" outline color="danger" (click)="addPlayers(-1)" small ion-button item-right><i class="fas fa-minus"></i></button>
+                                <button class="button-value" outline ion-button item-right>{{playerReq}}</button>
+                                <button class="button-add" outline (click)="addPlayers(1)" small ion-button item-right><i class="fas fa-plus"></i></button>  -->
+                               
+                </ion-item>
+                <div *ngIf="teeSlotNew && teeTimeSlotDisplay.slot.allowWalking">
+                    <ion-item >
+                        <!-- *ngIf="teeSlotNew" -->
+                        <ion-label>*** Do you require buggy?&nbsp;&nbsp;<span style="color:green">{{buggyRequired?"Yes":"No"}}</span></ion-label>
+                        <ion-toggle [(ngModel)]="buggyRequired"></ion-toggle>
+              </ion-item>
+            </div>
+            
+        <div *ngIf="teeSlotNew && !teeTimeSlotDisplay.slot.caddyMandatory">
+              <ion-item>
+                <ion-label>*** Do you require caddy?&nbsp;&nbsp;<span style="color:green">{{caddyRequired?"Yes":"No"}}</span></ion-label>
+                <ion-toggle [(ngModel)]="caddyRequired"></ion-toggle>
+      </ion-item>
+    </div>
+    <!-- <div *ngIf="teeTimeSlotDisplay.slot.allowWalking || !teeTimeSlotDisplay.slot.caddyMandatory">
+        <span style="font-style:italic" *ngIf="teeSlotNew">*** You can change this setting later in the booking</span>
+        <span style="font-style:italic" *ngIf="!teeSlotNew">*** Note :  This will only affect current booking session</span>
+    </div> -->
+                    <!-- <ion-item> -->
+                        <ion-item *ngIf="teeSlotNew && teeTimeSlotDisplay.slot.eighteenHolesAllowed">
+                            <ion-label item-left>Playing 9 or 18 holes? <b style="color:green">{{holesPlayed==='1'?'9':'18'}}</b></ion-label>
+                            <ion-segment item-right no-padding [(ngModel)]="holesPlayed">
+                                <ion-segment-button value="1">
+                                    9<span *ngIf="holesPlayed==='1'">&nbsp;&nbsp;<i  class="fa fa-fw fa-check"></i></span>
+                                </ion-segment-button>
+                                <ion-segment-button value="2">
+                                    18<span *ngIf="holesPlayed==='2'">&nbsp;&nbsp;<i  class="fa fa-fw fa-check"></i></span>
+                                </ion-segment-button>
+                            </ion-segment>
+                        </ion-item>
+                        <ion-item *ngIf="teeSlotNew">
+                                  <ion-label>Are you booking for someone else?&nbsp;&nbsp;<span style="color:green">{{bookForOther?"Yes":"No"}}</span></ion-label>
+                                  <ion-toggle [(ngModel)]="bookForOther"></ion-toggle>
+                        </ion-item> 
+                        
+          <!-- <ion-item *ngIf="teeSlotNew">
+            <h2>How many buggies needed?</h2>
+            <button class="button-subtract" clear icon-only color="danger" (click)="addBuggy(-1)" ion-button item-right>
+                <img src="assets/img/button-minus.svg" />
+            </button>
+            <button class="button-value" outline ion-button item-right>{{buggyReq}}</button>
+            <button class="button-add"  clear icon-only (click)="addBuggy(1)" ion-button item-right>
+                <img src="assets/img/button-plus.svg" /> 
+            </button>
+       
+             
+        </ion-item> -->
+        <!-- <ion-item *ngIf="teeSlotNew">
+            <h2>How many caddies needed?</h2>
+            <button class="button-subtract" clear icon-only color="danger" (click)="addCaddy(-1)" ion-button item-right>
+                <img src="assets/img/button-minus.svg" />
+            </button>
+            <button class="button-value" outline ion-button item-right>{{caddyReq}}</button>
+            <button class="button-add"  clear icon-only (click)="addCaddy(1)" ion-button item-right>
+                <img src="assets/img/button-plus.svg" /> 
+            </button>
+       
+        </ion-item> -->
+
+                        <!-- <ion-item *ngIf="bookingSlot && bookingSlot.bookedByPlayer">Booked by {{bookingSlot.bookedByPlayer?bookingSlot.bookedByPlayer.playerName:''}}</ion-item> -->
+
+                    <!-- <h3>{{this.teeTimeSlotDisplay.slot.eighteenHolesAllowed?18:9}} Holes</h3> -->
+                    <ion-item *ngIf="prices || promoPrices" style="text-align:center" no-padding>
+                    <h1><span *ngIf="(prices && prices.STD) || (promoPrices && promoPrices.STD)" 
+                        [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'STD')"></span></h1>
+                        <!-- <h2 *ngIf="playerReq>1"></h2>
+                        <h4 *ngIf="playerReq>1"></h4> -->
+                    <button *ngIf="promoPrices || prices" ion-button small clear (click)="togglePrices()">
+                        <span *ngIf="!displayPrices">See other packages</span>
+                        <span *ngIf="displayPrices">Close</span>
+                    </button>
+                    <ion-grid padding *ngIf="displayPrices">
+                        <ion-row *ngIf="(prices && prices.STD) || (promoPrices && promoPrices.STD)">
+                            <ion-col class="price-field">Visitor</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'STD')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.SENIOR) || (promoPrices && promoPrices.SENIOR)">
+                                <ion-col class="price-field">Senior Citizen</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'SENIOR')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.STAFF) || (promoPrices && promoPrices.STAFF)">
+                                <ion-col class="price-field">Staff Member</ion-col>
+                                <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'STAFF')"></span></ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="(prices && prices.LADIES) || (promoPrices && promoPrices.LADIES)">
+                                    <ion-col class="price-field">Ladies</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'LADIES')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.ARMY) || (promoPrices && promoPrices.ARMY)">
+                                <ion-col class="price-field">Army</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'ARMY')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.GOVT) || (promoPrices && promoPrices.GOVT)">
+                                <ion-col class="price-field">Civil Servants</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'GOVT')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.JUNIOR) || (promoPrices && promoPrices.JUNIOR)">
+                                <ion-col class="price-field">Junior</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'JUNIOR')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.MEMBER) || (promoPrices && promoPrices.MEMBER)">
+                                <ion-col class="price-field">Club Member</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'MEMBER')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.POLICE) || (promoPrices && promoPrices.POLICE)">
+                                <ion-col class="price-field">Police</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'POLICE')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.WOMAN) || (promoPrices && promoPrices.WOMAN)">
+                                <ion-col class="price-field">Women</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'WOMAN')"></span></ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="(prices && prices.GUEST) || (promoPrices && promoPrices.GUEST)">
+                                <ion-col class="price-field">Member's Guest</ion-col>
+                            <ion-col class="price-param"><span [innerHTML]="getSlotPrice(teeTimeSlotDisplay,'GUEST')"></span></ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </ion-card-content>
+            <!-- <ion-item> -->
+                <span *ngIf="grpTeeSlotInfo">
+                <button class="booking-book-button" (click)="onCancelBooking()" *ngIf="!teeSlotNew && bookingType!=='past'" ion-button full color="danger">CANCEL THIS BOOKING</button>
+
+            <button class="booking-book-button" (click)="onBookNow()" *ngIf="teeSlotNew" ion-button full color="gold">BOOK NOW</button>
+        </span>
+            
+            <!-- </ion-item> -->
+        </ion-card>
+        <ion-card *ngIf="!teeSlotNew" no-padding class="slot-box"> <!-- players -->
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-players.svg" 
+                            (click)="toggleBookingClick(2)"/>
+                    </ion-col>
+                    <ion-col col-9 style="background-color: white;letter-spacing: 2px;"
+                    (click)="toggleBookingClick(2)">
+                        Players
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <i *ngIf="checkBookingTabsComplete('2')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('2')" *ngIf="!checkBookingTabsComplete('2')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpPlayerDetails" class="slot-detail-box" no-padding>
+                <!-- <div *ngIf="bookingSlot.bookingPlayers && bookingSlot.bookingPlayers.length > 0" > -->
+                    <div *ngIf="0">
+
+                    <ion-item *ngFor="let x of slots;" style="padding-left:0.5em;margin-top:0.5em">
+                            <div class="row">
+                                <div class="column" style="width:20%">
+                                    <img style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em;"
+                                    [src]="getPlayerSlotDetails(x,'image')" onerror="this.src='img/default-user.jpg'">
+                                </div>
+                                <div class="column" style="width:80%">
+                                    <div class="row">
+                                        <div class="column">
+                                            <h2>{{getPlayerSlotDetails(x,'name')}} {{getPlayerSlotDetails(x,'id')}}</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="column" style="width:50%">
+                                                <!-- {{getPlayerType(x)}} -->
+                                            <h3 *ngIf="!slotFilled(x)"><input type="text" /> <input type="text" /></h3>
+                                        </div>
+                                        <div class="column" style="width:50%;text-align:right">
+                                            <button class="player-action" *ngIf="slotFilled(x)" ion-button clear style="font-size:1.2em">
+                                                <i class="fas fa-pen"></i>
+                                            </button>
+                                            <button class="player-action" *ngIf="slotFilled(x)" ion-button clear style="font-size:1.2em">
+                                                <i class="fas fa-user-cog"></i>
+                                            </button>
+                                            <!-- && (slot === 2 || slotFilled(x - 1)) -->
+                                            <button class="player-action" *ngIf="!slotFilled(x) " (click)="onPlayerSelect(x)" clear ion-button style="font-size:1.2em">
+                                                    <i class="fas fa-fw fa-plus-circle"></i>
+                                                </button>
+                                            <button class="player-action" *ngIf="slotFilled(x)" (click)="onDeleteBookingPlayer(x)" ion-button clear style="font-size:1.2em">
+                                                <i style="color:red" class="fa fa-times-circle "></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-item>
+                        </div>
+
+                        <ion-item *ngFor="let x of slots;" style="padding-left:0.5em">
+                                <div class="row">
+                                    <div class="column" style="width:20%">
+                                        <img style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em"
+                                        [src]="getPlayerSlotDetails(x,'image')" onerror="this.src='img/default-user.jpg'">
+                                    </div>
+                                    <div class="column" style="width:80%">
+                                        <div class="row">
+                                            <div class="column" style="width:80%;white-space: nowrap;
+                                            overflow: hidden;">
+                                                <h2 style="font-size: medium;font-weight: bold;color: green;">{{getPlayerSlotDetails(x,'name')}} {{getPlayerSlotDetails(x,'id')}}</h2>
+                                                    <!-- <button class="player-action" clear ion-button style="font-size:1.2em;font-size: medium;font-weight: bold;">
+                                                        {{getPlayerSlotDetails(x,'name')}} {{getPlayerSlotDetails(x,'id')}}
+                                                    </button> -->
+
+                                                <h3 [innerHTML]="getPlayerSlotDetails(x,'discount')"></h3>
+                                            </div>
+                                            <div class="column" style="width:20%;text-align:right" *ngIf="bookingType!=='past'">
+                                                    <!-- <button class="player-action" *ngIf="slotFilled(x)" ion-button clear style="font-size:1.2em">
+                                                            <i class="fas fa-pen"></i>
+                                                        </button>
+                                                        <button class="player-action" *ngIf="slotFilled(x)" ion-button clear style="font-size:1.2em">
+                                                            <i class="fas fa-user-cog"></i>
+                                                        </button> -->
+                                                        <!-- && (slot === 2 || slotFilled(x - 1)) -->
+                                                        <button class="player-action" *ngIf="!slotFilled(x) " (click)="onPlayerSelect(x)" clear ion-button style="font-size:1.2em">
+                                                                <i class="fas fa-fw fa-plus-circle"></i>
+                                                            </button>
+                                                        <button class="player-action" *ngIf="slotFilled(x)" (click)="onDeleteBookingPlayer(x)" ion-button clear style="font-size:1.2em">
+                                                            <i style="color:red" class="fa fa-times-circle "></i>
+                                                        </button>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="bookingType!=='past'">
+                                            <div class="column" style="width:80%">
+                                                    <!-- {{getPlayerType(x)}} -->
+                                                <span *ngIf="!slotFilled(x)" style="display:inline-flex;">
+                                                    <!-- 8em; -->
+                                                    <input (keyup.enter)="searchBookingPlayer(x)" style="width:12rem;height:2em;margin-right:2px" placeholder="Club Mship No." type="text" [disabled]="searchById[x] && searchById[x] > 0" [(ngModel)]="searchByMembership[x]"/> 
+                                                    <input (keyup.enter)="searchBookingPlayer(x)" style="width:7rem;height:2em;margin-right:2px" type="number" placeholder="mg2u ID" [disabled]="searchByMembership[x] && searchByMembership[x].length > 0" [(ngModel)]="searchById[x]"/>
+                                                    <!-- 5em -->
+                                                <button class="player-action" (click)="clearSearchPlayer(x)" ion-button clear style="font-size:1.2em">
+                                                            <i style="color:grey" class="fa fa-times-circle "></i>
+                                                        </button>
+                                                    </span>
+                                                    
+                                            </div>
+                                            <div class="column" style="width:20%;text-align:right">
+                                                    <!-- (click)="onPlayerSelect(x)" -->
+                                                    <button (click)="searchBookingPlayer(x)" class="player-action" *ngIf="!slotFilled(x)" clear ion-button style="font-size:1.2em">
+                                                            <i class="fas fa-fw fa-search"></i>
+                                                        </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="" -->
+                            </ion-item>
+                    <!-- </div> -->
+                    <!-- <ion-item style="padding-left:0.5em">
+                            <div class="row">
+                                <div class="column" style="width:20%">
+                                    <img style="width: 4em;float:left;object-fit: cover;border-radius:1em"
+                                        src="img/course-default.png'" onerror="this.src='img/default-user.jpg'">
+                                </div>
+                                <div class="column" style="width:80%">
+                                    <div class="row">
+                                        <div class="column">
+                                            <h2>{{bookingSlot.bookingPlayers[0].playerName}} (#{{bookingSlot.bookingPlayers[0].player.id}})</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="column" style="width:50%">
+                                            <h3>{{getPlayerType(bookingSlot.bookingPlayers[0])}}</h3>
+                                        </div>
+                                        <div class="column" style="width:50%;text-align:right">
+                                            <button ion-button clear style="font-size:1.5em">
+                                                <i class="fas fa-pen"></i>
+                                            </button>
+                                            <button ion-button clear style="font-size:1.5em">
+                                                <i class="fas fa-user-cog"></i>
+                                            </button>
+                                            <button (click)="onDeleteBookingPlayer(bookingSlot.bookingPlayers[0])" ion-button clear style="font-size:1.5em">
+                                                <i style="color:red" class="fa fa-times-circle "></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-item>
+                        <ion-item style="padding-left:0.5em">
+                                <div class="row">
+                                    <div class="column" style="width:20%">
+                                        <img style="width: 4em;float:left;object-fit: cover;border-radius:1em"
+                                            src="img/course-default.png'" onerror="this.src='img/default-user.jpg'">
+                                    </div>
+                                    <div class="column" style="width:80%">
+                                        <div class="row">
+                                            <div class="column">
+                                                <h2>{{bookingSlot.bookingPlayers[1].playerName}} (#{{bookingSlot.bookingPlayers[1].player.id}})</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="column" style="width:50%">
+                                                <h3>{{getPlayerType(bookingSlot.bookingPlayers[1])}}</h3>
+                                            </div>
+                                            <div class="column" style="width:50%;text-align:right">
+                                                <button ion-button clear style="font-size:1.5em">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
+                                                <button ion-button clear style="font-size:1.5em">
+                                                    <i class="fas fa-user-cog"></i>
+                                                </button>
+                                                <button (click)="onDeleteBookingPlayer(bookingSlot.bookingPlayers[1])" ion-button clear style="font-size:1.5em">
+                                                    <i style="color:red" class="fa fa-times-circle "></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ion-item> -->
+                <!-- <button ion-button icon-left color="primary" (click)="onGetFlightClick()" >
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        Select Group
+                    </button >
+                    <button ion-button icon-left color="secondary" *ngIf="canSaveFlight()" (click)="onSaveFlightClick()" > -->
+               
+                        
+
+                <ion-item *ngIf="bookingType!=='past' && this.bookingSlot.bookingStatus !== 'PaymentFull'">
+                    <button *ngIf="!groupSelected" (click)="onGetFlightClick()" ion-button clear item-left>
+                            <i class="fas fa-fw fa-heart"></i>Select Group</button>
+                    <button *ngIf="canSaveFlight()" (click)="onSaveFlightClick()" ion-button clear item-left>
+                        <i class="fas fa-fw fa-heart"></i>Save Group</button>
+                    <!-- <button *ngIf="bookingSlot.bookingPlayers.length < 4" (click)="onPlayerSelect(p)" ion-button clear item-right style="font-size:1.5em"><i
+                            class="fas fa-fw fa-plus-circle"></i>Golfer</button> -->
+                </ion-item>
+                <!-- <ion-list no-padding> -->
+                <!-- <ion-item *ngFor="let x of [1,2,3]" style="padding:0" (click)="onActiveBookingClick()">
+                                    <ion-row no-padding style="border-color:#1b6a34;background-color: #DDF6D6;font-size:0.8em;border-style:solid;border-width:thin;border-radius:0.5em;border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+                                        <ion-col style="text-align:left;color:#1b6a34;">02:45 PM</ion-col>
+                                        <ion-col style="text-align:center">Wed, 22 May 2020</ion-col>
+                                        <ion-col style="text-align:right;color:#1b6a34;">Ref #21492</ion-col>
+                                    </ion-row>
+                                    <ion-row no-padding style="border-color:#1b6a34;border-style:solid;border-width:thin;border-radius:0.5em;border-top-right-radius: 0;border-top-left-radius: 0;">
+                                        <ion-col no-padding>
+                                                <img style="width: 4em;float:left;object-fit: cover;" src="img/course-default.png'"
+                                                onerror="this.src='img/course-default.png'">
+                                                <h3 style="color:#1b6a34;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">Tasik Puteri Golf & Country Club</h3>
+                                                    <p>Booking By: <span style="color:#1b6a34;">Fazel</span></p>
+                                        </ion-col>
+                                            <ion-col col-3 style="text-align:center;border-color:#1b6a34;border-left-style:solid;border-left-width:thin">Total<br>
+                                                <span style="color:#1b6a34;">RM 240</span></ion-col>
+                                    </ion-row>
+                                </ion-item> -->
+                <!-- </ion-list> -->
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="!teeSlotNew" no-padding class="slot-box">
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;" (click)="toggleBookingClick(3)">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-buggy.svg" />
+                    </ion-col>
+                    <ion-col col-9 style="background-color: white;letter-spacing: 2px;" (click)="toggleBookingClick(3)">
+                        Buggy & Caddie Pairing
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <i *ngIf="checkBookingTabsComplete('3')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('3')" *ngIf="!checkBookingTabsComplete('3')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpAdditionals" class="slot-detail-box" no-padding>
+                <ion-item no-padding *ngIf="!closeAdditionalNotice" style="padding-bottom: 1rem;">
+                    <div class="row">
+                        <div class="column" style="width:20%">
+                            <img src="assets/img/booking-item-covid.svg" style="float:left;width: 3em;margin: 0.5em;" />
+                        </div>
+                        <div class="column" style="width:70%">
+                            <h4 style="color:red;white-space: normal;">COVID-19. MGA recommends that all players should include their
+                                addresses for contact tracing</h4>
+                        </div>
+                        <div class="column" style="width:10%">
+                            <button color="danger" no-padding (click)="closeAdditionalNotice = true" ion-button clear><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- <h3 style="color:red">COVID-19 Important Notice</h3> -->
+                    
+                    
+                </ion-item>
+                <ion-grid style="text-align: -webkit-center;" no-padding >
+                    <ion-row no-padding *ngIf="bookingType!=='past'">
+                        <ion-col no-padding><h2>Buggies</h2></ion-col>
+                            <ion-col no-padding><h2>Caddies</h2></ion-col>
+                    </ion-row>
+                    <ion-row>
+                            <ion-col>
+                                <!-- <button class="button-subtract" outline color="danger" (click)="addBuggy(-1)" small ion-button item-right> -->
+                                <button class="button-subtract" clear icon-only color="danger" (click)="addBuggy(-1)" ion-button item-right>
+                                    <!-- <i style="font-size:large" class="fas fa-minus"></i> -->
+                                <img src="assets/img/button-minus.svg" />
+                                </button>
+                                            <button class="button-value" outline ion-button item-right>{{buggyReq}}</button>
+                                            
+                                            <!-- <button class="button-add" outline (click)="addBuggy(1)" small ion-button item-right> -->
+                                            <button class="button-add" clear icon-only (click)="addBuggy(1)" ion-button item-right>
+                                                <!-- <i style="font-size:large" class="fas fa-plus"></i> -->
+                                                <img src="assets/img/button-plus.svg" /> 
+                                            </button>
+                                        </ion-col>    
+                                            <ion-col>
+                                                <button class="button-subtract" clear icon-only color="danger" (click)="addCaddy(-1)" ion-button item-right>
+                                                    <!-- <i style="font-size:large" class="fas fa-minus"></i> -->
+                                                    <img src="assets/img/button-minus.svg" />
+                                                </button>
+                                                <button class="button-value" outline ion-button item-right>{{caddyReq}}</button>
+                                                <button class="button-add"  clear icon-only (click)="addCaddy(1)" ion-button item-right>
+                                                    <!-- <i style="font-size:large" class="fas fa-plus"></i> -->
+                                                    <img src="assets/img/button-plus.svg" /> 
+                                                </button>
+                                            </ion-col>
+                                                  
+                            </ion-row>
+                </ion-grid>
+                <ion-list>
+                    <ion-list-header *ngIf="bookingPlayers && bookingPlayers.length > 0">Seatings</ion-list-header>
+                    <ion-item   *ngFor="let x of bookingSlot.bookingPlayers; let i = index" style="padding-left:0.5em;padding-top:1rem">
+                            <div class="row" (click)="expandDetails(i,'toggle')">
+                                <!-- (click)="expandDetails(i,'toggle')" -->
+                                <div class="column" style="width:20%">
+                                    <img style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em;"
+                                        [src]="x.player && x.player.image?x.player.image:''" onerror="this.src='img/default-user.jpg'">
+                                </div>
+                                <div class="column" style="width:80%">
+                                    <div class="row">
+                                        <div class="column" style="width:80%;white-space: nowrap;
+                                        overflow: hidden;">
+                                            <h2 style="font-size: medium;font-weight: bold;color: green;">{{getPlayerSlotDetails(i+1,'name')}} {{getPlayerSlotDetails(i+1,'id')}}</h2>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!checkBuggyCaddyInfo(i)"  class="row">
+                                        <div class="column" style="width:80%">
+                                            Tap here for more options
+                                        </div>
+                                        <div  class="column"  style="width:20%;text-align:center">
+                                                <i style="font-size:1.4em;color:#30bb5b" class="fas fa-2x fa-fw fa-cog"></i>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="checkBuggyCaddyInfo(i)" class="row" style="margin-top:0.5rem">
+                                        <!-- (click)="setBuggySeating(i,$event)" -->
+                                        <div class="column" style="width:25%;text-align: left;">
+                                            <!-- <ion-avatar item-left> -->
+                                                <span *ngIf="x.pairingNo === 0" class="pairing-number"><i style="font-size: large;color:#1b6a34" class="fas fa-fw fa-walking"></i>Walk</span>
+                                                    <!-- <img *ngIf="!x.pairingNo" item-left style="width: 2.6em;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy-black.svg"> -->
+                                                    <!-- <img *ngIf="x.pairingNo > 0" item-left style="width: 2.5rem;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy-green-16x16.svg"> -->
+                                                    
+                                                    <img *ngIf="x.pairingNo > 0" item-left style="width: 3rem;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy-new.svg">
+                                            <!-- </ion-avatar> -->
+                                                &nbsp;<span class="pairing-number">{{x.pairingNo?'#'+x.pairingNo:''}}</span>
+                                                <!-- {{buggySlots.buggySlot?buggySlots[i].buggySlot:''}} -->
+                                        </div>
+                                        <!-- (click)="selectCaddy(i)" -->
+                                        <div class="column" style="width:25%;text-align: left;">
+                                            <!-- <ion-thumbnail item-left> -->
+                                                    <img style="width: 2.5rem;float:left;object-fit: cover;margin:0" src="assets/img/icon-caddie_.svg">
+                                                    <!-- <img style="width: 0.8em;float:left;object-fit: cover;margin:0" src="assets/img/icon-caddie_.svg"> -->
+                                                    <!-- margin-left:0.5em;margin-right:0.5em -->
+                                            <!-- </ion-thumbnail> -->
+                                            &nbsp;<span class="pairing-number">{{getCaddyPreferred(i)}}</span>
+                                            <!-- {{x.caddyPreferred.}} -->
+                                        </div>
+                                        <!-- (click)="setPlayerDriving(i,x)"  -->
+                                        <div class="column" style="width:25%;text-align: left;">
+                                            <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+                                                        <!-- <img item-left style="width: 2.5rem;float:left;object-fit: cover;margin:0" src="assets/img/icons/icon-steering-wheel.svg"> -->
+                                                        <img item-left style="width: 2.5rem;float:left;object-fit: cover;margin:0" src="assets/img/icon-steering-wheel-new.svg">
+                                                
+                                                    &nbsp;<span class="pairing-number">{{getPlayerDriving(i)}}</span>
+                                            </div>
+                                            <div class="column" class="player-action" *ngIf="0 === 1 && slotFilled(i+1)" (click)="goUpdatePlayerContact(x)" style="width:15%;text-align:right">
+                                                    <img style="width: 2.5rem;float:left;object-fit: cover;margin:0" *ngIf="!getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-bubble-exclamation.svg" />
+                                                    <img style="width: 2.5rem;float:left;object-fit: cover;margin:0" *ngIf="getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-like.svg" />
+                                               
+                                    </div>
+                                    <div  class="column"  style="width:25%;text-align:center">
+                                        <!-- <button ion-button clear item-right (click)="expandDetails(i)"> -->
+                                            <i style="font-size:1.4em;color:#30bb5b" class="fas fa-2x fa-fw fa-cog"></i>
+                                        <!-- </button> -->
+                                        <!-- <i style="font-size:1.4em;" *ngIf="!expandPlayers[i]" class="fa fa-fw fa-chevron-circle-right"></i>
+                                        <i style="font-size:1.4em;" *ngIf="expandPlayers[i]" class="fa fa-fw fa-chevron-circle-down"></i> -->
+                                        <!-- <i style="font-size:1.4em;color:#1b6a34" class="fas fa-2x fa-fw fa-cog"></i> -->
+                                        <!-- <i style="font-size:1.4em;" *ngIf="!expandPlayers[i]" class="fa fa-fw fa-caret-right"></i>
+                                        <i style="font-size:1.4em;" *ngIf="expandPlayers[i]" class="fa fa-fw fa-caret-down"></i> -->
+                                    </div>
+                                    </div>
+                                    <div *ngIf="x && x.caddyPreferred" class="row">
+                                        <div class="column">
+                                            <!-- Caddy Booked : {{getCaddyPreferred(i,'slot_pairing')}} {{getCaddyPreferred(i,'slot_pairing_id')}} -->
+                                            <span *ngIf="getCaddyPreferred(i,'name')!=='Select Favourite Caddy'"> Caddy Booked : {{getCaddyPreferred(i,'name')}}</span>
+                                            <!-- {{getCaddyPreferred(i,'pairing')}}  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row" #expandHeader *ngIf="expandPlayers[i]">
+                                
+                            </div> -->
+                            <div id="expandRow" *ngIf="expandPlayers[i]">
+                                <ion-item class="row">
+                                <h3>Options for {{getPlayerSlotDetails(i+1,'name')}}</h3>
+                                <button (click)="onClearPlayerDetails(i)" clear ion-button item-right>Clear</button> 
+                                <button (click)="expandPlayers[i] = false" clear ion-button item-right>Close</button>
+                        </ion-item>
+                            <div class="row" style="margin-left: 1.5rem;margin-top: 1rem;">
+                                <!-- "width:30%" -->
+                                <div class="column" style="width:30%">
+                                    Buggy Seating
+                                </div>
+                                <div  class="column" style="width:70%">
+                                    <button [disabled]="bookingType==='past'" ion-button outline small style="white-space: normal;" (click)="setBuggySeating(i,$event)">
+                                <strong>{{getBuggySlotDisplay(i)}}</strong>
+                                </button>
+                            </div>
+                            </div>
+                            <div class="row" style="margin-left: 1.5rem;margin-top: 1rem;">
+                                <div class="column" style="width:30%;">
+                                            <!-- <img item-left style="width: 2.5rem;float:left;object-fit: cover;margin:0" src="assets/img/icons/icon-steering-wheel.svg"> -->
+                                            Driver ?
+                                            
+                                </div>
+                                <div  class="column" style="width:70%">
+                                    <button [disabled]="bookingType==='past'" (click)="setPlayerDriving(i,x)" ion-button outline small style="white-space: normal;"  >
+                                        
+                                        <i *ngIf="getPlayerDriving(i)==='Yes'" class="fa fa-fw fa-check "></i>
+                                            <i *ngIf="getPlayerDriving(i)==='No'" class="fa fa-fw fa-times "></i>
+                                                &nbsp;<strong>{{getPlayerDriving(i)}}</strong>
+                                        </button>
+                            </div>
+                                <!-- <ion-label>Driver?&nbsp;&nbsp;<span style="color:green">{{playerDriving[i]?"Me":"Other"}}</span></ion-label>
+                                <div class="column" style="width:30%">
+                                    <ion-label>Driver ?</ion-label>
+                                </div>
+                                <div class="column" style="width:70%">
+                                    <ion-segment item-right no-padding [(ngModel)]='playerDriving[i]' >
+                                    
+                                        <ion-segment-button value="me" (click)="togglePlayerDriving(i,x,1)">
+                                            Me
+                                        </ion-segment-button>
+                                        <ion-segment-button value="other" (click)="togglePlayerDriving(i,x,2)">
+                                            Other
+                                        </ion-segment-button>
+                                    </ion-segment>
+                            </div> -->
+                            </div>
+                            
+                            <div class="row" style="margin-left: 1.5rem;margin-top: 1rem;">
+                                <div class="column" style="width:30%">
+                                    <!-- <img item-left style="width: 2em;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy.svg"> -->
+                                    Caddy Pairing
+                                </div>
+                                <div  class="column" style="width:70%">
+                                    <button [disabled]="bookingType==='past'" ion-button  outline small style="white-space: normal;" (click)="setCaddyPairing(i,$event)">
+                                    <strong>{{getCaddyPreferred(i,'pairing')}}</strong>
+                                    </button>
+                            </div>
+                            
+                            
+                            </div>
+                            <div class="row" style="margin-left: 1.5rem;margin-top: 1rem;">
+                                <div class="column" style="width:30%;overflow: auto;
+                                white-space: normal;">
+                                    <!-- <img item-left style="width: 2em;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy.svg"> -->
+                                   Favourite Caddy?
+                                   <!-- <br>
+                                    <button *ngIf="x.caddyPreferred || x.caddySelectionCriteria.gender" ion-button  clear small style="white-space: normal;">
+                                        <strong style="color:red">+ RM 50</strong>
+                                        </button> -->
+                                </div>
+                                <!-- <div class="column" style="width:20%">
+                                    <button (click)="setCaddySlot(i,x.caddyPairing)" item-right ion-button outline>
+                                        <i class="fa fa-user-check"></i>
+                                    </button
+                                    ></div> -->
+                                <div class="column" style="width:50%" >
+                                    <button [disabled]="bookingType==='past'" ion-button outline small style="white-space: normal;" (click)="onSelectCaddy(i,x.caddyPairing)">
+                                    <strong>{{getCaddyPreferred(i,'name')}} </strong>
+                                    </button>
+                                    
+                            </div>
+                            <div class="column" style="width:20%">
+                                <button [disabled]="bookingType==='past'" color="danger" ion-button outline small (click)="removeCaddy(i,x.caddyPairing)">
+                                    <!-- (click)="removeCaddyPairing(x.caddyPairing,i)" -->
+                                    <i class="fa fa-user-times"></i>
+                                </button>
+                            </div>
+                            
+                            </div>
+                            <div class="row" style="margin-left: 1.5rem;">
+                                <div class="column" >
+                                    <button ion-button color="danger" clear small style="white-space: normal;">
+                                        Note: Caddies/Buggies will only be confirmed during payment.
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                            <div class="row" (click)="goUpdatePlayerContact(x)" style="margin-left: 1.5rem;">
+                                <!-- 85% -->
+                                <div class="column" style="width:85%;overflow: auto;
+                                white-space: normal;">
+                                    <h4 *ngIf="!getPlayerSlotDetails(i+1,'isContactComplete')">You have not entered your phone number or address as per MGA rules. Tap to add</h4>
+                                    <h4 *ngIf="getPlayerSlotDetails(i+1,'isContactComplete')">You have entered your phone number or address as per MGA rules. Tap to edit</h4>
+                            </div>
+                            <div class="column" style="width:15%;">
+                                    <!-- <img item-left style="width: 2em;float:left;object-fit: cover;margin:0" src="assets/img/icon-buggy.svg"> -->
+                                    <img style="width: 1.5em;float:left;object-fit: cover;margin:5px;" *ngIf="!getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-bubble-exclamation.svg" />
+                                    <img style="width: 1.5em;float:left;object-fit: cover;margin:5px;" *ngIf="getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-like.svg" />
+                                </div>
+                            </div>
+                            
+                            
+                                
+                                <!-- <div class="column" style="width:20%">
+                                    <img style="width: 1.5em;float:left;object-fit: cover;margin:0" *ngIf="!getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-exclamation-bubble.svg" />
+                                    <img style="width: 1.5em;float:left;object-fit: cover;margin:0" *ngIf="getPlayerSlotDetails(i+1,'isContactComplete')" src="assets/img/icon-like.svg" />
+                                </div> -->
+                            </div>
+                        </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="!teeSlotNew" no-padding class="slot-box">
+                <!-- (click)="toggleBookingClick(4)" -->
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                        <!-- #DDF6D6 -->
+                    <ion-col col-2 style="background-color: grey;padding:0.5em;">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-food.svg" />
+                    </ion-col>
+                    <ion-col col-9 style="background-color: white;letter-spacing: 2px;">
+                        <span style="font-style:italic;font-size: 0.8em">Food Ordering (<i class="fas fa-bullhorn"></i>coming soon)</span>
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <!-- <i style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
+                        <!-- </ion-badge> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpFood" class="slot-detail-box">
+                <!-- <ion-list no-padding> -->
+                    <!-- (click)="onActiveBookingClick()" -->
+                <ion-item *ngFor="let x of [1,2,3]" style="padding:0" >
+                    <ion-row no-padding
+                        style="border-color:#1b6a34;background-color: #DDF6D6;font-size:0.8em;border-style:solid;border-width:thin;border-radius:0.5em;border-bottom-right-radius: 0;border-bottom-left-radius: 0;">
+                        <ion-col style="text-align:left;color:#1b6a34;">02:45 PM</ion-col>
+                        <ion-col style="text-align:center">Wed, 22 May 2020</ion-col>
+                        <ion-col style="text-align:right;color:#1b6a34;">Ref #21492</ion-col>
+                    </ion-row>
+                    <ion-row no-padding
+                        style="border-color:#1b6a34;border-style:solid;border-width:thin;border-radius:0.5em;border-top-right-radius: 0;border-top-left-radius: 0;">
+                        <ion-col no-padding>
+                            <img style="width: 4em;float:left;object-fit: cover;" src="img/course-default.png'"
+                                onerror="this.src='img/course-default.png'">
+                            <h3 style="color:#1b6a34;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">Tasik
+                                Puteri Golf & Country Club</h3>
+                            <p>Booking By: <span style="color:#1b6a34;">Fazel</span></p>
+                        </ion-col>
+                        <ion-col col-3
+                            style="text-align:center;border-color:#1b6a34;border-left-style:solid;border-left-width:thin">
+                            Total<br>
+                            <span style="color:#1b6a34;">RM 240</span></ion-col>
+                    </ion-row>
+                </ion-item>
+                <!-- </ion-list> -->
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="!teeSlotNew" no-padding class="slot-box"> <!-- payment-->
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;" (click)="toggleBookingClick(5)">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-payment.svg" />
+                    </ion-col>
+                    <ion-col style="background-color: white;letter-spacing: 2px;" (click)="toggleBookingClick(5)">
+                        Payment
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <!-- <i style="color:red" class="fa fa-fw fa-times-circle "></i> -->
+                        <i *ngIf="checkBookingTabsComplete('5')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('5')" *ngIf="!checkBookingTabsComplete('5')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpPayment" class="slot-detail-box">
+                <ion-list *ngIf="refresherBill">
+                    <ion-item style="text-align:center">
+                        <i class="fas fa-sync fa-spin"></i>
+                    </ion-item>
+                </ion-list>
+                <ion-item *ngIf="!refresherBill && !bookingItemBill" (click)="getBookingItemizedBill()">
+                    Error getting Itemized Bill. Tap here to refresh.
+                </ion-item>
+                <ng-container *ngIf="!refresherBill && bookingItemBill && bookingItemBill.billItems && bookingItemBill.billItems.length > 0">
+                    
+                <!-- <ion-list no-padding> -->
+                    <div class="row">
+                        <div class="column bill-description bill-header">Description</div>
+                        <div class="column bill-rate bill-header">Rate</div>
+                        <div class="column bill-quantity bill-header">Qty</div>
+                        <div class="column bill-price bill-header">Price</div>
+                    </div>
+                    <!-- <ion-scroll scrollY="true"> -->
+                    <ng-container *ngIf="bookingItemBill && bookingItemBill.billItems.length > 0">
+                    <div class="row" *ngFor="let item of bookingItemBill.billItems; let billIdx = index">
+                        <div class="column bill-description">{{item.itemName}}</div>
+                        <div class="column bill-rate">{{item.unitPrice | number: '1.2-2'}}</div>
+                        <div class="column bill-quantity">{{item.itemCount}}</div>
+                        <div class="column bill-price">{{item.itemPrice | number: '1.2-2'}}</div>
+                    </div>
+                </ng-container>
+            <!-- </ion-scroll> -->
+                    <!-- <div class="row">
+                        <div class="column bill-description">Green Fees</div>
+                        <div class="column bill-rate">200</div>
+                        <div class="column bill-quantity">4</div>
+                        <div class="column bill-price">800.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="column bill-description">Buggy Fees</div>
+                        <div class="column bill-rate">60</div>
+                        <div class="column bill-quantity">2</div>
+                        <div class="column bill-price">120.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="column bill-description">Caddie Fees</div>
+                        <div class="column bill-rate">75</div>
+                        <div class="column bill-quantity">2</div>
+                        <div class="column bill-price">150.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="column bill-description">Caddie Booking</div>
+                        <div class="column bill-rate">50</div>
+                        <div class="column bill-quantity">1</div>
+                        <div class="column bill-price">50.00</div>
+                    </div><br>
+                    <div class="row">
+                        <div class="column bill-description">Government Tax (SST)</div>
+                        <div class="column bill-rate">6%</div>
+                        <div class="column bill-quantity">&nbsp;</div>
+                        <div class="column bill-price">67.20</div>
+                    </div><br> -->
+                    <br>
+                    
+                    <div class="row" style="font-weight:bold;font-size:2rem;">
+                        
+                        <div class="column bill-description" style="width:50%">
+                            <span style="color:red;" *ngIf="bookingSlot.amountPaid === 0">Total amount</span> 
+                            <span style="color:red;" *ngIf="bookingSlot.amountPaid > 0 && bookingSlot.amountPaid < bookingSlot.amountPayable">Remaining amount</span>
+                            <span style="color:#30bb5b" *ngIf="bookingSlot.amountPaid === bookingSlot.amountPayable">Total paid</span>
+
+                        </div>
+                        <!-- <div class="column bill-rate">&nbsp;</div> -->
+                        <!-- <div class="column bill-quantity">&nbsp;</div> -->
+                        <div class="column bill-price" style="width:50%">
+                            
+                            <span style="color:#30bb5b;" *ngIf="bookingItemBill.totalAmount&&bookingItemBill&&(bookingSlot.amountPayable === bookingSlot.amountPaid); else needPay">
+                                {{bookingSlot.slotAssigned.currency.symbol}} {{getBookingTotalAmount() | number :'1.2-2'}}
+                            </span>
+                            <ng-template #needPay>
+                            <span style="color:red;" *ngIf="bookingItemBill.totalAmount&&bookingItemBill">
+                                {{bookingSlot.slotAssigned.currency.symbol}} {{getBookingTotalAmount() | number :'1.2-2'}}
+                            </span>
+                        </ng-template>
+                            <!-- <span *ngIf=""> {{bookingItemBill.totalAmount | number :'1.2-2'}}</span> -->
+                            <!-- {{bookingItemBill.totalAmount?bookingItemBill.totalAmount:bookingSlot.amountPayable?bookingSlot.amountPayable:0 | number: '1.2-2'}} -->
+                            
+                        </div>
+                        <!-- bookingItemBill?bookingItemBill.totalAmount:0 -->
+                    </div>
+                    <div *ngIf="bookingSlot.amountPaid > 0 && bookingSlot.amountPaid < bookingSlot.amountPayable" class="row" style="color:#30bb5b;font-size: 1.5rem;">
+                        <div class="column" style="width:50%">
+                            Paid amount
+                        </div>
+                        <div class="column" style="width:50%; text-align: right;">
+                            {{bookingSlot.slotAssigned.currency.symbol}} {{bookingSlot.amountPaid}}
+                        </div>
+                        </div>
+                    <br>
+                    <ion-item *ngIf="!paymentClickedBoolean && !asgmtDiff && 
+                    (paymentStatus.toLowerCase() !== 'paid' || bookingSlot.bookingStatus.toLowerCase() !== 'paymentfull') && bookingType!=='past'">
+                        <span  style="overflow-wrap: normal; white-space: normal">
+                            <span style="text-decoration: underline; font-weight: bold;">
+                                Please Note
+                            </span> : This price may change upon payment depending on buggy/caddie availability.
+                        </span>
+                    </ion-item>
+                    <div *ngIf="bookingType!=='past' && (!paymentClickedBoolean) && (paymentStatus.toLowerCase() !== 'paid' || paymentStatus.toLowerCase() !== 'paymentfull' || bookingSlot.bookingStatus !== 'PaymentFull')" class="row" style="font-size:1.8rem;padding: 1rem;">
+                        <div class="column" style="width:40%">
+
+                            <ion-label item-left>Pay</ion-label>
+                        </div>
+                        <div class="column" style="width:60%;padding: 0.5rem">
+                            <ion-segment item-right no-padding [(ngModel)]="paymentAmountType">
+                                <ion-segment-button value="full">
+                                    Full<span *ngIf="paymentAmountType==='full'">&nbsp;&nbsp;<i  class="fa fa-fw fa-check"></i></span>
+                                </ion-segment-button>
+                                <ion-segment-button value="deposit">
+                                    Deposit<span *ngIf="paymentAmountType==='deposit'">&nbsp;&nbsp;<i  class="fa fa-fw fa-check"></i></span>
+                                </ion-segment-button>
+                                <ion-segment-button value="mine">
+                                    Mine<span *ngIf="paymentAmountType==='mine'">&nbsp;&nbsp;<i  class="fa fa-fw fa-check"></i></span>
+                                </ion-segment-button>
+                            </ion-segment>
+                        </div>
+                    </div>
+                    <ion-item *ngIf="paymentAmountType === 'deposit'">
+                        <ion-row >
+                            <ion-col class="mg-txt-left">Deposit amount to pay</ion-col>
+                            <ion-col class="mg-txt-right">{{bookingSlot.slotAssigned.currency.symbol}}
+                                <input type="number" [disabled]="paymentStatus.toLowerCase() === 'paid'" [(ngModel)]="depositAmount" style="max-width: 5em;text-align:right"/>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            Assignments only upon full/portion payment.
+                            <!-- Caddies will only be assigned upon full/portion payment. -->
+                        </ion-row>
+                    </ion-item>
+                    <ion-item *ngIf="paymentAmountType === 'mine'">
+                        <ion-row>
+                            Your portion amount will be displayed in next page
+                        </ion-row>
+                        <!-- <ion-row >
+                            <ion-col class="mg-txt-left">Your portion to pay</ion-col>
+                            <ion-col class="mg-txt-right">{{bookingSlot.slotAssigned.currency.symbol}}
+                                <input type="number" [disabled]="true" [(ngModel)]="playerChargeAmount" style="max-width: 5em;text-align:right"/>
+                            </ion-col>
+                        </ion-row> -->
+                    </ion-item>
+                    <ion-item *ngIf="bookingType!=='past' && (!paymentClickedBoolean)">
+                        <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" (click)="onBillFullDetails()"
+                        item-left ion-button color="primary">Itemized Bill</button>
+                        <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" *ngIf="paymentStatus.toLowerCase() !== 'paid'" (click)="onCheckBuggyCaddyAssignment()"
+                        item-right ion-button color="gold">Proceed to Payment</button>
+                        <!-- (click)="onPayNow()" -->
+                        <!-- <button class="booking-book-button" *ngIf="!teeSlotNew && bookingType!=='past'" ion-button full color="danger">CANCEL THIS BOOKING</button> -->
+
+                </ion-item>
+                <!-- <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" 
+                (click)="onLocalBill()"
+                        item-right ion-button color="gold">Get Local Bill (debug only)</button> -->
+                <ion-item *ngIf="paymentClickedBoolean && (asgmtDiff || buggyDiff || caddyDiff)">
+                    <i style="color:red" class="fa fa-fw fa-exclamation-circle "></i> We were not able to fulfill all your requests :<br>
+                    <span *ngFor="let changes of bookingItemBill.changes">
+                        - {{changes}}<br>
+                    </span>
+                    <span style="font-weight: bold;">Your bill has been adjusted accordingly.</span>
+                    <!-- <ul *ngIf="getAsgmtDiffDetails('buggies','req') !== getAsgmtDiffDetails('buggies','avl')">
+                        - Buggies requested {{getAsgmtDiffDetails('buggies','req')}}, available {{getAsgmtDiffDetails('buggies','avl')}}
+                    </ul>
+                    <ul *ngIf="getAsgmtDiffDetails('caddies','req') !== getAsgmtDiffDetails('caddies','avl')">- Caddies requested {{getAsgmtDiffDetails('caddies','req')}}, available {{getAsgmtDiffDetails('caddies','avl')}}
+                    </ul>
+                    <div *ngIf="caddyDiff">
+                    <ul *ngFor="let c of caddyDiff">
+                        - {{c.caddyPreferred.firstName}} was not available.
+                    </ul>
+                    <span style="font-weight: bold;">Your bill has been adjusted accordingly.</span>
+                </div> -->
+                
+            </ion-item>
+                <ion-item *ngIf="paymentClickedBoolean">
+                    <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" (click)="onBillFullDetails()"
+                        item-left ion-button color="primary">Itemized Bill</button>
+                        <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" (click)="onViewAssignmentDetails()"
+                        item-right ion-button color="primary">View Assignments</button> 
+                </ion-item>
+                <ion-item *ngIf="paymentClickedBoolean">
+                    <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" (click)="onCancelAssignment()"
+                    item-left ion-button color="danger">Cancel</button>
+                    <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" *ngIf="bookingSlot.bookingStatus !== 'PaymentFull'" (click)="onPayNow()"
+                    item-right ion-button color="gold">Continue</button>
+                </ion-item>
+
+                <button *ngIf="(bookingSlot.bookingStatus=== 'PaymentPartial' || bookingSlot.bookingStatus === 'PaymentFull') && bookingItemBill.payments"
+                 ion-button full clear (click)="togglePayHistory()">
+                    <span *ngIf="!displayPayHistory">See payment history</span>
+                    <span *ngIf="displayPayHistory">Close</span>
+                </button>
+                <div *ngIf="displayPayHistory && (bookingSlot.bookingStatus=== 'PaymentPartial' || bookingSlot.bookingStatus === 'PaymentFull') && bookingItemBill.payments">
+                    <div class="row">
+                        <div class="column" style="font-size:1.5rem;font-weight:bold;width:30%">When</div>
+                        <div class="column" style="font-size:1.5rem;font-weight:bold;width:45%">Amount</div>
+                        <!-- <div class="column" style="font-size:1.5rem;font-weight:bold;width:25%">Type</div> -->
+                        <div class="column" style="font-size:1.5rem;font-weight:bold;width:25%">Paid By</div>
+                    </div>
+                    <div class="row"  *ngFor="let payment of bookingItemBill.payments">
+                        <div class="column" style="width:30%">
+                            {{payment.datePaid | date:"EEE, d MMMM yyyy"}}<br>
+                            {{payment.datePaid | date:"h:mm:ss a"}}</div>
+                        <div class="column" style="width:45%">{{bookingSlot.slotAssigned.currency.symbol}} {{payment.amountPaid | number: '1.2-2'}}</div>
+                        <!-- <div class="column" style="width:25%">{{payment.whatIsPaid}}</div> -->
+                        <div class="column" style="width:25%">{{payment.paidBy}}</div>
+                    </div>
+                </div>
+            </ng-container>
+
+                    
+                    <h2 *ngIf="0 && bookingType!=='past'">Payment Method</h2>
+                    <ion-list radio-group [(ngModel)]="selectPaymentMethod" *ngIf="0 && bookingType!=='past'">
+                        
+                            <!-- <h4 class="small-label" style="margin-left:1.5rem;">Where do you want to play ?</h4> -->
+                                <ion-item class="booking-option">
+                                        <!-- (click)="goCoursePicklist()" -->
+                                        <ion-radio id="payment-radio" item-left value="online" checked></ion-radio>
+                                        <!-- <ion-avatar *ngIf="clubInfo && clubInfo.clubName" item-left style="margin: 0;">
+                                                <img [src]="getClubImage(clubInfo)" 
+                                                onerror="this.src='img/default_club.png'"/>
+                                            </ion-avatar> -->
+                                            <!-- {{getClubName()}} -->
+                                  <ion-label  style="font-size: 2rem;">Online Banking</ion-label>
+                                  
+                                  <!-- <button ion-button clear item-right (click)="clearClubSelection()">
+                                      <i style="color:red" class="fas fa-2x fa-fw fa-times"></i>
+                                    </button> -->
+                                </ion-item>
+                                <ion-item  class="booking-option">
+                                    <ion-radio id="payment-radio" item-left value="debit-credit-card"></ion-radio>  
+                              <ion-label style="font-size: 2rem;">Credit / Debit Card</ion-label>                                
+                            </ion-item>
+                                <!-- <ion-item  class="booking-option">
+                                    <ion-radio item-left value="debit-card"></ion-radio>  
+                              <ion-label style="font-size: 2rem;">Debit Card</ion-label>                                
+                            </ion-item>
+                
+                                <ion-item  class="booking-option">
+                                        <ion-radio item-left value="credit-card"></ion-radio>  
+                                  <ion-label style="font-size: 2rem;">Credit Card</ion-label>                                
+                                </ion-item> -->
+                                <ion-item  class="booking-option">
+                                    <ion-radio id="payment-radio" item-left value="paypal"></ion-radio>  
+                              <ion-label style="font-size: 2rem;">PayPal</ion-label>                                
+                            </ion-item>
+                            <ion-item  class="booking-option">
+                                <ion-radio id="payment-radio" item-left value="e-wallet"></ion-radio>  
+                          <ion-label style="font-size: 2rem;">E-Wallet</ion-label>                                
+                        </ion-item>
+                                <ion-item  class="booking-option">
+                                        <ion-radio id="payment-radio" item-left value="charge-account"></ion-radio>  
+                                  <ion-label style="font-size: 2rem;">Charge to Account 
+                                    <span style="font-style:italic;font-size:xx-small">(Requires Club Confirmation)</span></ion-label>
+                                    </ion-item>
+                                </ion-list>
+                                <!-- <h3>Amount to be paid</h3> -->
+                                <!-- <ion-item no-padding> -->
+                                    
+                                        
+                                    <!-- </ion-item> -->
+                                    <!-- <ion-item *ngIf="bookingType!=='past'">
+                                            <button style="padding-left: 3rem;padding-right: 3rem;" class="booking-book-button" *ngIf="paymentStatus.toLowerCase() !== 'paid'" (click)="onPayNow()" item-right ion-button color="gold">Pay Now</button> -->
+                                            <!-- <button class="booking-book-button" *ngIf="!teeSlotNew && bookingType!=='past'" ion-button full color="danger">CANCEL THIS BOOKING</button> -->
+
+                                    <!-- </ion-item> -->
+                                    
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="!teeSlotNew" no-padding class="slot-box"> <!-- check in-->
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;" (click)="toggleBookingClick(6)">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-checkin.svg" />
+                    </ion-col>
+                    <ion-col style="background-color: white;letter-spacing: 2px;" (click)="toggleBookingClick(6)">
+                        Check-In  
+                        <!-- <span *ngIf="bookingSlot.bookingStatus.toLowerCase() === 'secured' ||
+                        bookingSlot.bookingStatus.toLowerCase() === 'paid' 
+                        || bookingSlot.bookingStatus.toLowerCase() === 'paymentfull'">{{counterDisplay()}}</span> -->
+                        <!-- <span id="demo"></span> -->
+                        <!-- <countdown-timer *ngIf="bookingSlot.bookingStatus.toLowerCase() === 'secured' || bookingSlot.bookingStatus.toLowerCase() === 'secured'" [end]="countdownTeeTime()"></countdown-timer> -->
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <!-- <i style="color:red" class="fa fa-fw fa-times-circle "></i> -->
+                        <i *ngIf="checkBookingTabsComplete('6')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('6')" *ngIf="!checkBookingTabsComplete('6')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpCheckIn" class="slot-detail-box" style="padding-left: 0.5em;">
+                <!-- Timer mode:
+<countdown-timer [start]="'2020-06-25 00:00:00'"></countdown-timer>
+ <br>
+Countdown: -->
+<!-- <countdown-timer [end]="countdownTeeTime()"></countdown-timer> -->
+
+<!-- Countdown with zero trigger: -->
+<!-- <countdown-timer (zeroTrigger)="yourOwnFunction()" [end]="'2018-01-01 00:00:00'"></countdown-timer> -->
+                <!-- <ion-list no-padding> -->
+                    <ion-item style="padding-left: 0.5em;" *ngIf="!checkBookingTabsComplete('6') && bookingType!=='past'">
+                    <ion-checkbox item-left [(ngModel)]="checkInAllPlayers" (ionChange)="onCheckInAll()" style="margin-right: 1rem;"></ion-checkbox>
+                        <ion-label item-right style="font-weight: bold;font-size: larger;">Check In For All Players</ion-label>
+                    </ion-item>
+                    <ion-list>
+                    <ion-item *ngFor="let x of bookingSlot.bookingPlayers; let i = index" style="padding-left:0.5em">
+                        <ion-checkbox *ngIf="x && !x.confirmed && bookingType!=='past'" item-left style="margin-right: 1rem;" [(ngModel)]="checkInPlayers[i]" ></ion-checkbox>
+                        <ion-label style="display: contents;">
+                            <img item-left style="max-width: 4em;float:left;object-fit: cover;border-radius:1em; height: 4em;"
+                                    [src]="x.player && x.player.image?x.player.image:''" onerror="this.src='img/default-user.jpg'">
+                                    <h2 item-right style="font-size: medium;font-weight: bold;color: green;white-space: normal;">{{getPlayerSlotDetails(i+1,'name')}} {{getPlayerSlotDetails(i+1,'id')}}</h2>
+
+                        </ion-label>
+                        
+                        
+                    </ion-item>
+                </ion-list>
+                <ion-list *ngIf="!checkBookingTabsComplete('6') && bookingType!=='past'" radio-group [(ngModel)]="arrivalOption">
+                        
+                    <!-- <h4 class="small-label" style="margin-left:1.5rem;">Where do you want to play ?</h4> -->
+                        <ion-item class="booking-option">
+                                <ion-radio item-left value="arrived"></ion-radio>
+                          <ion-label  style="font-size: 2rem;">I / We have arrived at the club</ion-label>
+                        </ion-item>
+                        <ion-item class="booking-option">
+                            <ion-radio item-left value="eta"></ion-radio>
+                          <ion-label  style="font-size: 2rem;">On the way, ETA (in mins)</ion-label>
+                        </ion-item>
+                        <div *ngIf="arrivalOption === 'eta'" style="text-align:-webkit-center">
+                            <button class="button-subtract" clear icon-only color="danger" (click)="addETAcounter(-1)" ion-button item-right>
+                                <!-- <i style="font-size:large" class="fas fa-minus"></i> -->
+                                <img src="assets/img/button-minus.svg" />
+                            </button>
+                            <button class="button-value" outline ion-button item-right>{{etaCounter}}</button>
+                            <button class="button-add"  clear icon-only (click)="addETAcounter(1)" ion-button item-right>
+                                <!-- <i style="font-size:large" class="fas fa-plus"></i> -->
+                                <img src="assets/img/button-plus.svg" /> 
+                            </button>
+                        </div>
+                        </ion-list>
+                <!-- <ion-row>
+                    <ion-col col-sm-6 col-12 style="text-align: -webkit-center;">
+                        <button ion-button outline (click)="toggleETAoption()" style="text-align: -webkit-center;font-size: medium;font-weight: bold;">
+                            <span [innerHTML]="displayArrivalOpt()"></span>
+                        </button>
+                    </ion-col>
+                    <ion-col col-sm-6 col-12 *ngIf="arrivalOption === 'eta'" style="text-align: -webkit-center;">
+                        <button class="button-subtract" clear icon-only color="danger" (click)="addETAcounter(-1)" ion-button item-right>
+                            <img src="assets/img/button-minus.svg" />
+                        </button>
+                        <button class="button-value" outline ion-button item-right>{{etaCounter}}</button>
+                        <button class="button-add"  clear icon-only (click)="addETAcounter(1)" ion-button item-right>
+                            <img src="assets/img/button-plus.svg" /> 
+                        </button>
+                    </ion-col>
+                </ion-row> -->
+                    <button *ngIf="!checkBookingTabsComplete('6') && bookingType!=='past'" ion-button full item-right (click)="onCheckInClick()">Check In</button>
+                
+            </ion-card-content>
+        </ion-card>
+        
+        <ion-card *ngIf="!teeSlotNew && bookingType==='past' && !doneRating" no-padding class="slot-box"> <!-- feedback / comment-->
+            <ion-card-header no-padding class="slot-subtitle-box" >
+                <ion-row>
+                    <ion-col col-2 style="background-color: #DDF6D6;padding:0.5em;" (click)="toggleBookingClick(7)">
+                        <img style="max-height:1.5em;width:webkit-fill-available"
+                            src="assets/img/booking-item-review.svg" />
+                    </ion-col>
+                    <ion-col col-9 style="background-color: white;letter-spacing: 2px;" (click)="toggleBookingClick(7)">
+                        Feedback / Comments
+                        <!-- <countdown-timer *ngIf="bookingSlot.bookingStatus.toLowerCase() === 'secured' || bookingSlot.bookingStatus.toLowerCase() === 'secured'" [end]="countdownTeeTime()"></countdown-timer> -->
+                    </ion-col>
+                    <ion-col col-1 style="padding-left:0;padding-right:0;">
+                        <!-- <ion-badge item-right class="custom-badge" style="color:red;"> -->
+                        <!-- <i style="color:red" class="fa fa-fw fa-times-circle "></i> -->
+                        <i *ngIf="checkBookingTabsComplete('7')" class="fa fa-fw fa-check-circle "></i>
+                        <i (click)="checkExclamationInfo('7')" *ngIf="!checkBookingTabsComplete('7')" style="color:red" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <!-- </ion-badge> -->
+                    </ion-col>
+                </ion-row>
+            </ion-card-header>
+            <ion-card-content *ngIf="grpFeedback" class="slot-detail-box" style="padding-left: 0.5em;">
+                <ion-item>
+                    <h1 style="color:#30bb5b;font-weight: bold;">Overall Club Experience {{clubRating}}</h1>
+                    <ion-item style="text-align: center; color: yellowgreen; font-size:2.5rem">
+                        <ion-icon *ngIf="getStar('club',1,'set')" (click)="setStar('club',1,'unset')" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',2,'set')" (click)="setStar('club',2,'unset')" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',3,'set')" (click)="setStar('club',3,'unset')" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',4,'set')" (click)="setStar('club',4,'unset')" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',5,'set')" (click)="setStar('club',5,'unset')" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',1,'unset')" (click)="setStar('club',1,'set')" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',2,'unset')" (click)="setStar('club',2,'set')" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',3,'unset')" (click)="setStar('club',3,'set')" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',4,'unset')" (click)="setStar('club',4,'set')" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('club',5,'unset')" (click)="setStar('club',5,'set')" name="star-outline"></ion-icon>
+                    </ion-item>
+                </ion-item>
+                <div *ngFor="let item of clubRatingItems; let idx = index">
+                <ion-item *ngIf="idx > 0" >
+                
+                 <h1 style="color:#30bb5b;font-weight: bold;">{{item.name}}</h1>
+                    <ion-item style="text-align: center; color: yellowgreen; font-size:2.5rem">
+                        <ion-icon *ngIf="getStar('clubItem'+idx,1,'set',idx)" (click)="setStar('clubItem'+idx,1,'unset',idx)" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,2,'set',idx)" (click)="setStar('clubItem'+idx,2,'unset',idx)" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,3,'set',idx)" (click)="setStar('clubItem'+idx,3,'unset',idx)" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,4,'set',idx)" (click)="setStar('clubItem'+idx,4,'unset',idx)" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,5,'set',idx)" (click)="setStar('clubItem'+idx,5,'unset',idx)" name="star"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,1,'unset',idx)" (click)="setStar('clubItem'+idx,1,'set',idx)" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,2,'unset',idx)" (click)="setStar('clubItem'+idx,2,'set',idx)" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,3,'unset',idx)" (click)="setStar('clubItem'+idx,3,'set',idx)" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,4,'unset',idx)" (click)="setStar('clubItem'+idx,4,'set',idx)" name="star-outline"></ion-icon>
+                        <ion-icon *ngIf="getStar('clubItem'+idx,5,'unset',idx)" (click)="setStar('clubItem'+idx,5,'set',idx)" name="star-outline"></ion-icon>
+                        </ion-item>
+
+                </ion-item>
+                </div>
+                <ion-item (click)="onRateApp()">
+                    <h1 style="color:#30bb5b;font-weight: bold;">Booking App Experience</h1> 
+                    <h3 style="text-align: center; color: yellowgreen; font-size:2rem">Please tap here to rate</h3>
+                </ion-item>
+            <ion-item *ngIf="0">
+                <h1 style="color:#30bb5b;font-weight: bold;">Booking Experience {{bookingRating}}</h1> 
+                <ion-item style="text-align: center; color: yellowgreen; font-size:2.5rem">
+                    <ion-icon *ngIf="getStar('booking',1,'set')" (click)="setStar('booking',1,'unset')" name="star"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',2,'set')" (click)="setStar('booking',2,'unset')" name="star"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',3,'set')" (click)="setStar('booking',3,'unset')" name="star"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',4,'set')" (click)="setStar('booking',4,'unset')" name="star"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',5,'set')" (click)="setStar('booking',5,'unset')" name="star"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',1,'unset')" (click)="setStar('booking',1,'set')" name="star-outline"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',2,'unset')" (click)="setStar('booking',2,'set')" name="star-outline"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',3,'unset')" (click)="setStar('booking',3,'set')" name="star-outline"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',4,'unset')" (click)="setStar('booking',4,'set')" name="star-outline"></ion-icon>
+                    <ion-icon *ngIf="getStar('booking',5,'unset')" (click)="setStar('booking',5,'set')" name="star-outline"></ion-icon>
+                    <!-- <ion-icon name="star-half"></ion-icon> -->
+                    <!-- <i class="fas fa-fw fa-star"></i>
+                    <i class="fas fa-fw fa-star"></i>
+                    <i class="fas fa-fw fa-star"></i>
+                    <span class="fa-stack">
+                          <i class="fas fa-star-half fa-stack-1x "></i>
+                          <i class="far fa-star-half fa-stack-1x fa-flip-horizontal"></i>
+                    </span>
+                    <i class="far fa-fw fa-star"></i> -->
+                    <!-- <i class="far fa-fw fa-star-half"></i> -->
+                </ion-item>
+                <!-- <ionic3-star-rating #bookingRating
+                activeIcon = "ios-star"
+                defaultIcon = "ios-star-outline"
+                activeColor = "#FFD700" 
+                defaultColor = "#1b6a34"
+                readonly="false"
+                rating="3"
+                fontSize = "32px"
+                (ratingChanged)="logBookingRating($event)">
+            </ionic3-star-rating> -->
+            </ion-item>
+            <ion-item *ngIf="uniqCaddy && uniqCaddy.length > 0" (click)="getCaddy()" style="padding-right:0">  
+                <h1 style="color:#30bb5b;font-weight: bold;">Caddie Experience</h1>
+                    <ion-row *ngFor="let caddy of uniqCaddy; let caddyIdx = index">
+                        <ion-col col-3>
+                            <img (click)="onZoomImageCaddy(caddy)" style="max-width: 5rem;object-fit: cover;border-radius:1em; height: 5rem;margin-top:0.5rem"
+                            [src]="caddy.caddyAssigned?caddy.caddyAssigned.caddyImage:''" onerror="this.src='img/default-user.jpg'">
+                        </ion-col>
+                        <ion-col col-3 style="overflow:hidden">
+                            <span style="overflow:hidden">{{caddy.caddyAssigned?caddy.caddyAssigned.firstName:''}}</span>
+                            <br>{{caddy.caddyAssigned?"("+caddy.caddyAssigned.staffId+")":''}}
+                        </ion-col>
+                        <ion-col col-6 style="text-align: center; color: yellowgreen; font-size:2rem">
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,1,'set',caddyIdx)" (click)="setStar('caddy'+caddyIdx,1,'unset',caddyIdx)" name="star"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,2,'set',caddyIdx)" (click)="setStar('caddy'+caddyIdx,2,'unset',caddyIdx)" name="star"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,3,'set',caddyIdx)" (click)="setStar('caddy'+caddyIdx,3,'unset',caddyIdx)" name="star"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,4,'set',caddyIdx)" (click)="setStar('caddy'+caddyIdx,4,'unset',caddyIdx)" name="star"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,5,'set',caddyIdx)" (click)="setStar('caddy'+caddyIdx,5,'unset',caddyIdx)" name="star"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,1,'unset',caddyIdx)" (click)="setStar('caddy'+caddyIdx,1,'set',caddyIdx)" name="star-outline"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,2,'unset',caddyIdx)" (click)="setStar('caddy'+caddyIdx,2,'set',caddyIdx)" name="star-outline"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,3,'unset',caddyIdx)" (click)="setStar('caddy'+caddyIdx,3,'set',caddyIdx)" name="star-outline"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,4,'unset',caddyIdx)" (click)="setStar('caddy'+caddyIdx,4,'set',caddyIdx)" name="star-outline"></ion-icon>
+                            <ion-icon *ngIf="getStar('caddy'+caddyIdx,5,'unset',caddyIdx)" (click)="setStar('caddy'+caddyIdx,5,'set',caddyIdx)" name="star-outline"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                
+            </ion-item>
+            <ion-item>
+                <h1 style="color:#30bb5b;font-weight: bold;">Comments</h1> 
+            </ion-item>
+            
+            <textarea #myInput id="myInput" rows="3" maxLength="500" (keyup)="resize()" placeholder="Please add comment here" [(ngModel)]="myStuff"></textarea>
+            <ion-item style="text-align: center;">
+            <button ion-button item-left clear>Thank you for Rating Us</button>
+            <button ion-button item-right (click)="onRateSubmit()">Submit</button>
+            </ion-item>
+            </ion-card-content>
+        </ion-card>
+    
+        <!-- <ion-card no-padding style="border-style:solid;border-width:thin;border-radius: 1em">
+                            <ion-card-header no-padding style="font-size:1.5em;font-weight:bold">
+                                    <ion-row>
+                                            <ion-col col-2 style="background-color: #DDF6D6;">
+                                                    <img style="max-height:1.5em;width:webkit-fill-available" src="assets/img/booking-item-time.svg" />
+                                                </ion-col>
+                                                <ion-col style="background-color: white;letter-spacing: 2px;">
+                                                        Feedback / Comments
+                                                </ion-col>
+                                    </ion-row>
+                                </ion-card-header>
+                    </ion-card> -->
+    </ion-list>
+    </ion-item-group>
+
+
+</ion-content>
+<ion-footer style="background-color: #DDF6D6 !important;">
+    <ion-row style="text-align: center;">
+        <ion-col col-2>
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-calendar.png" />
+        </ion-col>
+        <ion-col col-2 (click)="onNotificationsClick()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-notification.png" />
+        </ion-col>
+        <ion-col col-4 (click)="onHomeClick()">
+        <img  style="height: 5rem;" src="assets/img/footer-icon-mg2u.png" />
+    </ion-col>
+        <ion-col col-2 >
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/icon-question-only.png" />
+        </ion-col>
+        <ion-col col-2 (click)="openProfile()">
+            <img style="height: 5rem; padding:1rem;" class="footer-icons" src="assets/img/footer-icon-player.png" />
+        </ion-col>
+    </ion-row>
+    
+</ion-footer>

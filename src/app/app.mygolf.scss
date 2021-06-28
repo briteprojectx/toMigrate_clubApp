@@ -1,0 +1,290 @@
+//
+//.toolbar-custom {
+//  background-color: #FFF !important;
+//}
+//
+//.bar-button-default {
+//  color: #fff !important;
+//}
+//.reload-score {
+//  .alert-message {
+//    color: darkred;
+//    font-weight: bold;
+//  }
+//}
+//.mygolf-old-background, .mygolf-sign-in-page-background{
+//	background-color: #fff !important;
+//	background:  url(../theme/img/bg1.png), url(../theme/img/bg2.png), url(../theme/img/cover.png) !important;
+//	background-repeat: no-repeat, repeat-x,repeat-x  !important;
+//    background-position:  right bottom, left bottom, left top !important;
+//    background-size: 100px, 40px, 200px !important;
+//}
+//
+//  .mygolf-page-background {
+//    //background-color: $primary;
+//    background-color: #F1F8E9;
+//  }
+//
+//.loading-wrapper {
+//  padding: 24px;
+//  max-width: 280px;
+//  max-height: 90%;
+//  color: $white;
+//  background:  rgba(0, 0, 0, 0.2);
+//  //box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+//  box-shadow: none;
+//  border-radius: 40px;
+//}
+//.nobg{
+//  .loading-wrapper{
+//    //background-color: transparent;
+//    background:  rgba(0, 0, 0, 0.2);
+//    box-shadow: none;
+//  }
+//}
+//
+//
+//.button-inprogress {
+//  background-color: #B83A3A !important;
+//
+//}
+//
+//.text-inprogress {
+//  color: white !important;
+//}
+//
+//.thumbnail-rounded {
+//  border-radius: 45px !important;
+//}
+//
+//.button-par {
+//  background-color: #FCEE93 !important;
+//  color: black !important;
+//}
+//
+//.item-inner {
+//  border-bottom: 0px;
+//  padding:0px;
+//}
+//
+//.item {
+//  border-bottom: 1px solid #CCC;
+//	.item-inner {
+//	  border-bottom: 0px;
+//	  padding:0px;
+//	}
+//}
+//
+//ion-list {
+//  .item {
+//  border-bottom: 1px solid #CCC;
+//	.item-inner {
+//	  border-bottom: 0px;
+//	  padding:0px;
+//	}
+//}
+//
+//}
+
+//
+//
+//ion-badge {
+//  border: 1px solid #ccc;
+//  text-shadow: 0 0 0 #fff;
+//  background-image: linear-gradient(#fff, #f1f1f1);
+//  padding: .2em .5em;
+//  line-height: 1.7;
+//}
+//
+//.scorecard-head {
+//  background-color: #424242;
+//  color: #FFF;
+//}
+//
+//.scorecard-par {
+//  background-color: #FCEE93 !important; //fadb4e
+//  color: black !important;
+//}
+//
+//.scoring {
+//  font-size: xx-large;
+//  border-radius: 30px;
+//  border-style: solid;
+//  border-width: thin;
+//}
+//
+//.custom-card {
+//  margin: 0px;
+//  /*width: 100%;*/
+//}
+//
+//.scorecard-name {
+//  overflow: hidden;
+//  text-overflow: ellipsis;
+//  white-space: nowrap;
+//}
+//
+//.custom-textfield {
+//  border: 1px solid $light !important;
+//  color: $light;
+//  border-radius: .6em !important;
+//  margin-bottom: 5px;
+//  height: 1.0em;
+//  min-height: 3.4rem;
+//  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, .2);
+//  background: transparent;
+//  font-size: 1.4rem;
+//}
+//
+//.custom-item {
+//  background-image: -webkit-linear-gradient(#fff, #f1f1f1);
+//  background-image: -moz-linear-gradient(#fff, #f1f1f1);
+//  background-image: -ms-linear-gradient(#fff, #f1f1f1);
+//  background-image: -o-linear-gradient(#fff, #f1f1f1);
+//  font-size:small;
+//}
+//
+//
+//.custom-thumbnail img {
+//  min-width: 7.0rem !important;
+//  min-height: 7.6rem !important;
+//  border: 1px solid #e1e1e1;
+//  -moz-box-shadow: 0 0 5px #e1e1e1;
+//  -webkit-box-shadow: 0 0 5px #e1e1e1;
+//  margin-top: -25px !important;
+//}
+//
+//.custom-p {
+//  -webkit-margin-before: .6em;
+//  -webkit-margin-after: .6em;
+//  text-align: center;
+//}
+//
+//.name {
+//  text-align: left;
+//}
+//
+//.scorecard-scores {
+//  text-align: center;
+//}
+//
+//.score-eagle {
+//  background-color: #FF4343;
+//  color: white;
+//}
+//
+//.score-par {
+//  background-color: #FCEE93;
+//  color: black;
+//}
+//
+//.score-birdie {
+//  background-color: #6DA9D3;
+//  color: white;
+//}
+//
+//.score-bogey {
+//  /*background-color: #FFFFFF;*/
+//  color: black;
+//}
+//
+////.button-danger {
+////  border: 1px solid #711414;
+////  background: #ab2525;
+////  text-shadow: 0 -1px 1px #711414;
+////  background-image: linear-gradient(#c44f4f /*{a-bup-background-start}*/, #ab2525 /*{a-bup-background-end}*/);
+////  border-radius: 1em;
+////  height: 2.6em;
+////}
+//
+//.error {
+//  border: solid 1px $danger;
+//}
+//
+//.error-box {
+//  color: $danger;
+//}
+//
+//a {
+//  color: #2489ce;
+//  font-weight:bold;
+//}
+//
+//[item-left]{
+//    margin: 0px;
+//}
+//
+//[item-right] {
+//    margin: 0px;
+//}
+//
+
+//
+//.ion-checkbox {
+//    margin: $checkbox-margin;
+//}
+//
+///*ion-select{
+//	border:1px solid #DDD !important;
+//	margin-bottom:5px;
+//	border-radius:1rem;
+//	max-width:100%;
+//	font-size:1.7rem;
+//	font-weight:bold;
+//	.select-icon{
+//		padding:1rem;
+//	}
+//}*/
+//
+//.header-panel ion-label{
+//  margin-top:6px;
+//  margin-bottom:6px;
+//}
+//
+//.bar-button-default {
+//  font-size: 1.3rem;
+//}
+//
+//.logged-in-user {
+//  color:$danger !important;
+//}
+//.swiper-container-horizontal > .swiper-pagination {
+//    bottom: 2px;
+//    left: 0;
+//    width: 100%;
+//  }
+//
+//.button {
+//  text-transform: none;
+//}
+//
+////#username input[placeholder]::-webkit-input-placeholder{color:white; opacity:0.8}
+////#password input[placeholder]::-webkit-input-placeholder{color:white; opacity:0.8}
+///** Nik : need to test in app **/
+//
+//.list-header{
+//	font-size: $font-size-base * 1.0;
+//    text-align: center;
+//    background-color: $badge-background;
+//}
+//.list-subHeader{
+//	font-size: $font-size-base * 1.2 !important;
+//    text-align: left;
+//    background-color: $white;
+//}
+//
+///* =======  ICON CSS  ======== */
+//
+//
+
+//.action-sheet-title{
+//  text-align: center;
+//  background-color: $primary;
+//  color: $white;
+//  font-weight: bold;
+//}
+//
+//.action-sheet-cancel {
+//  border-top: 1px solid #dedede;
+//  color: $danger;
+//}

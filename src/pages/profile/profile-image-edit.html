@@ -1,0 +1,44 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title center *ngIf="!friend" >Change Profile Picture</ion-title >
+        <ion-title center *ngIf="friend">{{(player$|async)?.firstName}}'s Picture :</ion-title >
+    </ion-navbar >
+</ion-header >
+<ion-content class="mygolf-page-background" >
+	<ion-card>
+        <ion-card-content >
+            <img [src]="(playerPhoto$ |async)" onerror="this.src='img/default_user.png'"/>
+        </ion-card-content >
+    </ion-card >
+
+    <ion-fab *ngIf="isCordova()"  bottom left>
+        <button ion-fab color="primary" (click)="takePhoto()" >
+            <ion-icon name="camera" ></ion-icon >
+        </button >
+    </ion-fab>
+    <ion-fab *ngIf="isCordova()" bottom center>
+        <button ion-fab (click)="selectPhoto()" >
+            <ion-icon name="image" ></ion-icon >
+        </button >
+    </ion-fab>
+    <!-- <ion-fab *ngIf="!isCordova()" bottom center>
+        <button ion-fab (click)="selectPhoto()" >
+            <ion-icon name="image" ></ion-icon >
+        </button >
+    </ion-fab> -->
+    <!-- <ion-fab *ngIf="!isCordova()" bottom center>
+        <button ion-fab (click)="selectPhoto()" >
+            <ion-icon name="image" ></ion-icon >
+        </button >
+    </ion-fab> -->
+    <ion-fab bottom right>
+        <button ion-fab (click)="cancelEditImage()" color="danger" >
+            <ion-icon name="close" ></ion-icon >
+        </button >
+    </ion-fab>
+
+
+    <h4 *ngIf="!isCordova()" >Upload photo feature only supported in mobile app. </h4 >
+
+
+</ion-content >

@@ -1,0 +1,97 @@
+<ion-header >
+    <ion-navbar >
+        <ion-title >Profile</ion-title >
+        <ion-buttons end >
+            <button ion-button icon-only (click)="onCancelClick()" >
+                <ion-icon name="close" ></ion-icon >
+            </button >
+        </ion-buttons >
+    </ion-navbar >
+</ion-header >
+
+
+<ion-content class="edit-profile">
+    <div padding >
+        <ion-list >
+            <ion-item >
+                <ion-label inline >First Name</ion-label >
+                <ion-input type="text" [(ngModel)]="player.firstName" maxlength="50" ></ion-input >
+            </ion-item >
+
+            <ion-item >
+                <ion-label >Last Name</ion-label >
+                <ion-input type="text" [(ngModel)]="player.lastName" maxlength="50" ></ion-input >
+            </ion-item >
+
+            <ion-item >
+                <ion-label >Email</ion-label >
+                <ion-input type="email" [(ngModel)]="player.email" maxlength="50" ></ion-input >
+            </ion-item >
+            <!-- <p>{{player.email}} {{hasEmailChanged()}}</p> -->
+            <ion-label *ngIf="hasEmailChanged()" style="color:red; white-space:normal">*** You are changing email. Please enter new password to proceed</ion-label>
+            <ion-item *ngIf="hasEmailChanged()">
+                <ion-label style="color:red" >New Password</ion-label > 
+                <ion-input type="password" [(ngModel)]="newPassword" maxlength="50" ></ion-input >
+            </ion-item >
+            
+            <ion-item *ngIf="hasEmailChanged()">
+                <ion-label style="color:red" >Current Password</ion-label >
+                <ion-input type="password" [(ngModel)]="confirmPassword" maxlength="50" ></ion-input >
+            </ion-item >
+
+            <ion-item >
+                <ion-label >Mobile</ion-label >
+                <ion-input type="tel" placeholder="Min length of 10 digits" [(ngModel)]="player.phone" maxlength="50" ></ion-input >
+            </ion-item >
+
+
+            <!-- <button ion-item (click)="onBirthDateClick()" *ngIf="cordova()" >
+                <span >Date of Birth</span >
+                <span style="float:right" >{{dobDisplay}}</span >
+            </button >
+            <ion-item *ngIf="!cordova()">
+                <ion-label>Date of Birth</ion-label>
+                <ion-datetime [(ngModel)]="dob" ></ion-datetime>
+            </ion-item> -->
+            <ion-item>
+                <ion-label>Date of Birth</ion-label>
+                <ion-datetime [(ngModel)]="dob" ></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>Nationality</ion-label>
+                <ion-select interface="alert" [(ngModel)]="player.nationalityId">
+                    <ion-option *ngFor="let country of countryList"  [value]="country.id">
+                         {{country.name}}</ion-option>
+                        </ion-select >
+              </ion-item>
+            <ion-item>
+                    <!-- <ion-label>Residing In</ion-label> -->
+                    <ion-label>Residing In</ion-label>
+                    <ion-select interface="alert" [(ngModel)]="player.countryId">
+                        <ion-option *ngFor="let country of countryList"  [value]="country.id">
+                             {{country.name}}</ion-option>
+                            </ion-select >
+                  </ion-item>
+            <ion-segment padding [(ngModel)]="player.teeOffFrom" >
+			<ion-label>T-Off</ion-label>
+                <ion-segment-button value="Black" >Black</ion-segment-button >
+                <ion-segment-button value="Blue" >Blue</ion-segment-button >
+                <ion-segment-button value="White" >White</ion-segment-button >
+                <ion-segment-button value="Red" >Red</ion-segment-button >
+            </ion-segment >
+
+
+            <ion-segment padding [(ngModel)]="player.gender">
+                <ion-segment-button value="M" >
+                    Male
+                </ion-segment-button >
+                <ion-segment-button value="F" >
+                    Female
+                </ion-segment-button >
+            </ion-segment >
+
+            <button ion-button color="primary" block (click)="updateProfile()" >Update Profile</button >
+        </ion-list >
+    </div >
+
+</ion-content >

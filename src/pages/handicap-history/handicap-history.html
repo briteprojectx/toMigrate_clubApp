@@ -1,0 +1,290 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons end *ngIf="fromMenu==='menu'">
+            <button ion-button icon-left (click)="onRefreshClick(null)">
+                <i class="fa fa-lg fa-fw fa-refresh" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+        <ion-title center>Handicap History</ion-title>
+        <!-- MyGolf2u -->
+    </ion-navbar>
+
+    <!-- <ion-toolbar  *ngIf="fromMenu" color="light">
+        <ion-searchbar placeholder="Search player by name or email" focuser #searchBar [(ngModel)]="searchPlayers"
+                       debounce="1500"
+                       (ionInput)="onSearchInput()" [showCancelButton]="true">
+
+        </ion-searchbar>
+    </ion-toolbar> -->
+    <!-- (click)="openProfile()"  -->
+</ion-header>
+
+<ion-content>
+    
+    <button text-wrap *ngIf="fromMenu==='menu'" ion-button clear small style="width:100%" (click)="openPlayerList()"
+        color="danger">
+        Looking for other players? Tap here.
+    </button>
+    <button text-wrap *ngIf="subsActive || playerSubs" ion-button clear small style="width:100%" (click)="onChangeHcpSystem()">
+       To view for different Handicap System. Tap here.
+    </button>
+    <!-- <ion-refresher pullMin="200" (ionRefresh)="onRefreshClick($event)">
+        <ion-refresher-content
+            pullingIcon="arrow-down"
+            pullingText="drag down to reload"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing ...">
+        </ion-refresher-content>
+    </ion-refresher> -->
+    <ion-card *ngIf="gameRounds && refreshAttempted && subsActive && handicapHistory && handicapHistory.player" class="custom-card">
+        <ion-card-content>
+            <ion-item>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col class="player-field">Player Name</ion-col>
+                        <ion-col class="player-param">{{(handicapHistory)?handicapHistory.player.playerName:''}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col class="player-field">Country</ion-col>
+                        <ion-col class="player-param">{{(handicapHistory)?handicapHistory.player.countryName:''}}
+                        </ion-col>
+                    </ion-row>
+                    <!-- <ion-row>
+                            <ion-col class="player-field">NHS Handicap Index</ion-col>
+                            <ion-col class="player-param">{{(handicapHistory)?handicapHistory.player.handicapIndex:''}}</ion-col>
+                        </ion-row> -->
+                    <ion-row  (click)="onChangeHcpSystem()"> 
+                        <ion-col class="player-field" >Handicap System</ion-col>
+                        <ion-col class="player-param" style="color:#30bb5b">
+                            {{getHandicapSystemDetail(handicapHistory.handicapSystem, 'code')}}</ion-col>
+                    </ion-row>
+                    <!-- <ion-row>
+                                <ion-col class="player-field">mg2u Handicap Index</ion-col>
+                                <ion-col class="player-param">{{(handicapHistory)?.player.mygolfHandicapIndex | number: '1.1-1'}}</ion-col>
+                            </ion-row> -->
+                    <!-- <ion-row>
+                                <ion-col class="player-field">Club Handicap</ion-col>
+                                <ion-col class="player-param">{{(handicapHistory)?handicapHistory.handicapIndex:''}}</ion-col>
+                        </ion-row> -->
+                    <ion-row>
+                        <ion-col class="player-field">Total Rounds Read</ion-col>
+                        <ion-col class="player-param">{{(handicapHistory)?handicapHistory.totalRoundsRead:''}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col class="player-field">Handicap Index</ion-col>
+                        <ion-col class="player-param">
+                            <strong>{{(handicapHistory)?handicapHistory.handicapIndex:''}}</strong>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="handicapHistory.handicapIndexDate">
+                        <ion-col class="player-field">Handicap Index Date</ion-col>
+                        <ion-col class="player-param">{{handicapHistory.handicapIndexDate | date:"MMM d, yyyy"}}
+                        </ion-col>
+                    </ion-row>
+                    <button *ngIf="!seeMore && showInfo(handicapHistory.handicapSystem)" (click)="toggleSeeMore()" ion-button clear small style="width:100%;font-size: x-small;">
+                        <span >See More</span>
+                    </button>
+                    
+                    <!-- <button *ngIf="seeMore" (click)="toggleSeeMore()" ion-button clear small style="width:100%;font-size: x-small;" color="danger">
+                        <span >See Less</span>
+                    </button> -->
+                    <ng-container *ngIf="seeMore && showInfo(handicapHistory.handicapSystem)">
+                        <ion-row *ngIf="handicapHistory.initialHandicapIndex">
+                            <ion-col class="player-field">Initial Handicap Index</ion-col>
+                            <ion-col class="player-param">{{(handicapHistory)?handicapHistory.initialHandicapIndex:''}}
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row *ngIf="handicapHistory.lowHandicapIndex">
+                            <ion-col class="player-field">Lowest Handicap Index</ion-col>
+                            <ion-col class="player-param">{{(handicapHistory)?handicapHistory.lowHandicapIndex:''}}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.lowHandicapStartDate">
+                            <ion-col class="player-field">Low Handicap Start Date</ion-col>
+                            <ion-col class="player-param">{{handicapHistory.lowHandicapStartDate  | date:"MMM d, yyyy"}}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.lowHandicapEndDate">
+                            <ion-col class="player-field">Low Handicap End Date</ion-col>
+                            <ion-col class="player-param">{{handicapHistory.lowHandicapEndDate  | date:"MMM d, yyyy"}}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.handicapIndexAfterSoftCap">
+                            <ion-col class="player-field">Handicap Index After Soft Cap</ion-col>
+                            <ion-col class="player-param">
+                                {{(handicapHistory)?handicapHistory.handicapIndexAfterSoftCap:''}}</ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.handicapIndexMovement">
+                            <ion-col class="player-field">Handicap Index Movement</ion-col>
+                            <ion-col class="player-param">{{(handicapHistory)?handicapHistory.handicapIndexMovement:''}}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.handicapIndexAfterHardCap">
+                            <ion-col class="player-field">Handicap Index After Hard Cap</ion-col>
+                            <ion-col class="player-param">
+                                {{(handicapHistory)?handicapHistory.handicapIndexAfterHardCap:''}}</ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.totalAverageDifferentialsUsed">
+                            <ion-col class="player-field">Total Avg. Diff. Used</ion-col>
+                            <ion-col class="player-param">
+                                {{(handicapHistory)?handicapHistory.totalAverageDifferentialsUsed:''}}</ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="handicapHistory.averageValue">
+                            <ion-col class="player-field">Average Value</ion-col>
+                            <ion-col class="player-param">
+                                {{(handicapHistory)?handicapHistory.averageValue:''}}</ion-col>
+                        </ion-row>
+                        <button (click)="toggleSeeMore()" ion-button clear small style="width:100%;font-size: x-small;" color="danger">
+                          <span *ngIf="seeMore && showInfo(handicapHistory.handicapSystem)">See Less</span>
+                         </button>
+                    </ng-container>
+
+                </ion-grid>
+            </ion-item>
+            <!-- <ion-item> 
+                    <p>Player Name: {{(handicapHistory)?handicapHistory.player.playerName:''}}</p>
+                    <p>Country : {{(handicapHistory)?handicapHistory.player.countryName:''}}</p>
+                    <p>Home Club : myGolf2u club</p>
+                    <p>Membership No : R1235A</p>
+                    <p>Handicap Index :  {{(handicapHistory)?handicapHistory.handicapIndex:''}}</p>
+                    <p>Handicap : 17</p>
+                    <p>Average DIff : {{(handicapHistory)?handicapHistory.averageValue:''}}</p>
+                    <p>Calculated on : {{(handicapHistory)?handicapHistory.calculatedOn:''}}</p>
+                    <p>Total Rounds Read : {{(handicapHistory)?handicapHistory.totalRoundsRead:''}}</p>
+                </ion-item> -->
+
+            <!-- <ion-item>Player Name</ion-item>
+                <ion-item>Country</ion-item>
+                <ion-item>Home Club</ion-item>
+                <ion-item>Membership No</ion-item>
+                <ion-item>Handicap Index</ion-item>
+                <ion-item>Handicap</ion-item>
+                <ion-item>Calculated On</ion-item> -->
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-list class="scorecard-list">
+        <ng-container *ngIf="handicapHistory && gameRounds && refreshAttempted && subsActive">
+            <button ion-button clear small style="width:100%;font-size: x-small;">
+                <i>* Calculated on : {{handicapHistory.calculatedOn | date:"MMMM d, yyyy"}}</i>
+            </button>
+        </ng-container>
+
+        <div *ngIf="handicapHistory && gameRounds && refreshAttempted && subsActive">
+            <!-- <button ion-item *ngFor="let round of gameRounds">
+                {{round.clubName}}
+                <br> {{round.courseNames}}
+            </button> -->
+            <button text-wrap [ngStyle]="round.used?{'background-color':'#f3f9f1'}:''" (click)="goHistoryDetails(round)" ion-item class="scorecard-item" *ngFor="let round of gameRounds">
+
+                <!-- <span item-left style="margin:0"> -->
+                    <p class="played-on">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        {{round.roundDate | date:"MMMM d, yyyy"}} &nbsp;
+    
+                        <!-- &nbsp;<i *ngIf="round.used" class="fa fa-check-square check-used"></i> -->
+                    </p>
+                    <p *ngIf="round.competitionRound">
+    
+                        <span item-left><i ion-text color="danger" class="fa fa-trophy" aria-hidden="true"></i></span>
+                        <span danger>
+                            {{round.competitionName}}
+                        </span>
+                    </p>
+                    <p class="club-name">{{round.clubName}}</p>
+                    <p class="course-names">
+                        <i class="fa fa-map-marker fa-location" aria-hidden="true"></i>
+                        {{round.courseNames[0]}} {{(round.courseNames[1])?"| "+round.courseNames[1]:''}}
+                    </p>
+                    <p color="blue" class="flight-members">
+                        <i class="fa fa-hashtag" aria-hidden="true"></i>
+                        Course : {{round.rating.courseRating}} | Slope : {{round.rating.slopeRating}} | Score Diff :
+                        {{round.scoreDifferential}}
+                        <!-- {{round.averageDifferential}} -->
+                    </p>
+                    <p *ngIf="handicapHistory && handicapHistory.handicapSystem && showInfo(handicapHistory.handicapSystem)" color="blue" class="flight-members">
+                        <i class="fa fa-hashtag" aria-hidden="true"></i>
+                        ESR : {{round.esr}}&nbsp;|&nbsp;Cumulative ESR : {{round.cumulativeESR}}&nbsp;|&nbsp;PCC Adj.: {{round.pccAdjustment}}
+                        <!-- &nbsp;|&nbsp;Actual Diff : {{getActualDiff(round)}} -->
+                    </p>
+                <!-- </span> -->
+                <span item-right style="margin:0">
+                    <p  *ngIf="round.used"  class="total-score">
+                        <button ion-button small clear>
+                            <i class="fa fa-check-square check-used club-name"></i>
+                        </button> </p>
+                    <p *ngIf="round.teeBoxName" class="total-score">
+                    <button ion-button  [color]="getTeeColor(round.teeBoxName)" small clear>
+                            <i class="fa fa-flag fa-fw"></i>
+                        </button>
+                    </p>
+                </span>
+                <span item-right class="total-scores">
+
+                    <p class="total-score">
+                        
+
+                        Score : <b>{{round.totalGrossScore}}<i
+                                class="front-back">&nbsp;({{getFrontBack(round)}})</i></b>
+                    </p>
+                    <p class="total-score">
+                        
+                        Adj. : <b>{{round.totalAdjustedScore}}<i
+                                class="front-back">&nbsp;({{getFrontBack(round,true)}})</i></b>
+                    </p>
+                    <br>
+                    <p class="total-score">
+                        Actual Diff : <b>{{getActualDiff(round) | number: '1.1-1'}}</b>
+                    </p>
+                    <!-- <i *ngIf="round.used" class="fa fa-check-square check-used club-name"></i> -->
+                    <!--<p class="front-back" >{{scorecard.frontNineTotal}} | {{scorecard.backNineTotal}}</p >-->
+                    <!-- <p class="front-back">{{getFrontBack(round)}}<br>({{getFrontBack(round,true)}})</p> -->
+                </span>
+            </button>
+
+            <!-- <button ion-item *ngFor="let scorecard of scorecardList.scorecards"
+                    (click)="onScorecardClick($event, scorecard)"
+                    class="scorecard-item">
+
+                <p class="played-on">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    {{scorecard.playedOn | date:"MMMM d, yyyy"}}
+                </p>
+                <p *ngIf="scorecard.competition">
+                    <span item-left><i ion-text color="danger" class="fa fa-trophy" aria-hidden="true"></i></span>
+                    <span danger>
+                    {{scorecard.competitionName}} - R{{scorecard.roundNumber}}
+                </span>
+                </p>
+                <p class="club-name">{{scorecard.clubName}}</p>
+                <span item-right class="total-scores">
+                <p class="total-score">{{scorecard.totalScore}}</p>
+                <p class="front-back">{{scorecard.playerTotals}}</p>
+            </span>
+                <p class="course-names">
+                    <i class="fa fa-map-marker fa-location" aria-hidden="true"></i>
+                    {{scorecard.courseNames}}
+                </p>
+                <p color="blue" class="flight-members">
+                    <i class="fa fa-users fa-people" aria-hidden="true"></i>{{scorecard.participants}}
+                </p>
+            </button> -->
+        </div>
+        <button text-wrap ion-button full clear color="danger" *ngIf="(!handicapHistory || !gameRounds) && refreshAttempted && subsActive" padding>
+            <span color="danger">No handicap calculation found for {{viewHcpSystem.shortCode}}</span>
+        </button>
+        <button *ngIf="!subsActive" ion-button clear small style="width:100%" (click)="promptSubscription()">
+            To view your own handicap, tap here to subscribe.
+        </button>
+
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" threshold="30%">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>

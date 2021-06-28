@@ -1,0 +1,109 @@
+{
+	"id": 1,
+	"booking": null,
+	"status": "Waiting?",
+	"createdAt": "2020-06-01",
+	"flightDispachedAt": null,
+	"playeStartedAt": null,
+	"flightCrossedOverAt": null,
+	"flightFinishedAt": null,
+	"caddyMaster": "Caddy Master",
+	"rainCheckIssued": false,
+	"flightSeatings": [{
+			"sequence": 1,
+			"buggy": "120",
+			"caddyMarshall": "Caddie Marshall",
+			"reasonForChange": "no change yet",
+			"players": [{
+                    "id": 1,
+                    "sequence": 1,
+                    "player": "player",
+                    "playerName": "Anna Selkie",
+                    "email": "anna.selkie@mygolf2u.com",
+                    "phone": "60123456789",
+                    "gender": "F",
+                    "playerContact": "address here?",
+                    "confirmed": true,
+                    "playerType": null,
+                    "walking": false,
+                    "pairingNo": 1,
+                    "driving": true,
+                    "caddyPreferred": "012",
+                    "caddyAssigned": "012",
+                    "buggyAssigned": "120"
+            },{
+                    "id": 1,
+                    "sequence": 1,
+                    "player": "player",
+                    "playerName": "Amber Brave",
+                    "email": "amber.brave@mygolf2u.com",
+                    "phone": "60123456789",
+                    "gender": "F",
+                    "playerContact": "address here?",
+                    "confirmed": true,
+                    "playerType": null,
+                    "walking": false,
+                    "pairingNo": 1,
+                    "driving": true,
+                    "caddyPreferred": "012",
+                    "caddyAssigned": "012",
+                    "buggyAssigned": "120"
+            }
+            ]
+		},
+		{
+			"sequence": 1,
+			"buggy": "121",
+			"caddyMarshall": "Caddie Marshall",
+			"reasonForChange": "no change yet",
+			"players": [{
+                    "id": 1,
+                    "sequence": 2,
+                    "player": "player",
+                    "playerName": "John Doe",
+                    "email": "john.doe@mygolf2u.com",
+                    "phone": "60123456789",
+                    "gender": "M",
+                    "playerContact": "address here?",
+                    "confirmed": true,
+                    "playerType": null,
+                    "walking": false,
+                    "pairingNo": 1,
+                    "driving": true,
+                    "caddyPreferred": "013",
+                    "caddyAssigned": "012",
+                    "buggyAssigned": "121"
+            }
+            ]
+		}, {
+			"sequence": 1,
+			"buggy": "123",
+			"caddyMarshall": "Caddie Marshall",
+			"reasonForChange": "no change yet",
+			"players": [{
+                    "id": 1,
+                    "sequence": 2,
+                    "player": "player",
+                    "playerName": "Paul Larson",
+                    "email": "john.doe@mygolf2u.com",
+                    "phone": "60123456789",
+                    "gender": "M",
+                    "playerContact": "address here?",
+                    "confirmed": true,
+                    "playerType": null,
+                    "walking": false,
+                    "pairingNo": 1,
+                    "driving": true,
+                    "caddyPreferred": "013",
+                    "caddyAssigned": "012",
+                    "buggyAssigned": "123"
+            }
+            ]
+		}
+	],
+	"totalBuggies": 12,
+	"totalCaddies": 11,
+	"totalFlights": 12,
+	"totalPlayers": 12,
+	"dateSlot": "2020-06-01"
+}

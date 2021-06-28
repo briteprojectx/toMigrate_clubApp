@@ -1,0 +1,24 @@
+faq-page {
+    .slot-box {
+        border-style: solid;
+        border-width: thin;
+        border-radius: 1em;
+        border-color: #1b6a34;
+      }
+    
+      .slot-subtitle-box {
+        font-size: 2rem;//1.5em;
+        font-weight: bold;
+        background-color: #DDF6D6;
+      }
+    
+      .slot-detail-box {
+        border-top-width: thin;
+        border-top-style: solid;
+        border-top-color: #1b6a34;
+        padding-top: 0.7em !important;
+      }
+      .red-text {
+        color: red;
+      } 
+}
